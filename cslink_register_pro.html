@@ -103,21 +103,25 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .success-next{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;}
 .success-btn-p{padding:13px 0;border-radius:10px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-size:14px;font-weight:700;text-decoration:none;text-align:center;box-shadow:0 6px 20px rgba(6,182,212,0.3);}
 .success-btn-s{padding:12px 0;border-radius:10px;border:1.5px solid var(--border);color:var(--muted);font-size:14px;font-weight:700;text-decoration:none;text-align:center;transition:all .2s;}
-.site-footer{background:var(--navy);color:rgba(255,255,255,0.7);}
+
+
+/* ═══ SITE FOOTER ═══ */
+.site-footer{background:#0f2342;color:rgba(255,255,255,0.7);margin-top:80px;}
 .site-footer-inner{max-width:1100px;margin:0 auto;padding:56px 48px 32px;}
 .site-footer-top{display:flex;align-items:center;gap:20px;margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.footer-logo{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:9px;text-decoration:none;color:#fff;}
-.footer-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.site-footer .footer-logo{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:9px;text-decoration:none;color:#fff;}
+.site-footer .footer-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#06b6d4,#0891b2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
 .footer-tagline{font-size:13px;color:rgba(255,255,255,0.4);margin-left:auto;}
 .site-footer-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,0.08);}
 .footer-col{display:flex;flex-direction:column;gap:10px;}
-.footer-col-title{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.footer-col-title{font-family:"Space Grotesk",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#06b6d4;margin-bottom:4px;}
 .footer-col a{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;}
 .footer-col a:hover{color:#fff;}
-.site-footer-bottom{display:flex;align-items:center;justify-content:space-between;}
+.site-footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .site-footer-bottom p{font-size:12px;color:rgba(255,255,255,0.3);}
-.footer-badges{display:flex;gap:10px;}
+.footer-badges{display:flex;gap:10px;flex-wrap:wrap;}
 .footer-badge{font-size:11px;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);}
+
 </style>
 <!-- deployed: 2026-04-13T15:44 -->
 </head>
@@ -309,17 +313,39 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 <footer class="site-footer">
   <div class="site-footer-inner">
     <div class="site-footer-top">
-      <a href="index.html" class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></a>
+      <a href="index.html" class="footer-logo">
+        <div class="footer-logo-icon">CS</div>
+        CS<b style="color:#06b6d4">LINK</b>
+      </a>
       <p class="footer-tagline">AIが最適なCSプロを、28秒でつなぐ。</p>
     </div>
     <div class="site-footer-nav">
-      <div class="footer-col"><div class="footer-col-title">サービス</div><a href="cslink_features_v5.html">機能・特徴</a><a href="cslink_howto_fixed.html">使い方・事例</a><a href="cslink_pricing.html">料金</a><a href="cslink_list_v2.html">CSプロ一覧</a></div>
-      <div class="footer-col"><div class="footer-col-title">登録</div><a href="cslink_register_client.html">企業として登録（無料）</a><a href="cslink_register_pro.html">CS人材として登録</a></div>
-      <div class="footer-col"><div class="footer-col-title">会社情報</div><a href="company.html">会社概要</a><a href="terms.html">利用規約</a><a href="privacy.html">プライバシーポリシー</a></div>
+      <div class="footer-col">
+        <div class="footer-col-title">サービス</div>
+        <a href="cslink_features_v5.html">機能・特徴</a>
+        <a href="cslink_howto_fixed.html">使い方・事例</a>
+        <a href="cslink_pricing.html">料金</a>
+        <a href="cslink_list_v2.html">CSプロ一覧</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">登録</div>
+        <a href="cslink_register_client.html">企業として登録（無料）</a>
+        <a href="cslink_register_pro.html">CS人材として登録</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">会社情報</div>
+        <a href="company.html">会社概要</a>
+        <a href="terms.html">利用規約</a>
+        <a href="privacy.html">プライバシーポリシー</a>
+      </div>
     </div>
     <div class="site-footer-bottom">
       <p>© 2026 facing株式会社 All Rights Reserved.</p>
-      <div class="footer-badges"><span class="footer-badge">🛡️ facing監修</span><span class="footer-badge">🤖 AI powered</span><span class="footer-badge">🆓 登録・掲載無料</span></div>
+      <div class="footer-badges">
+        <span class="footer-badge">🛡️ facing監修</span>
+        <span class="footer-badge">🤖 AI powered</span>
+        <span class="footer-badge">🆓 企業側完全無料</span>
+      </div>
     </div>
   </div>
 </footer>
