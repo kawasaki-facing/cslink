@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ja" style="scroll-behavior:smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>使い方 | CSLINK — CS課題解決の流れ</title>
+<meta name="description" content="CSLINKの使い方。企業は登録から28秒でCSプロとマッチング・完全無料。CSプロは登録するだけで案件が届く。facing監修のCS特化AIマッチングプラットフォーム。">
+<meta property="og:title" content="使い方 | CSLINK — CS課題解決の流れ">
+<meta property="og:description" content="企業は完全無料・28秒でCSプロとマッチング。CSプロは営業不要で案件獲得。">
+<meta property="og:image" content="https://cdn.midjourney.com/6eb2aaa6-b961-477b-82b0-e353ebf4b9b0/0_0_640_N.webp?method=shortest">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2306b6d4'/><text x='16' y='22' font-family='Arial' font-size='14' font-weight='900' fill='white' text-anchor='middle'>CS</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f;
+  --text:#1a2744;--muted:#64748b;--bg:#f8fafc;--bg2:#f0f7fa;
+  --border:rgba(6,182,212,0.14);--blue:#2563ff;
+}
+html,body{min-height:100vh;background:#fff;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;}
+
+/* TICKER */
+.ai-ticker{height:36px;background:linear-gradient(90deg,var(--navy),var(--navy-m));display:flex;align-items:center;overflow:hidden;}
+.ticker-label{flex-shrink:0;padding:0 20px;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:var(--teal);letter-spacing:1.5px;border-right:1px solid rgba(255,255,255,0.1);white-space:nowrap;}
+.ticker-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;animation:pulse 1.2s infinite;}
+.ticker-track{flex:1;overflow:hidden;}
+.ticker-inner{display:flex;align-items:center;white-space:nowrap;animation:tickerMove 28s linear infinite;}
+.ticker-item{display:inline-flex;align-items:center;gap:10px;padding:0 28px;border-right:1px solid rgba(255,255,255,0.07);font-size:11px;color:rgba(255,255,255,0.8);}
+.t-av{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;}
+.t-score{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:800;color:var(--teal);}
+@keyframes tickerMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(1.5)}}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--navy);}
+.nav-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--navy);}
+.nav-actions{display:flex;gap:10px;align-items:center;}
+.nav-login{font-size:13px;color:var(--muted);text-decoration:none;padding:8px 14px;}
+.nav-cta{font-size:13px;padding:9px 20px;border-radius:8px;background:var(--teal);color:#fff;text-decoration:none;font-weight:700;box-shadow:0 4px 14px rgba(6,182,212,0.35);transition:all .2s;}
+.nav-cta:hover{background:var(--teal-d);}
+
+/* HERO */
+.howto-hero{padding:80px 56px 72px;text-align:center;background:linear-gradient(180deg,#f0f9ff 0%,#fff 100%);position:relative;overflow:hidden;}
+.howto-hero-bg{position:absolute;inset:0;z-index:0;
+  background-image:url('https://cdn.midjourney.com/111c7aa4-4eeb-46fe-9d39-cb93a8180a5a/0_0_640_N.webp?method=shortest');
+  background-size:cover;background-position:center 30%;}
+.howto-hero-bg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(240,249,255,0.90) 0%,rgba(255,255,255,0.95) 100%);}
+.howto-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(6,182,212,0.07) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;z-index:1;}
+.howto-hero-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;}
+.hero-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;}
+.hero-eyebrow::before{content:'';width:20px;height:2px;background:var(--teal);border-radius:2px;}
+.howto-hero h1{font-size:clamp(36px,5vw,60px);font-weight:900;color:var(--navy);letter-spacing:-2.5px;line-height:1.08;margin-bottom:20px;}
+.howto-hero h1 em{font-style:normal;color:var(--teal);}
+.howto-hero-desc{font-size:16px;color:var(--muted);line-height:1.85;max-width:560px;margin:0 auto 40px;}
+
+/* タブ切り替え */
+.tab-switch{display:inline-flex;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:5px;gap:4px;}
+.tab-btn{padding:11px 32px;border-radius:10px;font-size:14px;font-weight:700;border:none;background:transparent;color:var(--muted);transition:all .25s;cursor:pointer;display:flex;align-items:center;gap:8px;}
+.tab-btn.active{background:#fff;color:var(--navy);box-shadow:0 2px 12px rgba(15,35,66,0.08);}
+.tab-btn.active.company{color:var(--teal-d);}
+.tab-btn.active.pro{color:var(--navy);}
+
+/* CONTENT */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* ── COMPANY FLOW ── */
+.flow-section{padding:72px 56px;max-width:1160px;margin:0 auto;}
+
+/* 大きい数字ステップ */
+.big-steps{display:flex;flex-direction:column;gap:0;}
+.big-step{display:grid;grid-template-columns:200px 1fr 340px;gap:0 24px;position:relative;align-items:stretch;}
+.big-step:not(:last-child)::after{content:'';position:absolute;left:99px;top:160px;bottom:-40px;width:2px;background:linear-gradient(var(--teal),rgba(6,182,212,0.1));z-index:0;}
+.big-step-left{display:flex;flex-direction:column;align-items:center;padding-top:16px;position:relative;z-index:1;}
+.big-step-num{font-family:'Space Grotesk',sans-serif;font-size:80px;font-weight:800;line-height:1;letter-spacing:-4px;background:linear-gradient(135deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.big-step-circle{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 24px rgba(6,182,212,0.3);margin-top:8px;}
+.big-step-time{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--teal-d);background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);padding:4px 12px;border-radius:100px;margin-top:10px;white-space:nowrap;}
+.big-step-right{padding:20px 0 64px 0;}
+.big-step-title{font-size:clamp(22px,2.5vw,32px);font-weight:900;color:var(--navy);letter-spacing:-1px;margin-bottom:10px;}
+.big-step-desc{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:20px;}
+.step-content-wrap{flex:1;min-width:0;}
+
+/* ステップ内のUI mockup */
+.step-mockup{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px 24px;max-width:520px;}
+.mock-label{font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal-d);margin-bottom:12px;}
+.mock-input{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--text);display:flex;align-items:center;gap:8px;}
+.mock-input-text{color:var(--muted);}
+.mock-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.mock-chip{font-size:11px;font-weight:700;padding:5px 12px;border-radius:100px;border:1.5px solid rgba(6,182,212,0.2);color:var(--teal-d);background:rgba(6,182,212,0.06);}
+.mock-chip.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+.mock-results{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.mock-result{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border-radius:10px;border:1px solid var(--border);}
+.mock-av{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.mock-name{font-size:12px;font-weight:700;color:var(--navy);flex:1;}
+.mock-score{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:800;color:var(--teal);}
+.mock-bar-wrap{margin-top:8px;}
+.mock-bar{height:4px;background:rgba(6,182,212,0.1);border-radius:4px;overflow:hidden;margin-bottom:2px;}
+.mock-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--blue));animation:barGrow 1.5s ease forwards;}
+@keyframes barGrow{from{width:0}to{width:var(--w)}}
+.mock-bar-label{font-size:10px;color:var(--muted);display:flex;justify-content:space-between;}
+
+/* ポイントカード */
+.step-points{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;}
+.step-point{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--text);background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;}
+.step-point-icon{font-size:14px;}
+
+/* ── FAQ ── */
+.faq-section{padding:72px 56px;background:var(--bg2);border-top:1px solid var(--border);}
+.faq-inner{max-width:800px;margin:0 auto;}
+.faq-title{font-size:clamp(24px,2.5vw,36px);font-weight:900;color:var(--navy);letter-spacing:-1.5px;text-align:center;margin-bottom:8px;}
+.faq-sub{font-size:14px;color:var(--muted);text-align:center;margin-bottom:48px;}
+.faq-list{display:flex;flex-direction:column;gap:12px;}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow .2s;}
+.faq-item:hover{box-shadow:0 4px 16px rgba(6,182,212,0.08);}
+.faq-q{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;}
+.faq-q-text{font-size:14px;font-weight:700;color:var(--navy);}
+.faq-icon{width:24px;height:24px;border-radius:50%;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.15);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--teal-d);flex-shrink:0;transition:transform .25s;}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;padding:0 22px;}
+.faq-item.open .faq-a{max-height:200px;padding:0 22px 18px;}
+.faq-a p{font-size:13px;color:var(--muted);line-height:1.85;border-top:1px solid var(--border);padding-top:14px;}
+
+/* ── COMPARE ── */
+.compare-section{padding:72px 56px;max-width:1100px;margin:0 auto;}
+.compare-title{font-size:clamp(24px,2.5vw,36px);font-weight:900;color:var(--navy);letter-spacing:-1.5px;text-align:center;margin-bottom:8px;}
+.compare-sub{font-size:14px;color:var(--muted);text-align:center;margin-bottom:48px;}
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.compare-card{border-radius:24px;padding:40px 36px;position:relative;}
+.compare-card.cslink{background:linear-gradient(145deg,var(--navy),var(--navy-m));box-shadow:0 16px 48px rgba(15,35,66,0.18);}
+.compare-card.other{background:#fff;border:1px solid var(--border);}
+.compare-card-label{font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.compare-card.cslink .compare-card-label{color:rgba(6,182,212,0.7);}
+.compare-card.other .compare-card-label{color:var(--muted);}
+.compare-card-name{font-size:22px;font-weight:900;margin-bottom:24px;}
+.compare-card.cslink .compare-card-name{color:#fff;}
+.compare-card.other .compare-card-name{color:var(--navy);}
+.compare-list{display:flex;flex-direction:column;gap:14px;}
+.compare-list-item{display:flex;align-items:center;gap:10px;font-size:14px;padding:2px 0;}
+.compare-list-item.yes{color:rgba(255,255,255,0.85);}
+.compare-list-item.no{color:var(--muted);}
+.compare-list-item .ci{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.compare-list-item.yes .ci{background:rgba(6,182,212,0.2);color:var(--teal);}
+.compare-list-item.no .ci{background:rgba(100,116,139,0.1);color:var(--muted);}
+
+/* ── CTA ── */
+.cta-section{background:linear-gradient(160deg,var(--navy),var(--navy-m));padding:96px 56px;text-align:center;position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(6,182,212,0.07) 1px,transparent 1px);background-size:36px 36px;}
+.cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;}
+.cta-label{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(6,182,212,0.6);margin-bottom:16px;}
+.cta-title{font-size:clamp(32px,4vw,52px);font-weight:900;color:#fff;letter-spacing:-2px;line-height:1.1;margin-bottom:16px;}
+.cta-title em{font-style:normal;color:var(--teal);}
+.cta-desc{font-size:15px;color:rgba(255,255,255,0.45);margin-bottom:40px;line-height:1.8;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.cta-btn-p{padding:16px 40px;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 12px 36px rgba(6,182,212,0.38);transition:all .25s;}
+.cta-btn-p:hover{transform:translateY(-2px);}
+.cta-btn-s{padding:16px 32px;border-radius:12px;border:1.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;}
+.cta-btn-s:hover{border-color:rgba(6,182,212,0.5);color:#fff;}
+.cta-note{font-size:11px;color:rgba(255,255,255,0.22);margin-top:20px;}
+
+/* FOOTER */
+footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:8px;}
+.footer-logo-icon{width:22px;height:22px;border-radius:6px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,0.22);}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:11px;color:rgba(255,255,255,0.3);text-decoration:none;}
+
+
+/* ステップ右側画像 */
+.step-img-col{border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(15,35,66,0.1);align-self:stretch;min-height:260px;margin-top:20px;margin-bottom:64px;}
+.step-img-col img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .4s ease;min-height:260px;}
+.big-step:hover .step-img-col img{transform:scale(1.03);}
+
+/* アニメ */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  nav,.howto-hero,.flow-section,.faq-section,.compare-section,.cta-section,footer{padding-left:20px;padding-right:20px;}
+  .nav-links{display:none;}
+  .big-step{grid-template-columns:80px 1fr;}
+  .step-img-col{display:none;}
+  .big-step-num{font-size:48px;}
+  .big-step:not(:last-child)::after{left:39px;}
+  .compare-grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:14px;text-align:center;}
+}
+
+/* ===== 統一フッター ===== */
+.site-footer{background:#0f2342;color:#fff;padding:56px 0 0;}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 56px;}
+.footer-top{display:grid;grid-template-columns:1fr 2fr;gap:64px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.footer-brand{}
+.footer-logo{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:9px;text-decoration:none;color:#fff;margin-bottom:16px;}
+.footer-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#06b6d4,#0891b2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.8;}
+.footer-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+.footer-nav-col{display:flex;flex-direction:column;gap:10px;}
+.footer-nav-title{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:4px;}
+.footer-nav-col a{font-size:13px;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s;}
+.footer-nav-col a:hover{color:#fff;}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding:20px 0;gap:16px;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,0.3);}
+.footer-badges{display:flex;gap:10px;flex-wrap:wrap;}
+.footer-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.2);color:rgba(255,255,255,0.6);}
+
+
+/* ===== 統一CTAボタン ===== */
+.btn-primary,.cta-primary,.cta-btn-p,.card-btn,.pe-btn-p,.sidebar-cta-btn,.two-cta {
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 24px;border-radius:10px;
+  background:linear-gradient(135deg,#06b6d4,#0891b2);
+  color:#fff;text-decoration:none;font-weight:700;font-size:14px;
+  box-shadow:0 4px 20px rgba(6,182,212,0.35);
+  transition:all .2s;border:none;cursor:pointer;
+}
+.btn-primary:hover,.cta-primary:hover,.cta-btn-p:hover,.card-btn:hover,.pe-btn-p:hover,.sidebar-cta-btn:hover,.two-cta:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(6,182,212,0.45);
+}
+.btn-secondary,.cta-secondary,.cta-btn-s {
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 24px;border-radius:10px;
+  background:transparent;
+  color:#0f2342;text-decoration:none;font-weight:700;font-size:14px;
+  border:2px solid rgba(6,182,212,0.4);
+  transition:all .2s;cursor:pointer;
+}
+.btn-secondary:hover,.cta-secondary:hover,.cta-btn-s:hover {
+  border-color:#06b6d4;
+  background:rgba(6,182,212,0.06);
+}
+
+</style>
+<!-- deployed: 2026-04-13T15:44 -->
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ai-ticker">
+  <div class="ticker-label"><span class="ticker-dot"></span>AI MATCHING</div>
+  <div class="ticker-track"><div class="ticker-inner" id="tickerEl"></div></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></a>
+  <ul class="nav-links">
+    <li><a href="cslink_features_v5.html">機能</a></li>
+    <li><a href="cslink_list_v2.html">CSプロ一覧</a></li>
+    <li><a href="cslink_pricing.html">料金</a></li>
+    <li><a href="cslink_howto_fixed.html" class="active" style="color:var(--navy);font-weight:700;">使い方</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="cslink_list_v2.html" class="nav-login">CS会社を見る</a>
+    <a href="cslink_register_client.html" class="nav-cta">無料で始める</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="howto-hero">
+  <div class="howto-hero-bg"></div>
+  <div class="howto-hero-inner">
+    <div class="hero-eyebrow">HOW IT WORKS</div>
+    <h1>CS課題が、<em>28秒</em>で<br>解決する仕組み</h1>
+    <p class="howto-hero-desc">AIが課題を分析し、facing監修のCS専門家を即座にマッチング。企業は完全無料。CSプロは営業不要で案件獲得。</p>
+    <div class="tab-switch">
+      <button class="tab-btn active company" onclick="switchTab('company')">🏢 企業の方</button>
+      <button class="tab-btn pro" onclick="switchTab('pro')">👤 CSプロの方</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 企業向けコンテンツ ── -->
+<div id="tab-company" class="tab-content active">
+
+  <!-- FLOW -->
+  <div class="flow-section">
+    <div class="big-steps">
+
+      <!-- STEP 1 -->
+      <div class="big-step fade-up">
+        <div class="big-step-left">
+          <div class="big-step-num">01</div>
+          <div class="big-step-circle">📝</div>
+          <div class="big-step-time">所要時間 2分</div>
+        </div>
+        <div class="big-step-right">
+          <div class="step-content-wrap"><div class="big-step-title">CS課題を入力する</div>
+          <div class="big-step-desc">解約率が高い・オンボーディングが弱い・CS組織を作りたいなど、今困っている課題を自由に入力するだけ。登録・費用は一切不要です。</div>
+          <div class="step-mockup">
+            <div class="mock-label">STEP 1 — 課題入力</div>
+            <div class="mock-input">
+              <span style="font-size:13px;color:var(--muted)">🔍</span>
+              <span class="mock-input-text">解約率改善・SaaS・即稼働希望</span>
+            </div>
+            <div class="mock-chips">
+              <span class="mock-chip active">解約防止</span>
+              <span class="mock-chip active">LTV改善</span>
+              <span class="mock-chip">CS組織構築</span>
+              <span class="mock-chip">オンボーディング</span>
+            </div>
+          </div>
+          <div class="step-points">
+            <div class="step-point"><span class="step-point-icon">✓</span>登録不要・完全無料</div>
+            <div class="step-point"><span class="step-point-icon">✓</span>2分で完了</div>
+          </div>
+        </div>
+        </div><div class="step-img-col"><img src="https://cdn.midjourney.com/6eb2aaa6-b961-477b-82b0-e353ebf4b9b0/0_0_640_N.webp?method=shortest" alt="CS課題入力イメージ" loading="lazy"></div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="big-step fade-up">
+        <div class="big-step-left">
+          <div class="big-step-num">02</div>
+          <div class="big-step-circle">⚡</div>
+          <div class="big-step-time">所要時間 28秒</div>
+        </div>
+        <div class="big-step-right">
+          <div class="step-content-wrap"><div class="big-step-title">AIが最適なCSプロを提案</div>
+          <div class="big-step-desc">入力内容をAIが即座に分析。課題の種類・フェーズ・スピード感・予算感に合った最適なCS専門家を28秒以内にリストアップします。</div>
+          <div class="step-mockup">
+            <div class="mock-label">STEP 2 — AI MATCHING（28秒）</div>
+            <div class="mock-results">
+              <div class="mock-result">
+                <div class="mock-av" style="background:linear-gradient(135deg,#2563ff,#06b6d4)">R</div>
+                <div class="mock-name">リテンションラボ株式会社</div>
+                <div class="mock-score">98%</div>
+              </div>
+              <div class="mock-result">
+                <div class="mock-av" style="background:linear-gradient(135deg,#7c3aed,#06b6d4)">T</div>
+                <div class="mock-name">田中 美咲（CS戦略コンサル）</div>
+                <div class="mock-score">94%</div>
+              </div>
+              <div class="mock-result">
+                <div class="mock-av" style="background:linear-gradient(135deg,#059669,#2563ff)">K</div>
+                <div class="mock-name">株式会社CS Partners</div>
+                <div class="mock-score">91%</div>
+              </div>
+            </div>
+          </div>
+          <div class="step-points">
+            <div class="step-point"><span class="step-point-icon">⚡</span>平均28秒</div>
+            <div class="step-point"><span class="step-point-icon">🛡️</span>facing審査済みのみ</div>
+          </div>
+        </div>
+        </div><div class="step-img-col"><img src="https://cdn.midjourney.com/c3d9b2da-c189-4de8-a3df-2bb2bd3cf724/0_1_640_N.webp?method=shortest" alt="AIマッチングイメージ" loading="lazy"></div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="big-step fade-up">
+        <div class="big-step-left">
+          <div class="big-step-num">03</div>
+          <div class="big-step-circle">💬</div>
+          <div class="big-step-time">1〜3営業日</div>
+        </div>
+        <div class="big-step-right">
+          <div class="step-content-wrap"><div class="big-step-title">面談・条件すり合わせ</div>
+          <div class="big-step-desc">気になるCSプロとオンライン面談。稼働条件・進め方・報酬などをすり合わせます。facing担当者がサポートするので、交渉は不要です。</div>
+          <div class="step-mockup">
+            <div class="mock-label">STEP 3 — 面談・調整</div>
+            <div style="display:flex;gap:10px;flex-direction:column;">
+              <div style="background:#fff;border-radius:10px;padding:12px 14px;border:1px solid var(--border);font-size:12px;color:var(--text);">
+                📅 <strong>オンライン面談設定</strong><br>
+                <span style="color:var(--muted);font-size:11px;">facing担当者が日程調整をサポート</span>
+              </div>
+              <div style="background:#fff;border-radius:10px;padding:12px 14px;border:1px solid var(--border);font-size:12px;color:var(--text);">
+                📋 <strong>稼働条件・費用の確認</strong><br>
+                <span style="color:var(--muted);font-size:11px;">交渉はCSLINKが代行。企業側0円</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-points">
+            <div class="step-point"><span class="step-point-icon">💰</span>費用は0円</div>
+            <div class="step-point"><span class="step-point-icon">🤝</span>facing担当がサポート</div>
+          </div>
+        </div>
+        </div><div class="step-img-col"><img src="https://cdn.midjourney.com/111c7aa4-4eeb-46fe-9d39-cb93a8180a5a/0_0_640_N.webp?method=shortest" alt="面談・成約イメージ" loading="lazy"></div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="big-step fade-up">
+        <div class="big-step-left">
+          <div class="big-step-num">04</div>
+          <div class="big-step-circle">🚀</div>
+          <div class="big-step-time">最短1週間〜</div>
+        </div>
+        <div class="big-step-right">
+          <div class="step-content-wrap"><div class="big-step-title">稼働開始・課題解決へ</div>
+          <div class="big-step-desc">成約後、CSプロが稼働を開始。成約時のみCS側から10%の成功報酬が発生し、企業側の費用は引き続き0円です。KPI管理・成果測定もCSLINKがサポートします。</div>
+          <div class="step-mockup">
+            <div class="mock-label">STEP 4 — 稼働スタート</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="background:#fff;border-radius:10px;padding:12px 14px;border:1px solid var(--border);font-size:12px;color:var(--text);">
+                🤝 <strong>成約・契約締結</strong><br>
+                <span style="color:var(--muted);font-size:11px;">facing担当者が契約手続きをサポート</span>
+              </div>
+              <div style="background:#fff;border-radius:10px;padding:12px 14px;border:1px solid var(--border);font-size:12px;color:var(--text);">
+                🚀 <strong>稼働開始 → KPI設定</strong><br>
+                <span style="color:var(--muted);font-size:11px;">CSLINKがKPI管理・成果測定をサポート</span>
+              </div>
+              <div style="background:rgba(6,182,212,0.06);border-radius:10px;padding:10px 14px;border:1px solid rgba(6,182,212,0.15);display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:11px;font-weight:700;color:var(--teal-d);">企業側費用</span>
+                <span style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:800;color:var(--teal);">¥0</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-points">
+            <div class="step-point"><span class="step-point-icon">✓</span>企業側費用0円</div>
+            <div class="step-point"><span class="step-point-icon">📊</span>KPI管理もサポート</div>
+            <div class="step-point"><span class="step-point-icon">🔄</span>相性NG時は再マッチング</div>
+          </div>
+        </div>
+        </div><div class="step-img-col"><img src="https://cdn.midjourney.com/c0f94714-4417-4324-8db9-699300a087e1/0_1_640_N.webp?method=shortest" alt="稼働開始イメージ" loading="lazy"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMPARE -->
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 56px;">
+    <div class="compare-section" style="padding:0;">
+      <div class="compare-title">他の方法と比べると</div>
+      <div class="compare-sub" style="margin-bottom:36px;">CSLINKが選ばれる理由</div>
+      <div class="compare-grid">
+        <div class="compare-card cslink">
+          <div class="compare-card-label">おすすめ</div>
+          <div class="compare-card-name">CSLINK</div>
+          <div class="compare-list">
+            <div class="compare-list-item yes"><span class="ci">✓</span>企業側 完全無料</div>
+            <div class="compare-list-item yes"><span class="ci">✓</span>28秒でマッチング</div>
+            <div class="compare-list-item yes"><span class="ci">✓</span>CS特化専門家のみ</div>
+            <div class="compare-list-item yes"><span class="ci">✓</span>facing審査済み</div>
+            <div class="compare-list-item yes"><span class="ci">✓</span>最短翌日稼働</div>
+            <div class="compare-list-item yes"><span class="ci">✓</span>KPIサポートあり</div>
+          </div>
+        </div>
+        <div class="compare-card other">
+          <div class="compare-card-label">採用エージェント</div>
+          <div class="compare-card-name" style="color:var(--navy);">採用エージェント</div>
+          <div class="compare-list">
+            <div class="compare-list-item no"><span class="ci">✗</span>着手金・年収35%</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>〜2週間かかる</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>CS特化ではない</div>
+            <div class="compare-list-item yes" style="color:var(--text)"><span class="ci" style="background:rgba(6,182,212,0.1);color:var(--teal)">✓</span>審査あり</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>1ヶ月以上</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>サポートなし</div>
+          </div>
+        </div>
+        <div class="compare-card other">
+          <div class="compare-card-label">求人広告</div>
+          <div class="compare-card-name" style="color:var(--navy);">求人広告</div>
+          <div class="compare-list">
+            <div class="compare-list-item no"><span class="ci">✗</span>掲載費固定</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>応募待ちが必要</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>CS特化ではない</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>審査なし</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>〜1ヶ月</div>
+            <div class="compare-list-item no"><span class="ci">✗</span>サポートなし</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="faq-inner">
+      <div class="faq-title">よくある質問</div>
+      <div class="faq-sub">企業の方からよくいただくご質問</div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">本当に企業側は完全無料ですか？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>はい、企業側は登録・掲載・マッチング・面談設定・成約前まで一切費用は発生しません。費用が発生するのは成約時のみで、CSプロ側が報酬から10%をお支払いいただく仕組みです。企業側は0円のままです。</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">マッチングしない場合はどうなりますか？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>AIマッチングで条件が合わない場合、facing株式会社（累計500社・CS支援10億円以上）の担当者が直接ヒアリングし、最適なCSプロをご提案します。CS課題は必ず解決されます。</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">稼働開始まで最短どのくらいかかりますか？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>急ぎの場合は最短翌日〜1週間での稼働開始も可能です。マッチングは28秒、面談・条件確認に1〜3営業日、契約手続きに数日かかります。</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">相性が合わなかった場合は？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>稼働開始後に相性が合わないと感じた場合は、facing担当者にご相談ください。無料で再マッチングを行います。企業側のご満足を最優先に対応いたします。</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">個人情報は安全に管理されますか？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>facing株式会社はプライバシーマーク（第2500202号）を取得しています。入力いただいた情報はマッチング目的のみに使用し、第三者への提供・販売は一切行いません。</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-company -->
+
+<!-- ── CSプロ向けコンテンツ ── -->
+<div id="tab-pro" class="tab-content">
+
+  <div class="flow-section">
+    <div class="big-steps">
+
+      <div class="big-step fade-up">
+        <div class="big-step-left">
+          <div class="big-step-num">01</div>
+          <div class="big-step-circle">📋</div>
+          <div class="big-step-time">所要時間 5分</div>
+        </div>
+        <div class="big-step-right">
+          <div class="big-step-title">プロフィールを登録する</div>
+          <div class="big-step-desc">スキル・実績・稼働条件を入力するだけ。月額費用は一切なく、登録は無料です。法人・個人事業主どちらでも登録できます。</div>
+          <div class="step-points">
+            <div class="step-point"><span class="step-point-icon">✓</span>登録・月額0円</div>
+            <div class="step-point"><span class="step-point-icon">✓</span>個人・法人OK</div>
+            <div class="step-point"><span class="step-point-icon">✓</span>5分で完了</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="big-step fade-up">
+        <div class="big-step-left">
+          <div class="big-step-num">02</div>
+          <div class="big-step-circle">🔍</div>
+          <div class="big-step-time">2〜3営業日</div>
+        </div>
+        <div class="big-step-right">
+          <div class="big-step-title">facing審査を通過する</div>
+          <div class="big-step-desc">facing株式会社がプロフィール・実績・スキルを審査します。審査通過後、CSLINKに掲載されfacing審査済みバッジが付与されます。</div>
+          <div class="step-mockup">
+            <div class="mock-label">STEP 2 — 審査基準</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text);">
+                <span style="color:var(--teal);font-weight:800;">✓</span> CS実務経験2年以上
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text);">
+                <span style="color:var(--teal);font-weight:800;">✓</span> 支援実績・成果の提示
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text);">
+                <span style="color:var(--teal);font-weight:800;">✓</span> facing担当者との面談
+              </div>
+            </div>
+          </div>
+          <div class="step-points">
+            <div class="step-point"><span class="step-point-icon">🏆</span>facing審査済みバッジ</div>
+            <div class="step-point"><span class="step-point-icon">⬆️</span>高単価案件に優先マッチング</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="big-step fade-up">
+        <div class="big-step-left">
+          <div class="big-step-num">03</div>
+          <div class="big-step-circle">📬</div>
+          <div class="big-step-time">掲載後すぐ</div>
+        </div>
+        <div class="big-step-right">
+          <div class="big-step-title">案件が自動で届く</div>
+          <div class="big-step-desc">営業・提案書作成・交渉は不要。AIがスキルと企業課題をマッチングし、案件の紹介メールが届きます。受けるかどうかはあなたが決めます。</div>
+          <div class="step-points">
+            <div class="step-point"><span class="step-point-icon">📬</span>営業活動不要</div>
+            <div class="step-point"><span class="step-point-icon">✋</span>案件は選べる</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="big-step fade-up">
+        <div class="big-step-left">
+          <div class="big-step-num">04</div>
+          <div class="big-step-circle">💴</div>
+          <div class="big-step-time">成約後</div>
+        </div>
+        <div class="big-step-right">
+          <div class="big-step-title">成約・報酬受け取り</div>
+          <div class="big-step-desc">稼働開始後、成約金額の10%のみが成功報酬としてCSLINKに発生します。月額費用・掲載費・登録費は一切かかりません。</div>
+          <div class="step-points">
+            <div class="step-point"><span class="step-point-icon">💴</span>成功報酬10%のみ</div>
+            <div class="step-point"><span class="step-point-icon">🆓</span>月額・掲載費0円</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PRO FAQ -->
+  <div class="faq-section">
+    <div class="faq-inner">
+      <div class="faq-title">CSプロの方へよくある質問</div>
+      <div class="faq-sub">登録・審査・案件についてのご質問</div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">登録・掲載に費用はかかりますか？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>登録・掲載・案件紹介まで完全無料です。費用が発生するのは成約時のみで、成約金額の10%が成功報酬となります。月額費用や掲載費は一切かかりません。</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">審査にはどのくらいかかりますか？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>通常2〜3営業日以内にfacing担当者よりご連絡いたします。審査ではプロフィール確認と簡単なオンライン面談を行います。</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">副業・週1〜2日でも登録できますか？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>はい、週1〜2日のスポット対応から、フルタイムまで幅広い稼働形態に対応しています。登録時に希望の稼働条件を入力していただければ、条件に合った案件のみご紹介します。</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">案件を断ることはできますか？</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><p>もちろんです。紹介された案件を受けるかどうかは100%あなたが決めます。断ることで評価が下がるようなことはありません。</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-pro -->
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-label">GET STARTED</div>
+    <h2 class="cta-title">今すぐ<em>無料</em>で<br>始めてみる</h2>
+    <p class="cta-desc">企業は登録から成約まで完全無料。CSプロは登録・掲載費0円。まずは気軽にお試しください。</p>
+    <div class="cta-btns">
+      <a href="cslink_register_client.html" class="cta-btn-p">🏢 企業として無料登録</a>
+      <a href="cslink_register_pro.html" class="cta-btn-s">👤 CSプロとして登録</a>
+    </div>
+    <div class="cta-note">登録無料 ✓ 成約まで企業側0円 ✓ CSプロは成功報酬10%のみ</div>
+  </div>
+</div>
+
+
+
+<script>
+// TICKER
+const tData=[
+  {av:'R',bg:'#2563ff',name:'リテンションラボ株式会社',tag:'解約防止',score:98},
+  {av:'T',bg:'#7c3aed',name:'田中 美咲',tag:'LTV改善',score:94},
+  {av:'K',bg:'#059669',name:'株式会社CS Partners',tag:'顧客成功',score:91},
+  {av:'S',bg:'#ea580c',name:'鈴木 健太',tag:'LTV改善',score:89},
+];
+const tEl=document.getElementById('tickerEl');
+[...tData,...tData].forEach(d=>{
+  tEl.innerHTML+=`<div class="ticker-item"><div class="t-av" style="background:${d.bg}">${d.av}</div>${d.name}<span style="font-size:9px;color:rgba(255,255,255,0.4)">${d.tag}</span><span class="t-score">${d.score}%</span><span style="color:#22c55e;font-size:10px;font-weight:700">✓ 完了</span></div>`;
+});
+
+// タブ切り替え
+function switchTab(tab){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelector('.tab-btn.'+tab).classList.add('active');
+  // fade-upリセット→再発火
+  document.querySelectorAll('#tab-'+tab+' .fade-up').forEach(el=>{
+    el.classList.remove('visible');
+    setTimeout(()=>io.observe(el),100);
+  });
+}
+
+// FAQ
+function toggleFaq(el){
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+// IntersectionObserver
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+</script>
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-top">
+      <a href="index.html" class="footer-logo">
+        <div class="footer-logo-icon">CS</div>
+        CS<b style="color:var(--teal)">LINK</b>
+      </a>
+      <p class="footer-tagline">AIが最適なCSプロを、28秒でつなぐ。</p>
+    </div>
+    <div class="site-footer-nav">
+      <div class="footer-col">
+        <div class="footer-col-title">サービス</div>
+        <a href="cslink_features_v5.html">機能・特徴</a>
+        <a href="cslink_howto_fixed.html">使い方・事例</a>
+        <a href="cslink_pricing.html">料金</a>
+        <a href="cslink_list_v2.html">CSプロ一覧</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">登録</div>
+        <a href="cslink_register_client.html">企業として登録（無料）</a>
+        <a href="cslink_register_pro.html">CS人材として登録</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">会社情報</div>
+        <a href="company.html">会社概要</a>
+        <a href="terms.html">利用規約</a>
+        <a href="privacy.html">プライバシーポリシー</a>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <p>© 2026 facing株式会社 All Rights Reserved.</p>
+      <div class="footer-badges">
+        <span class="footer-badge">🛡️ facing監修</span>
+        <span class="footer-badge">🤖 AI powered</span>
+        <span class="footer-badge">🆓 企業側完全無料</span>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

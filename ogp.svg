@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f2342"/>
+      <stop offset="100%" style="stop-color:#1e3a5f"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#2563ff"/>
+    </linearGradient>
+  </defs>
+  <!-- BG -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Grid dots -->
+  <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="1" fill="rgba(6,182,212,0.15)"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <!-- Glow -->
+  <radialGradient id="glow" cx="30%" cy="50%" r="50%">
+    <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.15"/>
+    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <!-- Logo icon -->
+  <rect x="80" y="72" width="52" height="52" rx="14" fill="url(#teal)"/>
+  <text x="106" y="106" font-family="Arial" font-size="20" font-weight="900" fill="white" text-anchor="middle">CS</text>
+  <!-- Logo text -->
+  <text x="148" y="110" font-family="Arial" font-size="32" font-weight="700" fill="white">CS</text>
+  <text x="196" y="110" font-family="Arial" font-size="32" font-weight="700" fill="#06b6d4">LINK</text>
+  <!-- Badge -->
+  <rect x="80" y="180" width="240" height="32" rx="16" fill="rgba(6,182,212,0.15)" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.4"/>
+  <circle cx="104" cy="196" r="5" fill="#22c55e"/>
+  <text x="118" y="201" font-family="Arial" font-size="12" font-weight="700" fill="#06b6d4" letter-spacing="2">日本初・CS特化AIマッチング</text>
+  <!-- Main headline -->
+  <text x="80" y="290" font-family="Arial" font-size="68" font-weight="900" fill="white">解約が止まる。</text>
+  <text x="80" y="375" font-family="Arial" font-size="54" font-weight="900" fill="url(#teal)">CSのプロが、今日つながる。</text>
+  <!-- Sub -->
+  <text x="80" y="440" font-family="Arial" font-size="22" fill="rgba(255,255,255,0.55)">AIが要件を聞いて、最適なCS企業・人材を28秒で提案。</text>
+  <text x="80" y="470" font-family="Arial" font-size="22" fill="rgba(255,255,255,0.55)">企業側の利用は完全無料。成約時のみCS側に10%。</text>
+  <!-- Cards on right -->
+  <rect x="760" y="120" width="360" height="90" rx="16" fill="rgba(255,255,255,0.07)" stroke="rgba(6,182,212,0.25)" stroke-width="1"/>
+  <rect x="784" y="144" width="36" height="36" rx="10" fill="#2563ff"/>
+  <text x="802" y="167" font-family="Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">R</text>
+  <text x="836" y="160" font-family="Arial" font-size="14" font-weight="700" fill="white">リテンションラボ株式会社</text>
+  <text x="836" y="178" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.45)">解約防止・SaaS特化</text>
+  <text x="1076" y="165" font-family="Arial" font-size="20" font-weight="900" fill="#06b6d4" text-anchor="end">98%</text>
+  <text x="1076" y="180" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="end">マッチ度</text>
+
+  <rect x="760" y="230" width="360" height="90" rx="16" fill="rgba(255,255,255,0.07)" stroke="rgba(6,182,212,0.2)" stroke-width="1"/>
+  <rect x="784" y="254" width="36" height="36" rx="10" fill="#06b6d4"/>
+  <text x="802" y="277" font-family="Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">T</text>
+  <text x="836" y="270" font-family="Arial" font-size="14" font-weight="700" fill="white">田中 美咲（CS顧問）</text>
+  <text x="836" y="288" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.45)">LTV改善・顧客分析</text>
+  <text x="1076" y="275" font-family="Arial" font-size="20" font-weight="900" fill="#06b6d4" text-anchor="end">94%</text>
+  <text x="1076" y="290" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="end">マッチ度</text>
+
+  <rect x="760" y="340" width="360" height="90" rx="16" fill="rgba(255,255,255,0.07)" stroke="rgba(6,182,212,0.15)" stroke-width="1"/>
+  <rect x="784" y="364" width="36" height="36" rx="10" fill="#7c3aed"/>
+  <text x="802" y="387" font-family="Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">A</text>
+  <text x="836" y="380" font-family="Arial" font-size="14" font-weight="700" fill="white">株式会社CS Partners</text>
+  <text x="836" y="398" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.45)">顧客成功・CS組織構築</text>
+  <text x="1076" y="385" font-family="Arial" font-size="20" font-weight="900" fill="#06b6d4" text-anchor="end">91%</text>
+  <text x="1076" y="400" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="end">マッチ度</text>
+
+  <!-- AI label -->
+  <rect x="784" y="452" width="120" height="28" rx="14" fill="rgba(6,182,212,0.15)" stroke="rgba(6,182,212,0.3)" stroke-width="1"/>
+  <text x="844" y="470" font-family="Arial" font-size="11" font-weight="700" fill="#06b6d4" text-anchor="middle">⚡ AI MATCHING</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="580" width="1200" height="50" fill="rgba(0,0,0,0.3)"/>
+  <text x="80" y="611" font-family="Arial" font-size="14" fill="rgba(255,255,255,0.4)">cslink.jp</text>
+  <text x="1120" y="611" font-family="Arial" font-size="14" fill="rgba(255,255,255,0.4)" text-anchor="end">© 2026 facing株式会社</text>
+</svg>
