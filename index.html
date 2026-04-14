@@ -459,7 +459,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
         <span class="chip">LTV改善</span><span class="chip">顧客分析</span><span class="chip">BPO</span>
       </div>
       <p class="hero-desc">
-        課題を入力するだけ。AIがCS企業・フリーランスから<strong>全自動で最適候補を選定。</strong>
+        課題を入力するだけ。AIが1,200件以上のCS企業・フリーランスから<strong>全自動で最適候補を選定。</strong>
         企業側の利用は<strong>完全無料。</strong>成約時のみCS側に10%。
       </p>
       <div class="cta-row">
@@ -505,8 +505,8 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
       <div class="proof-item">
         <div class="proof-icon">🤝</div>
         <div>
-          <div class="proof-num">登録・利用<em>無料</em></div>
-          <div class="proof-desc">企業側はずっと0円</div>
+          <div class="proof-num"><em>500社</em>以上</div>
+          <div class="proof-desc">facing累計支援企業数</div>
         </div>
       </div>
       <div class="proof-item">
@@ -519,8 +519,8 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
       <div class="proof-item">
         <div class="proof-icon">🔄</div>
         <div>
-          <div class="proof-num"><em>24時間</em>以内</div>
-          <div class="proof-desc">コンシェルジュ初回対応</div>
+          <div class="proof-num">継続率<em>98%</em></div>
+          <div class="proof-desc">支援後のクライアント継続率</div>
         </div>
       </div>
     </div>
@@ -718,6 +718,43 @@ setTimeout(() => {
 }, 500);
 
 // ── CHAT ──
+const CHAT_SCRIPTS = [
+  { keys:['解約','退会','チャーン','churn','離脱'],
+    reply:'解約防止は多くの企業で共通の悩みですね。CSLINKには解約防止に特化したCS人材が複数登録しています。どんな業種・規模のビジネスですか？' },
+  { keys:['LTV','単価','アップセル','クロスセル','継続'],
+    reply:'LTV改善はCS戦略が直結します。SaaS・EC・サブスクリプション業種でのLTV改善実績が豊富な人材をご紹介できます。' },
+  { keys:['採用','人材','外注','アウトソース','委託','雇用'],
+    reply:'CS人材の確保はお急ぎですか？CSLINKは最短28秒でマッチング候補を提案します。まず無料で登録してみてください。' },
+  { keys:['費用','料金','無料','コスト','いくら','価格'],
+    reply:'企業側の登録・利用は完全無料です。マッチングが成立したときだけ、CS会社側から契約額の10%をいただく仕組みです。' },
+  { keys:['使い方','どうやって','流れ','方法','はじめ','始め'],
+    reply:'①無料登録 → ②AI診断でCS課題をヒアリング → ③最適な候補を提案 → ④面談・契約、という流れです。最短翌日からご支援を開始できます。' },
+  { keys:['SaaS','saas','ソフト','プロダクト'],
+    reply:'SaaS企業のCS課題は得意分野です。オンボーディング改善・ヘルススコア設計・チャーン対策など、実績豊富な人材を多数登録しています。' },
+  { keys:['EC','イーコマース','通販','D2C'],
+    reply:'EC・D2Cのカスタマーサポート改善や購買後体験向上に強いCS人材をご紹介できます。まずは無料相談をどうぞ。' },
+  { keys:['急ぎ','すぐ','早急','今すぐ','至急'],
+    reply:'承知しました。緊急案件は優先対応いたします。登録後、担当コンシェルジュが24時間以内にご連絡します。' },
+  { keys:['コンシェルジュ','相談','聞きたい','教えて'],
+    reply:'CSLINKのコンシェルジュが課題を整理して最適な人材を提案します。まず無料登録からどうぞ。' },
+];
+const FALLBACKS = [
+  'なるほど。その課題に強いCS専門家がCSLINKに多数登録しています。詳しくはコンシェルジュにご相談ください。',
+  'CS課題の解決は早いほど効果的です。まず無料登録で詳しくご相談ください。',
+  'ご状況を拝見しました。最適なCS人材をご紹介できると思います。無料登録でコンシェルジュにお繋ぎします。',
+];
+let fallbackIdx = 0;
+
+function getReply(text) {
+  const t = text;
+  for(const s of CHAT_SCRIPTS) {
+    if(s.keys.some(k => t.includes(k))) return s.reply;
+  }
+  const r = FALLBACKS[fallbackIdx % FALLBACKS.length];
+  fallbackIdx++;
+  return r;
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   const body = document.getElementById('chatBody');
   if(body) {
@@ -731,26 +768,19 @@ window.addEventListener('DOMContentLoaded', () => {
   if(inp) inp.addEventListener('keydown', e => { if(e.key==='Enter') sendChat(); });
 });
 
-async function sendChat() {
+function sendChat() {
   const inp = document.getElementById('chatInput');
   const body = document.getElementById('chatBody');
   if(!inp||!body) return;
   const text = inp.value.trim(); if(!text) return;
   inp.value = '';
   const um = document.createElement('div'); um.className='msg user'; um.textContent=text; body.appendChild(um);
-  const am = document.createElement('div'); am.className='msg ai'; am.textContent='考え中…'; body.appendChild(am);
   body.scrollTop = body.scrollHeight;
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,
-        system:'あなたはCSLINKのAIアシスタントです。CS（カスタマーサクセス）の課題解決とマッチングについて簡潔に日本語で答えてください。',
-        messages:[{role:'user',content:text}]})
-    });
-    const data = await res.json();
-    am.textContent = data.content?.[0]?.text || 'エラーが発生しました';
-  } catch(e) { am.textContent = 'エラーが発生しました。'; }
-  body.scrollTop = body.scrollHeight;
+  const am = document.createElement('div'); am.className='msg ai'; am.textContent='入力中…'; body.appendChild(am);
+  setTimeout(() => {
+    am.textContent = getReply(text);
+    body.scrollTop = body.scrollHeight;
+  }, 900);
 }
 
 if(typeof ScrollReveal !== 'undefined') {
