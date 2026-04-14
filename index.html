@@ -805,20 +805,12 @@ async function sendChat() {
   const am = document.createElement('div'); am.className='msg ai'; am.textContent='考え中…'; body.appendChild(am);
   body.scrollTop = body.scrollHeight;
   try {
-    const res = await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev', {
+    const res = await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev/chat', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:400,
-        messages:[
-          {role:'user', content:'（システム）あなたはCSLINKのAIアシスタントです。CS課題解決とマッチングについて簡潔に日本語で3文以内で答えてください。'},
-          {role:'assistant', content:'こんにちは！CSLINKのAIアシスタントです。どのようなCS課題をお持ちですか？'},
-          {role:'user', content:text}
-        ]
-      })
+      body: JSON.stringify({ message: text })
     });
     const data = await res.json();
-    am.textContent = data.content?.[0]?.text || 'すみません、もう一度お試しください。';
+    am.textContent = data.reply || 'すみません、もう一度お試しください。';
   } catch(e) { am.textContent = 'すみません、もう一度お試しください。'; }
   body.scrollTop = body.scrollHeight;
 }
