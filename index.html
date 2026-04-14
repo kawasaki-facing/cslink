@@ -805,15 +805,18 @@ async function sendChat() {
   const am = document.createElement('div'); am.className='msg ai'; am.textContent='考え中…'; body.appendChild(am);
   body.scrollTop = body.scrollHeight;
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,
-        system:'あなたはCSLINKのAIアシスタントです。CS（カスタマーサクセス）の課題解決とマッチングについて簡潔に日本語で答えてください。',
-        messages:[{role:'user',content:text}]})
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        system:'あなたはCSLINKのAIアシスタントです。CS（カスタマーサクセス）の課題解決とマッチングについて簡潔に日本語で3文以内で答えてください。',
+        messages:[{role:'user',content:text}]
+      })
     });
     const data = await res.json();
-    am.textContent = data.content?.[0]?.text || 'エラーが発生しました';
-  } catch(e) { am.textContent = 'エラーが発生しました。'; }
+    am.textContent = data.content?.[0]?.text || 'すみません、もう一度お試しください。';
+  } catch(e) { am.textContent = 'すみません、もう一度お試しください。'; }
   body.scrollTop = body.scrollHeight;
 }
 
