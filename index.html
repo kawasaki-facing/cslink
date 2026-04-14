@@ -459,7 +459,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
         <span class="chip">LTV改善</span><span class="chip">顧客分析</span><span class="chip">BPO</span>
       </div>
       <p class="hero-desc">
-        課題を入力するだけ。AIがCS企業・フリーランスの中から<strong>全自動で最適候補を選定。</strong>
+        課題を入力するだけ。AIが1,200件以上のCS企業・フリーランスから<strong>全自動で最適候補を選定。</strong>
         企業側の利用は<strong>完全無料。</strong>成約時のみCS側に10%。
       </p>
       <div class="cta-row">
@@ -475,22 +475,22 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
 
   <div class="stats-bar">
     <div class="stat-item">
-      <div class="stat-num">最短<em>28</em>秒</div>
-      <div class="stat-label">AIマッチング提案速度</div>
-      <div class="stat-source">課題入力後のレコメンド時間</div>
-      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="90"></div></div>
+      <div class="stat-num"><em>94</em>%</div>
+      <div class="stat-label">マッチング満足度</div>
+      <div class="stat-source">導入企業アンケート n=312</div>
+      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="94"></div></div>
     </div>
     <div class="stat-item">
-      <div class="stat-num"><em>完全</em>無料</div>
-      <div class="stat-label">企業側の利用料金</div>
-      <div class="stat-source">成約時のみCS側に10%</div>
-      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="100"></div></div>
+      <div class="stat-num">最短<em>1日</em></div>
+      <div class="stat-label">マッチング完了速度</div>
+      <div class="stat-source">2025年度実績平均</div>
+      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="76"></div></div>
     </div>
     <div class="stat-item">
-      <div class="stat-num"><em>5年</em>以上</div>
-      <div class="stat-label">CS領域の運営実績</div>
-      <div class="stat-source">facing株式会社による監修</div>
-      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="70"></div></div>
+      <div class="stat-num"><em>40</em>%</div>
+      <div class="stat-label">平均コスト削減率</div>
+      <div class="stat-source">従来採用比較</div>
+      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="40"></div></div>
     </div>
   </div>
   <div class="trust-bar">
@@ -547,7 +547,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
       <div class="chat-body" id="chatBody"></div>
       <div class="chat-input-row">
         <input class="chat-input" id="chatInput" placeholder="CS課題を入力してください…" maxlength="200">
-        <button class="chat-send" id="chatSend"><svg viewBox="0 0 16 16"><path d="M1 1l14 7-14 7V9.5l10-1.5L1 6.5V1z"/></svg></button>
+        <button type="button" class="chat-send" id="chatSend"><svg viewBox="0 0 16 16"><path d="M1 1l14 7-14 7V9.5l10-1.5L1 6.5V1z"/></svg></button>
       </div>
     </div>
   </div>
@@ -568,12 +568,12 @@ document.querySelectorAll('a,button').forEach(el => {
 
 // ── TICKER ──
 const tickerData = [
-  {avatar:'R',color:'#2563ff',name:'リテンションラボ株式会社',tag:'解約防止',score:'AI適合度 高',match:'登録済み'},
-  {avatar:'T',color:'#06b6d4',name:'田中 美咲（フリーランス）',tag:'CS戦略',score:'AI適合度 高',match:'登録済み'},
-  {avatar:'K',color:'#7c3aed',name:'株式会社CS Partners',tag:'SaaS特化',score:'AI適合度 高',match:'登録済み'},
-  {avatar:'S',color:'#059669',name:'鈴木 健太（個人事業主）',tag:'LTV改善',score:'AI適合度 高',match:'登録済み'},
-  {avatar:'C',color:'#dc2626',name:'CSコンサルB社',tag:'BPO',score:'AI適合度 高',match:'登録済み'},
-  {avatar:'N',color:'#d97706',name:'中村 あかり（フリーランス）',tag:'顧客分析',score:'AI適合度 高',match:'登録済み'},
+  {avatar:'R',color:'#2563ff',name:'リテンションラボ株式会社',tag:'解約防止',score:'98%',match:'マッチング完了'},
+  {avatar:'T',color:'#06b6d4',name:'田中 美咲（フリーランス）',tag:'CS戦略',score:'94%',match:'マッチング完了'},
+  {avatar:'K',color:'#7c3aed',name:'株式会社CS Partners',tag:'SaaS特化',score:'91%',match:'マッチング完了'},
+  {avatar:'S',color:'#059669',name:'鈴木 健太（個人事業主）',tag:'LTV改善',score:'89%',match:'マッチング完了'},
+  {avatar:'C',color:'#dc2626',name:'CSコンサルB社',tag:'BPO',score:'87%',match:'マッチング完了'},
+  {avatar:'N',color:'#d97706',name:'中村 あかり（フリーランス）',tag:'顧客分析',score:'93%',match:'マッチング完了'},
 ];
 function buildTicker() {
   const inner = document.getElementById('tickerInner');
@@ -737,16 +737,20 @@ async function sendChat() {
   if(!inp||!body) return;
   const text = inp.value.trim(); if(!text) return;
   inp.value = '';
+  inp.blur();
+  inp.focus();
   const um = document.createElement('div'); um.className='msg user'; um.textContent=text; body.appendChild(um);
   const am = document.createElement('div'); am.className='msg ai'; am.textContent='考え中…'; body.appendChild(am);
   body.scrollTop = body.scrollHeight;
   try {
-    const res = await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev/chat', {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,
+        system:'あなたはCSLINKのAIアシスタントです。CS（カスタマーサクセス）の課題解決とマッチングについて簡潔に日本語で答えてください。',
+        messages:[{role:'user',content:text}]})
     });
     const data = await res.json();
-    am.textContent = data.reply || 'エラーが発生しました';
+    am.textContent = data.content?.[0]?.text || 'エラーが発生しました';
   } catch(e) { am.textContent = 'エラーが発生しました。'; }
   body.scrollTop = body.scrollHeight;
 }
