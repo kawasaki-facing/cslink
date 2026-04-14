@@ -810,8 +810,11 @@ async function sendChat() {
       body: JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:400,
-        system:'あなたはCSLINKのAIアシスタントです。CS（カスタマーサクセス）の課題解決とマッチングについて簡潔に日本語で3文以内で答えてください。',
-        messages:[{role:'user',content:text}]
+        messages:[
+          {role:'user', content:'（システム）あなたはCSLINKのAIアシスタントです。CS課題解決とマッチングについて簡潔に日本語で3文以内で答えてください。'},
+          {role:'assistant', content:'こんにちは！CSLINKのAIアシスタントです。どのようなCS課題をお持ちですか？'},
+          {role:'user', content:text}
+        ]
       })
     });
     const data = await res.json();
