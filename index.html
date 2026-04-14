@@ -740,18 +740,31 @@ async function sendChat() {
   inp.blur();
   inp.focus();
   const um = document.createElement('div'); um.className='msg user'; um.textContent=text; body.appendChild(um);
-  const am = document.createElement('div'); am.className='msg ai'; am.textContent='考え中…'; body.appendChild(am);
+  const am = document.createElement('div'); am.className='msg ai'; am.textContent='分析中…'; body.appendChild(am);
   body.scrollTop = body.scrollHeight;
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,
-        system:'あなたはCSLINKのAIアシスタントです。CS（カスタマーサクセス）の課題解決とマッチングについて簡潔に日本語で答えてください。',
-        messages:[{role:'user',content:text}]})
-    });
-    const data = await res.json();
-    am.textContent = data.content?.[0]?.text || 'エラーが発生しました';
-  } catch(e) { am.textContent = 'エラーが発生しました。'; }
+
+  // キーワードベースの応答
+  const t = text;
+  let reply = '';
+  if(/解約|チャーン|退会|離脱/.test(t)) {
+    reply = 'チャーン対策ですね。CSLINKには解約防止を専門とするCS会社が多数登録されています。ご利用フェーズや業種をお聞かせいただければ、最適な会社を28秒でご提案できます。無料でマッチングを始めますか？';
+  } else if(/オンボーディング|定着|活用/.test(t)) {
+    reply = 'オンボーディング強化のご要望ですね。導入後の活用定着を専門とするCSチームをご紹介できます。SaaS・IT・金融など業種別に特化した会社が揃っています。詳しくお聞かせください。';
+  } else if(/コスト|費用|予算|安い|高い/.test(t)) {
+    reply = 'コスト面のご懸念ですね。CSLINKは成約時のみCS会社側から10%をいただく仕組みで、企業様の初期費用は完全無料です。まずはお気軽にマッチングをお試しください。';
+  } else if(/人材|採用|担当者|スタッフ/.test(t)) {
+    reply = 'CS人材のご要望ですね。フリーランスCS・CS特化の派遣・CS支援会社など、ご予算とニーズに合わせた形態でご提案できます。どのような規模感をお考えですか？';
+  } else if(/LTV|単価|アップセル|クロスセル/.test(t)) {
+    reply = 'LTV向上のご相談ですね。アップセル・クロスセルに実績のあるCS会社を複数ご紹介できます。現在の顧客数や単価帯を教えていただければ、より精度の高いマッチングが可能です。';
+  } else if(/問い合わせ|相談|詳しく|教えて|知りたい/.test(t)) {
+    reply = 'ご相談ありがとうございます！CSLINKでは貴社の課題をヒアリングし、最適なCS会社・人材をご提案しています。まず「無料で始める」ボタンから簡単な要件をご入力ください。担当者からご連絡いたします。';
+  } else {
+    reply = 'ご入力ありがとうございます。CSLINKのAIが貴社のCS課題を分析し、最適なプロフェッショナルをご紹介します。解約防止・オンボーディング・LTV向上など、もう少し詳しく課題を教えていただけますか？';
+  }
+
+  // 自然な応答遅延（0.8〜1.5秒）
+  await new Promise(r => setTimeout(r, 800 + Math.random() * 700));
+  am.textContent = reply;
   body.scrollTop = body.scrollHeight;
 }
 
