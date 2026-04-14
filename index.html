@@ -546,7 +546,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
       </div>
       <div class="chat-body" id="chatBody"></div>
       <div class="chat-input-row">
-        <input class="chat-input" id="chatInput" placeholder="CS課題を入力してください…" maxlength="200">
+        <input class="chat-input" id="chatInput" placeholder="CS課題を入力してください…" maxlength="200" autocomplete="off">
         <button type="button" class="chat-send" id="chatSend"><svg viewBox="0 0 16 16"><path d="M1 1l14 7-14 7V9.5l10-1.5L1 6.5V1z"/></svg></button>
       </div>
     </div>
@@ -739,6 +739,7 @@ async function sendChat() {
   inp.value = '';
   inp.blur();
   inp.focus();
+  setTimeout(() => { inp.value = ''; }, 50);
   const um = document.createElement('div'); um.className='msg user'; um.textContent=text; body.appendChild(um);
   const am = document.createElement('div'); am.className='msg ai'; am.textContent='分析中…'; body.appendChild(am);
   body.scrollTop = body.scrollHeight;
