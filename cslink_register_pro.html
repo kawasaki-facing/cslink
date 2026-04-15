@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CS会社・パートナー登録 | CSLINK</title>
-<meta name="description" content="CSLINKにCS会社・フリーランスCSとして登録して、案件を受注しましょう。登録無料・成約時のみ10%。facing監修の審査を通過した企業のみ掲載。">
+<title>企業登録 | CSLINK — CSプロを無料で探す</title>
+<meta name="description" content="CSLINKにCS人材として登録して、facing監修のCS専門家と無料でマッチング。登録無料・CS案件をAIがマッチング。最短28秒でCS課題を解決するプロが見つかります。">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2306b6d4'/><text x='16' y='22' font-family='Arial' font-size='14' font-weight='900' fill='white' text-anchor='middle'>CS</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -38,12 +38,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;ali
   position:relative;overflow:hidden;
   padding:72px 64px;display:flex;flex-direction:column;justify-content:center;
 }
+.left-panel-bg{
+  position:absolute;inset:0;z-index:0;
+  background-image:url('https://cdn.midjourney.com/6eb2aaa6-b961-477b-82b0-e353ebf4b9b0/0_0_640_N.webp?method=shortest');
+  background-size:cover;background-position:center top;
+}
+.left-panel-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(232,247,251,0.88) 0%,rgba(240,249,255,0.82) 50%,rgba(224,242,247,0.90) 100%);
+}
 .left-panel::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(6,182,212,0.1) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
 .left-panel::after{content:'';position:absolute;bottom:-200px;left:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,0.12) 0%,transparent 65%);pointer-events:none;}
 .left-inner{position:relative;z-index:2;}
 .left-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);display:flex;align-items:center;gap:10px;margin-bottom:24px;}
 .left-eyebrow::before{content:'';width:24px;height:2px;background:var(--teal);border-radius:2px;}
-.left-title{font-size:clamp(34px,4vw,46px);font-weight:900;color:var(--navy);letter-spacing:-1.5px;line-height:1.2;margin-bottom:16px;}
+.left-title{font-size:clamp(28px,2.8vw,40px);font-weight:900;color:var(--navy);letter-spacing:-1.5px;line-height:1.15;margin-bottom:16px;}
 .left-title em{font-style:normal;color:var(--teal);}
 .left-desc{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:40px;}
 
@@ -128,12 +137,11 @@ textarea{resize:vertical;min-height:88px;line-height:1.7;}
 /* 戻るボタン */
 .btn-back{padding:12px 24px;border-radius:12px;background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:700;transition:all .2s;white-space:nowrap;flex-shrink:0;}
 .btn-back:hover{border-color:var(--teal);color:var(--teal-d);}
-
 /* 送信ボタン */
 .submit-area{margin-top:28px;}
-.submit-btn{width:100%;padding:15px 0;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;border:none;box-shadow:0 8px 28px rgba(6,182,212,0.38);transition:all .25s;position:relative;overflow:hidden;cursor:pointer;}
+.submit-btn{width:100%;padding:15px 0;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;border:none;box-shadow:0 8px 28px rgba(6,182,212,0.38);transition:all .25s;position:relative;overflow:hidden;}
 .submit-btn:hover{transform:translateY(-1px);box-shadow:0 12px 36px rgba(6,182,212,0.48);}
-.submit-btn:disabled{opacity:.7;transform:none;cursor:not-allowed;}
+.submit-btn:disabled{opacity:.7;transform:none;}
 .submit-btn::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:shimmer 1.8s infinite;}
 @keyframes shimmer{to{left:100%;}}
 .submit-note{text-align:center;font-size:11px;color:var(--muted);margin-top:12px;line-height:1.7;}
@@ -178,50 +186,53 @@ footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;
   <a href="index.html" class="nav-logo"><div class="nav-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></a>
   <ul class="nav-links">
     <li><a href="cslink_features_v5.html">機能</a></li>
-    <li><a href="cslink_list_v2.html">CSプロ一覧</a></li>
+    <li><a href="cslink_howto_fixed.html">使い方・事例</a></li>
     <li><a href="cslink_pricing.html">料金</a></li>
+    <li><a href="cslink_register_client.html">企業向け</a></li>
+    <li><a href="cslink_register_pro.html" class="active">CS人材向け</a></li>
   </ul>
-  <a href="cslink_pricing.html" class="nav-back">← 料金ページに戻る</a>
+  <a href="cslink_list_v2.html" class="nav-back">← CSプロ一覧に戻る</a>
 </nav>
 
 <div class="page-wrap">
 
   <!-- LEFT PANEL -->
   <div class="left-panel">
+    <div class="left-panel-bg"></div>
     <div class="left-inner">
-      <div class="left-eyebrow">FOR CS COMPANIES &amp; PROFESSIONALS</div>
-      <h1 class="left-title"><em>CS案件</em>を、<br>AIが届ける。</h1>
-      <p class="left-desc">CSLINKに登録すると、AIが最適な案件をマッチングします。登録無料・成約時のみ契約額の10%。facing監修の審査を通過した企業のみ掲載されます。</p>
+      <div class="left-eyebrow">FOR COMPANIES</div>
+      <h1 class="left-title">CS課題を、<br><em>28秒</em>で解決する</h1>
+      <p class="left-desc">登録無料・CS案件をAIがマッチング。AIがCS課題を分析し、facing監修のCS専門家・企業を即座にマッチングします。</p>
 
       <div class="left-features">
         <div class="left-feat">
-          <div class="left-feat-icon">🆓</div>
+          <div class="left-feat-icon">⚡</div>
           <div class="left-feat-body">
-            <div class="left-feat-title">登録・掲載は完全無料</div>
-            <div class="left-feat-desc">初期費用・掲載費用はゼロ。案件が成約したときだけ、契約額の10%をいただきます。</div>
+            <div class="left-feat-title">登録後、最短28秒でマッチング</div>
+            <div class="left-feat-desc">AIが課題を分析し、最適なCS専門家を即座に提案。長い採用プロセスは不要です。</div>
           </div>
         </div>
         <div class="left-feat">
-          <div class="left-feat-icon">🤖</div>
+          <div class="left-feat-icon">🆓</div>
           <div class="left-feat-body">
-            <div class="left-feat-title">AIが最適な企業をマッチング</div>
-            <div class="left-feat-desc">登録情報をAIが分析し、自社の得意領域にフィットした依頼企業を自動でつなぎます。</div>
+            <div class="left-feat-title">企業側は登録から成約まで完全無料</div>
+            <div class="left-feat-desc">初期費用・掲載費用・面談費用はすべて0円。成約後のみCS側から10%のみ発生。</div>
           </div>
         </div>
         <div class="left-feat">
           <div class="left-feat-icon">🛡️</div>
           <div class="left-feat-body">
-            <div class="left-feat-title">facing監修の審査済み掲載</div>
-            <div class="left-feat-desc">facing株式会社が内容を確認・審査。質の高い企業との接点のみに集中できます。</div>
+            <div class="left-feat-title">facing監修の審査済みプロのみ</div>
+            <div class="left-feat-desc">全プロがfacing株式会社の審査を通過。マッチングしない場合はfacingが直接支援。</div>
           </div>
         </div>
       </div>
 
       <div class="left-proof">
-        <div class="proof-item"><div class="proof-num"><em>登録</em></div><div class="proof-label">完全無料</div></div>
-        <div class="proof-item"><div class="proof-num"><em>10</em>%</div><div class="proof-label">成約時のみ</div></div>
-        <div class="proof-item"><div class="proof-num"><em>24</em>h</div><div class="proof-label">以内に審査回答</div></div>
-        <div class="proof-item"><div class="proof-num"><em>AI</em></div><div class="proof-label">自動マッチング</div></div>
+        <div class="proof-item"><div class="proof-num"><em>500</em>社+</div><div class="proof-label">facing支援実績</div></div>
+        <div class="proof-item"><div class="proof-num"><em>10</em>億円+</div><div class="proof-label">CS支援金額</div></div>
+        <div class="proof-item"><div class="proof-num"><em>98</em>%</div><div class="proof-label">継続率</div></div>
+        <div class="proof-item"><div class="proof-num"><em>28</em>秒</div><div class="proof-label">平均マッチング</div></div>
       </div>
     </div>
   </div>
@@ -234,11 +245,11 @@ footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;
     <div class="form-header">
       <div class="form-step-bar">
         <div class="step-item active" id="step1-dot"><div class="step-circle">1</div><div class="step-label">会社情報</div></div>
-        <div class="step-item" id="step2-dot"><div class="step-circle">2</div><div class="step-label">提供サービス</div></div>
-        <div class="step-item" id="step3-dot"><div class="step-circle">3</div><div class="step-label">担当者情報</div></div>
+        <div class="step-item" id="step2-dot"><div class="step-circle">2</div><div class="step-label">CS課題</div></div>
+        <div class="step-item" id="step3-dot"><div class="step-circle">3</div><div class="step-label">連絡先</div></div>
       </div>
       <div class="form-title" id="formTitle">会社情報を入力</div>
-      <div class="form-sub" id="formSub">CSサービスを提供する会社・事業者の基本情報をご入力ください</div>
+      <div class="form-sub" id="formSub">まずは基本的な会社情報をお聞かせください</div>
     </div>
 
     <!-- STEP 1：会社情報 -->
@@ -247,132 +258,125 @@ footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;
         <div class="form-section-label">会社基本情報</div>
         <div class="field-row">
           <div class="field" id="f-company">
-            <label>会社名・屋号<span class="req">*</span></label>
+            <label>会社名<span class="req">*</span></label>
             <input type="text" id="company" placeholder="株式会社サンプル" autocomplete="organization">
             <div class="field-error">会社名を入力してください</div>
           </div>
-          <div class="field" id="f-type">
-            <label>事業者区分<span class="req">*</span></label>
-            <select id="type">
+          <div class="field" id="f-industry">
+            <label>業種<span class="req">*</span></label>
+            <select id="industry">
               <option value="">選択してください</option>
-              <option>CS専門会社（BPO）</option>
-              <option>CSコンサルティング会社</option>
-              <option>SaaSサポート専門会社</option>
-              <option>フリーランス / 個人事業主</option>
+              <option>SaaS / クラウドサービス</option>
+              <option>ITサービス・システム開発</option>
+              <option>Eコマース・小売</option>
+              <option>金融・保険・フィンテック</option>
+              <option>HR・人材・教育</option>
+              <option>医療・ヘルスケア</option>
+              <option>製造・メーカー</option>
+              <option>コンサルティング</option>
               <option>その他</option>
             </select>
-            <div class="field-error">事業者区分を選択してください</div>
+            <div class="field-error">業種を選択してください</div>
           </div>
         </div>
         <div class="field-row">
           <div class="field" id="f-size">
-            <label>社員・スタッフ数<span class="req">*</span></label>
+            <label>従業員数<span class="req">*</span></label>
             <select id="size">
               <option value="">選択してください</option>
-              <option>1名（個人）</option>
-              <option>2〜5名</option>
-              <option>6〜20名</option>
-              <option>21〜50名</option>
+              <option>1〜10名</option>
+              <option>11〜50名</option>
               <option>51〜100名</option>
-              <option>101名以上</option>
+              <option>101〜300名</option>
+              <option>301〜1000名</option>
+              <option>1001名以上</option>
             </select>
-            <div class="field-error">スタッフ数を選択してください</div>
+            <div class="field-error">従業員数を選択してください</div>
           </div>
           <div class="field">
-            <label>設立年<span class="opt">任意</span></label>
-            <select id="founded">
+            <label>ARR / 月次売上<span class="opt">任意</span></label>
+            <select id="revenue">
               <option value="">選択してください</option>
-              <option>2024〜2025年</option>
-              <option>2020〜2023年</option>
-              <option>2015〜2019年</option>
-              <option>2010〜2014年</option>
-              <option>2009年以前</option>
+              <option>〜500万円/月</option>
+              <option>500万〜1000万円/月</option>
+              <option>1000万〜3000万円/月</option>
+              <option>3000万円〜/月</option>
+              <option>非公開</option>
             </select>
           </div>
         </div>
         <div class="field">
-          <label>会社URL<span class="opt">任意</span></label>
-          <input type="text" id="url" placeholder="https://example.com">
-        </div>
-        <div class="field">
-          <label>会社・サービスの紹介<span class="opt">任意</span></label>
-          <textarea id="intro" placeholder="例：SaaS企業向けにカスタマーサクセス支援を専門とする会社です。導入支援からオンボーディング設計、解約防止施策の構築まで一貫して対応します…"></textarea>
+          <label>自社プロダクト / サービス概要<span class="opt">任意</span></label>
+          <textarea id="product" placeholder="例：BtoB向けSaaS型の人事管理ツール。主に中小企業向けに提供しています…"></textarea>
         </div>
       </div>
-      <button class="submit-btn" onclick="goStep2()">次へ → 提供サービスを入力</button>
+      <button class="submit-btn" onclick="goStep2()">次へ → CS課題を入力</button>
     </div>
 
-    <!-- STEP 2：提供サービス -->
+    <!-- STEP 2：CS課題 -->
     <div id="step2" style="display:none">
       <div class="form-section">
-        <div class="form-section-label">提供サービス詳細</div>
-        <div class="field" id="f-services">
-          <label>対応可能なCS業務<span class="req">*</span>（複数選択可）</label>
-          <div class="check-grid check-group" id="services">
-            <div class="check-item"><input type="checkbox" id="s1" value="電話・メール・チャット対応"><label for="s1">📞 電話・メール・チャット対応</label></div>
-            <div class="check-item"><input type="checkbox" id="s2" value="カスタマーサクセス支援"><label for="s2">🎯 カスタマーサクセス支援</label></div>
-            <div class="check-item"><input type="checkbox" id="s3" value="CS組織構築・コンサルティング"><label for="s3">🏢 CS組織構築・コンサル</label></div>
-            <div class="check-item"><input type="checkbox" id="s4" value="オンボーディング設計"><label for="s4">🚀 オンボーディング設計</label></div>
-            <div class="check-item"><input type="checkbox" id="s5" value="ヘルススコア・KPI設計"><label for="s5">📊 ヘルススコア・KPI設計</label></div>
-            <div class="check-item"><input type="checkbox" id="s6" value="CS人材育成・研修"><label for="s6">📚 CS人材育成・研修</label></div>
-            <div class="check-item"><input type="checkbox" id="s7" value="解約防止・LTV向上施策"><label for="s7">📉 解約防止・LTV向上施策</label></div>
-            <div class="check-item"><input type="checkbox" id="s8" value="その他"><label for="s8">💬 その他・まず相談したい</label></div>
+        <div class="form-section-label">CS課題の詳細</div>
+        <div class="field" id="f-challenge">
+          <label>主なCS課題<span class="req">*</span>（複数選択可）</label>
+          <div class="check-grid check-group" id="challenges">
+            <div class="check-item"><input type="checkbox" id="c1" value="解約率の改善"><label for="c1">📉 解約率の改善</label></div>
+            <div class="check-item"><input type="checkbox" id="c2" value="LTV向上"><label for="c2">📈 LTV・売上向上</label></div>
+            <div class="check-item"><input type="checkbox" id="c3" value="オンボーディング設計"><label for="c3">🚀 オンボーディング設計</label></div>
+            <div class="check-item"><input type="checkbox" id="c4" value="CS組織構築"><label for="c4">🏢 CS組織の構築・強化</label></div>
+            <div class="check-item"><input type="checkbox" id="c5" value="ヘルススコア設計"><label for="c5">💊 ヘルススコア設計</label></div>
+            <div class="check-item"><input type="checkbox" id="c6" value="CS人材採用"><label for="c6">👥 CS人材の採用支援</label></div>
+            <div class="check-item"><input type="checkbox" id="c7" value="KPI管理・分析"><label for="c7">📊 KPI管理・データ分析</label></div>
+            <div class="check-item"><input type="checkbox" id="c8" value="その他"><label for="c8">💬 その他・まず相談したい</label></div>
           </div>
-          <div class="field-error" id="services-error">1つ以上選択してください</div>
+          <div class="field-error" id="challenge-error">1つ以上選択してください</div>
         </div>
-
-        <div class="field" id="f-industry">
-          <label>得意な業種・領域<span class="req">*</span></label>
-          <select id="industry">
-            <option value="">選択してください</option>
-            <option>SaaS / クラウドサービス</option>
-            <option>Eコマース・小売</option>
-            <option>金融・保険・フィンテック</option>
-            <option>HR・人材・教育</option>
-            <option>医療・ヘルスケア</option>
-            <option>製造・メーカー</option>
-            <option>業種不問・幅広く対応</option>
-            <option>その他</option>
-          </select>
-          <div class="field-error">得意業種を選択してください</div>
+        <div class="field" id="f-detail">
+          <label>課題の詳細<span class="req">*</span></label>
+          <textarea id="detail" placeholder="例：月次解約率が5%を超えており、特に導入3ヶ月以内の解約が多い。オンボーディングを改善したいが社内にCS専門家がいない…" style="min-height:100px;"></textarea>
+          <div class="field-error">課題の詳細を入力してください</div>
         </div>
-
+        <div class="field">
+          <label>希望する稼働形態</label>
+          <div class="radio-group">
+            <div class="radio-pill"><input type="radio" name="worktype" id="w1" value="フルタイム" checked><label for="w1">フルタイム</label></div>
+            <div class="radio-pill"><input type="radio" name="worktype" id="w2" value="週3以上"><label for="w2">週3以上</label></div>
+            <div class="radio-pill"><input type="radio" name="worktype" id="w3" value="週1〜2（副業）"><label for="w3">週1〜2（副業）</label></div>
+            <div class="radio-pill"><input type="radio" name="worktype" id="w4" value="スポット・単発"><label for="w4">スポット・単発</label></div>
+            <div class="radio-pill"><input type="radio" name="worktype" id="w5" value="未定・まず相談"><label for="w5">未定・まず相談</label></div>
+          </div>
+        </div>
         <div class="field-row">
           <div class="field">
-            <label>受け入れ可能な規模感</label>
-            <select id="capacity">
-              <option value="">選択してください</option>
-              <option>小規模（〜10名の案件）</option>
-              <option>中規模（10〜50名の案件）</option>
-              <option>大規模（50名〜の案件）</option>
-              <option>規模不問</option>
+            <label>希望開始時期</label>
+            <select id="starttime">
+              <option>できるだけ早く（即日〜）</option>
+              <option>1ヶ月以内</option>
+              <option>1〜3ヶ月以内</option>
+              <option>3ヶ月以降</option>
+              <option>未定</option>
             </select>
           </div>
           <div class="field">
-            <label>月額料金帯（目安）</label>
-            <select id="price">
+            <label>月額予算感<span class="opt">任意</span></label>
+            <select id="budget">
               <option value="">選択してください</option>
               <option>〜30万円/月</option>
               <option>30〜50万円/月</option>
               <option>50〜100万円/月</option>
               <option>100万円〜/月</option>
-              <option>案件により変動</option>
+              <option>要相談</option>
             </select>
           </div>
-        </div>
-
-        <div class="field">
-          <label>受注実績・強み<span class="opt">任意</span></label>
-          <textarea id="strength" placeholder="例：SaaS企業30社以上の解約率改善支援実績あり。導入3ヶ月以内の解約率を平均40%削減。NPS設計からオンボーディング改善まで一気通貫で対応…" style="min-height:100px;"></textarea>
         </div>
       </div>
       <div style="display:flex;gap:12px;">
         <button class="btn-back" onclick="goStep1()">← 戻る</button>
-        <button class="submit-btn" style="flex:1;" onclick="goStep3()">次へ → 担当者情報を入力</button>
+        <button class="submit-btn" style="flex:1;" onclick="goStep3()">次へ → 連絡先を入力</button>
       </div>
     </div>
 
-    <!-- STEP 3：担当者情報 -->
+    <!-- STEP 3：連絡先 -->
     <div id="step3" style="display:none">
       <div class="form-section">
         <div class="form-section-label">担当者の連絡先</div>
@@ -391,7 +395,7 @@ footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;
         <div class="field" id="f-email">
           <label>メールアドレス<span class="req">*</span></label>
           <input type="email" id="email" placeholder="taro@example.com" autocomplete="email">
-          <div class="field-hint">審査結果・マッチング通知をこちらに送信します</div>
+          <div class="field-hint">マッチング結果をこちらに送信します</div>
           <div class="field-error">正しいメールアドレスを入力してください</div>
         </div>
         <div class="field">
@@ -399,8 +403,12 @@ footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;
           <input type="tel" id="tel" placeholder="03-0000-0000" autocomplete="tel">
         </div>
         <div class="field">
+          <label>会社URL<span class="opt">任意</span></label>
+          <input type="text" id="url" placeholder="https://example.com" autocomplete="url">
+        </div>
+        <div class="field">
           <label>その他・備考<span class="opt">任意</span></label>
-          <textarea id="memo" placeholder="対応可能な稼働開始時期、希望する案件の条件、その他ご要望があればご記入ください…"></textarea>
+          <textarea id="memo" placeholder="特に希望することや、急ぎの背景などがあればご記入ください…"></textarea>
         </div>
         <div class="field">
           <div class="check-item">
@@ -414,27 +422,27 @@ footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;
       </div>
       <div style="display:flex;gap:12px;">
         <button class="btn-back" onclick="goStep2Back()">← 戻る</button>
-        <button class="submit-btn" style="flex:1;" id="submitBtn" onclick="submitForm()">登録してマッチングを受け取る ✦</button>
+        <button class="submit-btn" style="flex:1;" id="submitBtn" onclick="submitForm()">AIマッチングを開始する ✦</button>
       </div>
-      <div class="submit-note">登録後、facing担当者が審査の上<strong>24時間以内</strong>にご連絡します。<br>
-      <a href="cslink_pricing.html">料金の詳細はこちら</a>｜掲載・登録は完全無料</div>
+      <div class="submit-note">送信後、AIが課題を分析しfacing担当者から<strong>24時間以内</strong>にご連絡します。<br>
+      <a href="cslink_pricing.html">料金の詳細はこちら</a>｜企業側は完全無料</div>
     </div>
 
     <!-- 完了画面 -->
     <div class="success-screen" id="successScreen">
       <div class="success-icon">✓</div>
       <div class="success-title">登録が完了しました！</div>
-      <p class="success-desc">ご登録ありがとうございます。facing担当者が内容を確認の上、24時間以内にご連絡いたします。</p>
+      <p class="success-desc">ご登録ありがとうございます。AIが課題を分析中です。facing担当者より順次ご連絡いたします。</p>
       <div class="success-timing">
         <div class="success-timing-title">次のステップ</div>
-        <div class="success-timing-item">📋 <strong>今すぐ</strong> — 登録内容をfacingが確認</div>
-        <div class="success-timing-item">📧 <strong>24時間以内</strong> — 審査結果をメールでご連絡</div>
-        <div class="success-timing-item">✅ <strong>審査通過後</strong> — CSLINKにプロフィール掲載</div>
-        <div class="success-timing-item">🤝 <strong>マッチング開始</strong> — AIが最適な企業を自動提案</div>
+        <div class="success-timing-item">⚡ <strong>今すぐ</strong> — AIが課題分析を開始</div>
+        <div class="success-timing-item">📧 <strong>24時間以内</strong> — facing担当者からメール</div>
+        <div class="success-timing-item">📞 <strong>2〜3営業日</strong> — ヒアリング・候補提案</div>
+        <div class="success-timing-item">🤝 <strong>最短1週間</strong> — 稼働開始</div>
       </div>
       <div class="success-next">
-        <a href="cslink_list_v2.html" class="success-btn-p">掲載CSプロ一覧を見る →</a>
-        <a href="index.html" class="success-btn-s">CSLINKトップへ</a>
+        <a href="cslink_list_v2.html" class="success-btn-p">CSプロ一覧を見る →</a>
+        <a href="cslink_features_v5.html" class="success-btn-s">CSLINKの機能を見る</a>
       </div>
     </div>
 
@@ -457,8 +465,8 @@ function setStep(n){
     if(i===n) dot.classList.add('active');
     if(i<n) dot.classList.add('done');
   });
-  const titles = ['会社情報を入力','提供サービスを入力','担当者情報を入力'];
-  const subs = ['CSサービスを提供する会社・事業者の基本情報をご入力ください','対応可能なCS業務・得意領域をご入力ください','マッチング通知・審査結果をお送りするメールアドレスをご入力ください'];
+  const titles = ['会社情報を入力','CS課題を教えてください','担当者の連絡先'];
+  const subs = ['まずは基本的な会社情報をお聞かせください','解決したいCS課題を詳しく教えてください','マッチング結果をお送りするメールアドレスをご入力ください'];
   document.getElementById('formTitle').textContent = titles[n-1];
   document.getElementById('formSub').textContent = subs[n-1];
   window.scrollTo({top:0,behavior:'smooth'});
@@ -469,9 +477,9 @@ function validate1(){
   if(!document.getElementById('company').value.trim()){
     document.getElementById('f-company').classList.add('has-error'); ok=false;
   } else document.getElementById('f-company').classList.remove('has-error');
-  if(!document.getElementById('type').value){
-    document.getElementById('f-type').classList.add('has-error'); ok=false;
-  } else document.getElementById('f-type').classList.remove('has-error');
+  if(!document.getElementById('industry').value){
+    document.getElementById('f-industry').classList.add('has-error'); ok=false;
+  } else document.getElementById('f-industry').classList.remove('has-error');
   if(!document.getElementById('size').value){
     document.getElementById('f-size').classList.add('has-error'); ok=false;
   } else document.getElementById('f-size').classList.remove('has-error');
@@ -480,17 +488,17 @@ function validate1(){
 
 function validate2(){
   let ok = true;
-  const checked = document.querySelectorAll('#services input:checked');
+  const checked = document.querySelectorAll('#challenges input:checked');
   if(checked.length===0){
-    document.getElementById('f-services').classList.add('has-error');
-    document.getElementById('services-error').style.display='block'; ok=false;
+    document.getElementById('f-challenge').classList.add('has-error');
+    document.getElementById('challenge-error').style.display='block'; ok=false;
   } else {
-    document.getElementById('f-services').classList.remove('has-error');
-    document.getElementById('services-error').style.display='none';
+    document.getElementById('f-challenge').classList.remove('has-error');
+    document.getElementById('challenge-error').style.display='none';
   }
-  if(!document.getElementById('industry').value){
-    document.getElementById('f-industry').classList.add('has-error'); ok=false;
-  } else document.getElementById('f-industry').classList.remove('has-error');
+  if(!document.getElementById('detail').value.trim()){
+    document.getElementById('f-detail').classList.add('has-error'); ok=false;
+  } else document.getElementById('f-detail').classList.remove('has-error');
   return ok;
 }
 
@@ -521,28 +529,29 @@ async function submitForm(){
   if(!validate3()) return;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.textContent = '登録処理中… ✦';
+  btn.textContent = 'AIが分析中… ✦';
 
   // フォームデータ収集
-  const services = [...document.querySelectorAll('#services input:checked')].map(c=>c.value).join('、');
+  const challenges = [...document.querySelectorAll('#challenges input:checked')].map(c=>c.value).join('、');
+  const worktype = document.querySelector('input[name=worktype]:checked')?.value || '';
   const data = {
     company: document.getElementById('company').value,
-    type: document.getElementById('type').value,
-    size: document.getElementById('size').value,
-    founded: document.getElementById('founded').value,
-    url: document.getElementById('url').value,
-    intro: document.getElementById('intro').value,
-    services,
     industry: document.getElementById('industry').value,
-    capacity: document.getElementById('capacity').value,
-    price: document.getElementById('price').value,
-    strength: document.getElementById('strength').value,
+    size: document.getElementById('size').value,
+    revenue: document.getElementById('revenue').value,
+    product: document.getElementById('product').value,
+    challenges,
+    detail: document.getElementById('detail').value,
+    worktype,
+    starttime: document.getElementById('starttime').value,
+    budget: document.getElementById('budget').value,
     name: document.getElementById('lastname').value + ' ' + document.getElementById('firstname').value,
     email: document.getElementById('email').value,
     tel: document.getElementById('tel').value,
+    url: document.getElementById('url').value,
     memo: document.getElementById('memo').value,
     submitted_at: new Date().toLocaleString('ja-JP'),
-    source: 'CSLINKプロ登録フォーム'
+    source: 'CSLINK企業登録フォーム'
   };
 
   // facing社への通知（Cloudflare Workers経由）
@@ -552,7 +561,9 @@ async function submitForm(){
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(data)
     });
+    // 通知に関わらず完了画面へ
   } catch(e) {
+    // エラーでも完了画面へ（UXを損なわない）
     console.log('通知エラー:', e);
   }
 
@@ -564,7 +575,7 @@ async function submitForm(){
     document.getElementById('step3-dot').classList.add('done');
     document.getElementById('formTitle').textContent = '登録完了 🎉';
     document.getElementById('formSub').textContent = 'ご登録ありがとうございます';
-  }, 1500);
+  }, 1800);
 }
 
 // フィールドのリアルタイムクリア
