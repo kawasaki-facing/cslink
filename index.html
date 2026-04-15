@@ -488,7 +488,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
         <span class="chip">LTV改善</span><span class="chip">顧客分析</span><span class="chip">BPO</span>
       </div>
       <p class="hero-desc">
-        課題を入力するだけ。AIが1,200件以上のCS企業・フリーランスから<strong>全自動で最適候補を選定。</strong>
+        課題を入力するだけ。AIが<strong>全自動で最適候補を選定。</strong>
         企業側の利用は<strong>完全無料。</strong>成約時のみCS側に10%。
       </p>
       <div class="cta-row">
@@ -810,7 +810,16 @@ async function sendChat() {
       body: JSON.stringify({ message: text })
     });
     const data = await res.json();
-    am.textContent = data.reply || 'すみません、もう一度お試しください。';
+    const raw = data.reply || 'すみません、もう一度お試しください。';
+    const clean = raw
+      .replace(/#{1,6}\s*/g, '')
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/\*(.*?)\*/g, '$1')
+      .replace(/^\s*[-*+]\s/gm, '・')
+      .replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{27BF}]/gu, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+    am.textContent = clean;
   } catch(e) { am.textContent = 'すみません、もう一度お試しください。'; }
   body.scrollTop = body.scrollHeight;
 }
