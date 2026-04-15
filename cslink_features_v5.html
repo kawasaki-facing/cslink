@@ -425,6 +425,8 @@ nav{position:fixed;top:36px;left:0;right:0;z-index:100;height:64px;display:flex;
 .two-pane-a .two-cta:hover{background:var(--teal-d);transform:translateY(-1px);}
 .two-pane-b .two-cta{background:var(--navy);color:#fff;box-shadow:0 8px 24px rgba(15,35,66,0.18);}
 .two-pane-b .two-cta:hover{background:var(--navy-m);transform:translateY(-1px);}
+.two-pane-img{margin-top:32px;border-radius:16px;overflow:hidden;box-shadow:0 16px 40px rgba(15,35,66,0.12);}
+.two-pane-img img{width:100%;display:block;object-fit:cover;}
 
 /* ═══ NUMBERS ═══ */
 .nums-bar{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#fff;}
@@ -1007,57 +1009,7 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
 }
 
 
-
-/* ===== 統一フッター ===== */
-
-
-
-/* ===== 統一CTAボタン ===== */
-.btn-primary,.cta-primary,.cta-btn-p,.card-btn,.pe-btn-p,.sidebar-cta-btn,.two-cta {
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 24px;border-radius:10px;
-  background:linear-gradient(135deg,#06b6d4,#0891b2);
-  color:#fff;text-decoration:none;font-weight:700;font-size:14px;
-  box-shadow:0 4px 20px rgba(6,182,212,0.35);
-  transition:all .2s;border:none;cursor:pointer;
-}
-.btn-primary:hover,.cta-primary:hover,.cta-btn-p:hover,.card-btn:hover,.pe-btn-p:hover,.sidebar-cta-btn:hover,.two-cta:hover {
-  transform:translateY(-2px);
-  box-shadow:0 8px 28px rgba(6,182,212,0.45);
-}
-.btn-secondary,.cta-secondary,.cta-btn-s {
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 24px;border-radius:10px;
-  background:transparent;
-  color:#0f2342;text-decoration:none;font-weight:700;font-size:14px;
-  border:2px solid rgba(6,182,212,0.4);
-  transition:all .2s;cursor:pointer;
-}
-.btn-secondary:hover,.cta-secondary:hover,.cta-btn-s:hover {
-  border-color:#06b6d4;
-  background:rgba(6,182,212,0.06);
-}
-
-
-/* ═══ SITE FOOTER ═══ */
-.site-footer{background:#0f2342;color:rgba(255,255,255,0.7);margin-top:80px;}
-.site-footer-inner{max-width:1100px;margin:0 auto;padding:56px 48px 32px;}
-.site-footer-top{display:flex;align-items:center;gap:20px;margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.site-footer .footer-logo{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:9px;text-decoration:none;color:#fff;}
-.site-footer .footer-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#06b6d4,#0891b2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
-.footer-tagline{font-size:13px;color:rgba(255,255,255,0.4);margin-left:auto;}
-.site-footer-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.footer-col{display:flex;flex-direction:column;gap:10px;}
-.footer-col-title{font-family:"Space Grotesk",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#06b6d4;margin-bottom:4px;}
-.footer-col a{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;}
-.footer-col a:hover{color:#fff;}
-.site-footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.site-footer-bottom p{font-size:12px;color:rgba(255,255,255,0.3);}
-.footer-badges{display:flex;gap:10px;flex-wrap:wrap;}
-.footer-badge{font-size:11px;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);}
-
 </style>
-<!-- deployed: 2026-04-13T15:44 -->
 </head>
 <body>
 
@@ -1673,6 +1625,10 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
       <li>facing監修のプラットフォームで信頼を得たい</li>
     </ul>
     <a href="cslink_register_pro.html">CS人材として登録する →</a>
+    <div class="two-pane-img">
+      <img src="https://cdn.midjourney.com/a3d92e3d-f069-4ecb-a783-4c984ff19c5b/0_0_640_N.webp?method=shortest"
+           alt="CSプロフェッショナル" loading="lazy"/>
+    </div>
   </div>
 </section>
 
@@ -1760,7 +1716,15 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
   </div>
 </section>
 
-
+<footer>
+  <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div>
+  <div class="footer-links">
+    <a href="terms.html">利用規約</a>
+    <a href="privacy.html">プライバシーポリシー</a>
+    <a href="company.html">運営会社</a>
+  </div>
+  <div class="footer-copy">© 2026 facing株式会社</div>
+</footer>
 
 <script>
 // ── HERO CANVAS ──
@@ -2033,44 +1997,5 @@ if(numsBar)numObs.observe(numsBar);
   input.addEventListener('keydown', e => { if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } });
 })();
 </script>
-<footer class="site-footer">
-  <div class="site-footer-inner">
-    <div class="site-footer-top">
-      <a href="index.html" class="footer-logo">
-        <div class="footer-logo-icon">CS</div>
-        CS<b style="color:#06b6d4">LINK</b>
-      </a>
-      <p class="footer-tagline">AIが最適なCSプロを、28秒でつなぐ。</p>
-    </div>
-    <div class="site-footer-nav">
-      <div class="footer-col">
-        <div class="footer-col-title">サービス</div>
-        <a href="cslink_features_v5.html">機能・特徴</a>
-        <a href="cslink_howto_fixed.html">使い方・事例</a>
-        <a href="cslink_pricing.html">料金</a>
-        <a href="cslink_list_v2.html">CSプロ一覧</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">登録</div>
-        <a href="cslink_register_client.html">企業として登録（無料）</a>
-        <a href="cslink_register_pro.html">CS人材として登録</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">会社情報</div>
-        <a href="company.html">会社概要</a>
-        <a href="terms.html">利用規約</a>
-        <a href="privacy.html">プライバシーポリシー</a>
-      </div>
-    </div>
-    <div class="site-footer-bottom">
-      <p>© 2026 facing株式会社 All Rights Reserved.</p>
-      <div class="footer-badges">
-        <span class="footer-badge">🛡️ facing監修</span>
-        <span class="footer-badge">🤖 AI powered</span>
-        <span class="footer-badge">🆓 企業側完全無料</span>
-      </div>
-    </div>
-  </div>
-</footer>
 </body>
 </html>
