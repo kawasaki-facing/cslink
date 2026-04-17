@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マイページ | CSLINK — CSプロ向け</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f;--text:#1a2744;--muted:#64748b;--bg:#f0f7fa;--white:#fff;--border:#e2e8f0;}
+body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+.header{background:var(--navy);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:28px;height:28px;background:var(--teal);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;font-family:'Space Grotesk',sans-serif;}
+.logo-text{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#fff;}
+.logo-text b{color:var(--teal);}
+.header-badge{background:rgba(6,182,212,0.2);color:var(--teal);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 64px);padding:40px 20px;}
+.login-card{background:var(--white);border-radius:20px;padding:48px 40px;width:420px;box-shadow:0 8px 32px rgba(15,35,66,0.12);}
+.login-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--teal);text-transform:uppercase;margin-bottom:16px;}
+.login-title{font-size:24px;font-weight:900;color:var(--navy);margin-bottom:8px;}
+.login-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:32px;}
+.form-label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:8px;}
+.form-input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;outline:none;transition:border .2s;font-family:'Zen Kaku Gothic New',sans-serif;}
+.form-input:focus{border-color:var(--teal);}
+.submit-btn{width:100%;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px;transition:all .2s;font-family:'Zen Kaku Gothic New',sans-serif;}
+.submit-btn:hover{background:var(--navy-m);transform:translateY(-1px);}
+.submit-btn:disabled{opacity:.6;transform:none;cursor:not-allowed;}
+.form-err{color:#ef4444;font-size:13px;margin-top:12px;display:none;}
+.form-note{font-size:12px;color:var(--muted);text-align:center;margin-top:16px;}
+
+#mainScreen{display:none;}
+.content{max-width:900px;margin:0 auto;padding:40px 24px;}
+
+.welcome-card{background:linear-gradient(135deg,#1e3a5f 0%,#0f2342 100%);border-radius:18px;padding:32px 40px;margin-bottom:32px;color:#fff;position:relative;overflow:hidden;}
+.welcome-card::after{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:rgba(6,182,212,0.1);border-radius:50%;}
+.welcome-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--teal);text-transform:uppercase;margin-bottom:8px;font-family:'Space Grotesk',sans-serif;}
+.welcome-name{font-size:22px;font-weight:900;margin-bottom:4px;}
+.welcome-sub{font-size:13px;color:rgba(255,255,255,0.7);}
+.logout-btn{position:absolute;top:24px;right:24px;background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:7px 16px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'Zen Kaku Gothic New',sans-serif;}
+
+.section-title{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.section-title::before{content:'';width:4px;height:18px;background:var(--teal);border-radius:2px;}
+.status-section{margin-bottom:32px;}
+
+/* 審査ステータス */
+.screening-card{background:var(--white);border-radius:14px;padding:28px;border:1px solid var(--border);}
+.screening-status{display:flex;align-items:center;gap:20px;}
+.screening-icon{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.screening-icon.pending{background:#f1f5f9;}
+.screening-icon.reviewing{background:#fef3c7;}
+.screening-icon.approved{background:#d1fae5;}
+.screening-icon.rejected{background:#fee2e2;}
+.screening-info h3{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.screening-info p{font-size:13px;color:var(--muted);line-height:1.7;}
+.screening-badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-top:8px;}
+.badge-pending{background:#f1f5f9;color:var(--muted);}
+.badge-reviewing{background:#fef3c7;color:#92400e;}
+.badge-approved{background:#d1fae5;color:#065f46;}
+.badge-rejected{background:#fee2e2;color:#991b1b;}
+
+/* 案件カード */
+.job-card{background:var(--white);border-radius:14px;padding:24px;border:1px solid var(--border);margin-bottom:16px;}
+.job-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.job-company{font-size:17px;font-weight:800;color:var(--navy);}
+.job-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.job-status{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-proposed{background:#ede9fe;color:#5b21b6;}
+.badge-accepted{background:#d1fae5;color:#065f46;}
+.badge-contracted{background:#dbeafe;color:#1e40af;}
+.badge-rejected{background:#fee2e2;color:#991b1b;}
+.job-detail{background:var(--bg);border-radius:10px;padding:14px;font-size:13px;color:var(--text);line-height:1.8;margin-bottom:16px;}
+.job-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.tag{background:rgba(6,182,212,0.1);color:var(--teal-d);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;}
+.action-row{display:flex;gap:10px;}
+.btn-accept{padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;}
+.btn-decline{padding:10px 20px;background:var(--white);color:var(--muted);border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;}
+.btn-accept:hover{background:var(--teal-d);}
+.btn-decline:hover{border-color:var(--muted);}
+
+.msg-section{margin-top:20px;border-top:1px solid var(--border);padding-top:20px;}
+.msg-section-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+.msg-list{max-height:240px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;}
+.msg-bubble{padding:10px 14px;border-radius:12px;font-size:13px;max-width:85%;}
+.msg-bubble.mine{background:var(--navy);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.msg-bubble.theirs{background:#f1f5f9;color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;}
+.msg-bubble.admin{background:#fef3c7;color:#92400e;align-self:center;border-radius:8px;font-size:12px;}
+.msg-meta{font-size:10px;opacity:.7;margin-top:4px;}
+.msg-input-row{display:flex;gap:10px;}
+.msg-input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;outline:none;font-family:'Zen Kaku Gothic New',sans-serif;}
+.msg-input:focus{border-color:var(--teal);}
+.msg-send{padding:10px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;}
+
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.detail-item{padding:12px;background:var(--bg);border-radius:10px;}
+.detail-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;}
+.detail-value{font-size:13px;color:var(--text);}
+.detail-item.full{grid-column:1/-1;}
+
+.empty-state{text-align:center;padding:60px 20px;background:var(--white);border-radius:14px;border:1px solid var(--border);}
+.empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.empty-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="logo">
+    <div class="logo-icon">CS</div>
+    <div class="logo-text">CS<b>LINK</b></div>
+  </a>
+  <span class="header-badge">CSプロマイページ</span>
+</div>
+
+<!-- ログイン -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-eyebrow">FOR CS PROFESSIONALS</div>
+    <div class="login-title">プロマイページにログイン</div>
+    <p class="login-desc">ご登録時のメールアドレスを入力してください。審査状況やマッチングされた案件を確認できます。</p>
+    <label class="form-label">登録メールアドレス</label>
+    <input type="email" class="form-input" id="emailInput" placeholder="taro@example.com" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="submit-btn" id="loginBtn" onclick="doLogin()">マイページを表示する →</button>
+    <p class="form-err" id="loginErr">このメールアドレスでの登録が見つかりません。</p>
+    <p class="form-note">登録がお済みでない方は<a href="cslink_register_pro.html" style="color:var(--teal)">こちら</a>から登録できます</p>
+  </div>
+</div>
+
+<!-- メイン -->
+<div id="mainScreen">
+  <div class="content">
+
+    <!-- ウェルカム -->
+    <div class="welcome-card">
+      <button class="logout-btn" onclick="doLogout()">ログアウト</button>
+      <div class="welcome-eyebrow">CS PROFESSIONAL DASHBOARD</div>
+      <div class="welcome-name" id="welcomeName">—</div>
+      <div class="welcome-sub" id="welcomeSub">—</div>
+    </div>
+
+    <!-- 審査ステータス -->
+    <div class="status-section">
+      <div class="section-title">審査ステータス</div>
+      <div class="screening-card">
+        <div class="screening-status">
+          <div class="screening-icon" id="screeningIcon">⏳</div>
+          <div class="screening-info">
+            <h3 id="screeningTitle">—</h3>
+            <p id="screeningDesc">—</p>
+            <span class="screening-badge" id="screeningBadge">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- プロフィール -->
+    <div class="status-section">
+      <div class="section-title">登録プロフィール</div>
+      <div class="screening-card">
+        <div class="detail-grid" id="profileGrid"></div>
+      </div>
+    </div>
+
+    <!-- 案件一覧 -->
+    <div class="status-section">
+      <div class="section-title">マッチング案件</div>
+      <div id="jobsList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://xatjfhleqgubgrnqzxrs.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_TWPuwEddFu3sgGDGSlnFFA_HaLiP7Tw';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentPro = null;
+
+async function doLogin(){
+  const email = document.getElementById('emailInput').value.trim();
+  if(!email){ alert('メールアドレスを入力してください'); return; }
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = '確認中…';
+
+  const {data, error} = await db.from('professionals').select('*').eq('email', email).single();
+  btn.disabled = false; btn.textContent = 'マイページを表示する →';
+
+  if(error || !data){
+    document.getElementById('loginErr').style.display = 'block';
+    return;
+  }
+  currentPro = data;
+  document.getElementById('loginErr').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainScreen').style.display = 'block';
+  renderMain();
+}
+
+function doLogout(){
+  currentPro = null;
+  document.getElementById('mainScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('emailInput').value = '';
+}
+
+function renderMain(){
+  const p = currentPro;
+  document.getElementById('welcomeName').textContent = p.name;
+  document.getElementById('welcomeSub').textContent = `${p.activity||''}　|　専門：${(p.specialties||'').split('、')[0]||'—'}`;
+  renderScreening(p.status);
+  renderProfile(p);
+  loadJobs(p.id);
+}
+
+function renderScreening(status){
+  const configs = {
+    pending: {icon:'⏳', cls:'pending', title:'審査受付済み', desc:'ご登録ありがとうございます。facing担当者が審査を開始します。3営業日以内に審査結果をメールでお知らせします。', badge:'審査待ち', badgeCls:'badge-pending'},
+    reviewing: {icon:'🔍', cls:'reviewing', title:'審査中', desc:'facing担当者がプロフィールを確認しています。審査完了後、CSLINKに掲載され案件のマッチングが始まります。', badge:'審査中', badgeCls:'badge-reviewing'},
+    approved: {icon:'✅', cls:'approved', title:'審査通過！掲載中', desc:'おめでとうございます。審査を通過しCSLINKに掲載されました。企業からのマッチングをお待ちください。', badge:'承認済 · 掲載中', badgeCls:'badge-approved'},
+    rejected: {icon:'❌', cls:'rejected', title:'審査結果について', desc:'今回は審査基準に合致しなかったためご登録をお断りしました。詳細はメールでお知らせしています。', badge:'審査終了', badgeCls:'badge-rejected'}
+  };
+  const cfg = configs[status] || configs.pending;
+  document.getElementById('screeningIcon').textContent = cfg.icon;
+  document.getElementById('screeningIcon').className = 'screening-icon '+cfg.cls;
+  document.getElementById('screeningTitle').textContent = cfg.title;
+  document.getElementById('screeningDesc').textContent = cfg.desc;
+  document.getElementById('screeningBadge').textContent = cfg.badge;
+  document.getElementById('screeningBadge').className = 'screening-badge '+cfg.badgeCls;
+}
+
+function renderProfile(p){
+  const fields = [
+    {label:'氏名', value:p.name},
+    {label:'活動形態', value:p.activity},
+    {label:'専門領域', value:p.specialties, full:true},
+    {label:'CS経験年数', value:p.experience},
+    {label:'希望月額単価', value:p.rate},
+    {label:'稼働可能形態', value:p.worktype},
+    {label:'稼働可能時期', value:p.starttime},
+    {label:'支援実績', value:p.achievement, full:true},
+  ];
+  document.getElementById('profileGrid').innerHTML = fields.map(f=>
+    `<div class="detail-item${f.full?' full':''}">
+      <div class="detail-label">${f.label}</div>
+      <div class="detail-value">${esc(f.value||'—')}</div>
+    </div>`
+  ).join('');
+}
+
+async function loadJobs(proId){
+  const {data:matchings} = await db.from('matchings').select('*').eq('professional_id', proId).order('created_at',{ascending:false});
+  const container = document.getElementById('jobsList');
+
+  if(!matchings || !matchings.length){
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">案件マッチング待ち</div>
+        <div class="empty-desc">審査通過後、CSLINKが最適な企業案件をマッチングします。<br>マッチングされた案件はこちらに表示されます。</div>
+      </div>`;
+    return;
+  }
+
+  const companyIds = matchings.map(m=>m.company_id);
+  const {data:companies} = await db.from('companies').select('*').in('id', companyIds);
+
+  container.innerHTML = matchings.map(m => {
+    const company = companies?.find(c=>c.id===m.company_id);
+    if(!company) return '';
+    const statusLabel = {proposed:'提案中',accepted:'対応中',rejected:'見送り',contracted:'成約',closed:'終了'}[m.status]||m.status;
+    const badgeClass = 'badge-'+(m.status==='contracted'?'contracted':m.status==='accepted'?'accepted':m.status==='rejected'?'rejected':'proposed');
+    const challenges = (company.challenges||'').split('、').filter(Boolean).slice(0,4);
+    const canRespond = m.status === 'proposed';
+    return `
+    <div class="job-card" id="job-${m.id}">
+      <div class="job-header">
+        <div>
+          <div class="job-company">${esc(company.name)}</div>
+          <div class="job-sub">${esc(company.industry||'—')}　|　${esc(company.size||'—')}</div>
+          <div style="margin-top:8px"><span class="job-status ${badgeClass}">${statusLabel}</span></div>
+        </div>
+      </div>
+      <div class="job-tags">${challenges.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      <div class="job-detail">
+        <strong>CS課題：</strong>${esc(company.detail||company.challenges||'—')}<br>
+        <strong>希望稼働：</strong>${esc(company.worktype||'—')}　<strong>開始希望：</strong>${esc(company.starttime||'—')}　<strong>予算：</strong>${esc(company.budget||'—')}
+      </div>
+      ${canRespond?`
+      <div class="action-row">
+        <button class="btn-accept" onclick="respondToMatch('${m.id}','accepted')">✓ この案件を受ける</button>
+        <button class="btn-decline" onclick="respondToMatch('${m.id}','rejected')">見送る</button>
+      </div>`:''}
+      <div class="msg-section">
+        <div class="msg-section-title">💬 担当者・企業とのメッセージ</div>
+        <div class="msg-list" id="msgs-${m.id}"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">読み込み中...</div></div>
+        <div class="msg-input-row">
+          <input class="msg-input" id="msginput-${m.id}" placeholder="メッセージを入力…">
+          <button class="msg-send" onclick="sendMsg('${m.id}','${proId}','professional')">送信</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  for(const m of matchings){
+    await loadMessages(m.id, proId);
+  }
+}
+
+async function respondToMatch(matchingId, status){
+  const label = status==='accepted'?'この案件を受ける':'見送る';
+  if(!confirm(`「${label}」でよろしいですか？`)) return;
+  const {error} = await db.from('matchings').update({status}).eq('id', matchingId);
+  if(error){alert('更新に失敗しました'); return;}
+  await loadJobs(currentPro.id);
+}
+
+async function loadMessages(matchingId, proId){
+  const {data:msgs} = await db.from('messages').select('*').eq('matching_id',matchingId).order('created_at');
+  const container = document.getElementById('msgs-'+matchingId);
+  if(!container) return;
+  if(!msgs||!msgs.length){
+    container.innerHTML='<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">まだメッセージはありません</div>';
+    return;
+  }
+  container.innerHTML = msgs.map(msg=>{
+    const ismine = msg.sender_type==='professional' && msg.sender_id===proId;
+    const isadmin = msg.sender_type==='admin';
+    const cls = ismine?'mine':isadmin?'admin':'theirs';
+    const who = {company:'企業担当者',professional:'あなた',admin:'CSLINK運営'}[msg.sender_type];
+    return `<div class="msg-bubble ${cls}">
+      ${esc(msg.content)}
+      <div class="msg-meta">${who} · ${fmtDate(msg.created_at)}</div>
+    </div>`;
+  }).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMsg(matchingId, senderId, senderType){
+  const input = document.getElementById('msginput-'+matchingId);
+  const content = input?.value.trim();
+  if(!content) return;
+  const {error} = await db.from('messages').insert({
+    matching_id: matchingId,
+    sender_type: senderType,
+    sender_id: senderId,
+    content
+  });
+  if(error){alert('送信に失敗しました'); return;}
+  input.value = '';
+  await loadMessages(matchingId, senderId);
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtDate(d){if(!d)return'—';const dt=new Date(d);return`${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`;}
+
+document.getElementById('emailInput').focus();
+</script>
+</body>
+</html>
