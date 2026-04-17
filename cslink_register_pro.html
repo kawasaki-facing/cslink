@@ -132,6 +132,37 @@ async function submitForm(){
     console.log('Supabase保存エラー:', e);
   }
 
+  // Supabaseへ保存
+  try {
+    await fetch('https://xatjfhleqgubgrnqzxrs.supabase.co/rest/v1/professionals', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'sb_publishable_TWPuwEddFu3sgGDGSlnFFA_HaLiP7Tw',
+        'Authorization': 'Bearer sb_publishable_TWPuwEddFu3sgGDGSlnFFA_HaLiP7Tw',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        name:        data.name,
+        activity:    data.activity,
+        specialties: data.specialties,
+        experience:  data.experience,
+        achievement: data.achievement,
+        worktype:    data.worktype,
+        starttime:   data.starttime,
+        rate:        data.rate,
+        email:       data.email,
+        tel:         data.tel,
+        url:         data.url,
+        memo:        data.memo,
+        status:      'pending',
+        source:      'CSLINKプロ登録フォーム'
+      })
+    });
+  } catch(e) {
+    console.log('Supabase保存エラー:', e);
+  }
+
   // 完了画面
   setTimeout(()=>{
     document.getElementById('step3').style.display='none';
