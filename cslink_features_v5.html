@@ -1045,6 +1045,7 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
 <nav>
   <a href="index.html" class="nav-logo"><div class="nav-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></a>
   <ul class="nav-links">
+    <li><a href="index.html">TOP</a></li>
     <li><a href="cslink_features_v5.html" class="active">機能</a></li>
     <li><a href="cslink_howto_fixed.html">使い方・事例</a></li>
     <li><a href="cslink_pricing.html">料金</a></li>
@@ -1303,8 +1304,8 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
     <!-- 大カード：実績 -->
     <div class="bento-card wide sr">
       <div class="bento-icon">📈</div>
-      <div class="bento-title">5年・500,000件超の支援実績をAIに学習</div>
-      <p class="bento-desc">facing株式会社が積み上げた500,000件超・5年分のCS支援ノウハウをAIに学習。業界特有の成功パターンから最適解を導きます。</p>
+      <div class="bento-title">5年・500社超の支援実績をAIに学習</div>
+      <p class="bento-desc">facing株式会社が積み上げた500社超・5年分のCS支援ノウハウをAIに学習。業界特有の成功パターンから最適解を導きます。</p>
       <div style="display:flex;gap:24px;margin-top:20px;flex-wrap:wrap;">
         <div><div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-1px;">500<em style="color:var(--teal);font-style:normal;">社</em>+</div><div style="font-size:11px;color:var(--muted);font-weight:600;">支援企業数</div></div>
         <div><div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-1px;">10<em style="color:var(--teal);font-style:normal;">億円</em>+</div><div style="font-size:11px;color:var(--muted);font-weight:600;">累計支援金額</div></div>
@@ -1371,7 +1372,7 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
         </div>
         <div class="sim-result-body" id="simBody">
           <div class="sim-placeholder">
-            <canvas id="matchCanvas" width="280" height="160" style="display:block;margin:0 auto 12px;"></canvas>
+            <div style="font-size:36px;margin-bottom:12px;">🎯</div>
             <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">課題を選んで開始</div>
             <div style="font-size:12px;color:var(--muted);">AIが最適なCSプロを28秒で提案します</div>
           </div>
@@ -1600,7 +1601,7 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
 
 <!-- ═══ TWO SIDES ═══ -->
 <section class="two-section" id="two">
-  <div class="two-pane two-pane-a">
+  <div class="two-pane two-pane-a sr">
     <div class="two-badge">🏢 企業向け</div>
     <h3 class="two-title">CS課題を抱える<br>すべての企業へ</h3>
     <ul class="two-list">
@@ -1612,7 +1613,7 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
     </ul>
     <a href="cslink_register_client.html">CSのプロを無料で探す →</a>
   </div>
-  <div class="two-pane two-pane-b">
+  <div class="two-pane two-pane-b sr">
     <div class="two-badge">💼 CS企業・人材向け</div>
     <h3 class="two-title">CS専門家の<br>皆さんへ</h3>
     <ul class="two-list">
@@ -1783,7 +1784,7 @@ window.startSim = function() {
   const steps=[
     {t:300,icon:'🔍',text:'課題を分析中：「'+simSelected+'」',type:'thinking'},
     {t:900,icon:'📊',text:'業種・フェーズ判定：'+simPhase+'企業向けプロを検索',type:'thinking'},
-    {t:1800,icon:'🧠',text:'500,000件+の支援事例と照合中...',type:'thinking'},
+    {t:1800,icon:'🧠',text:'500社+の支援事例と照合中...',type:'thinking'},
     {t:3000,icon:'⚡',text:'スコアリング完了：上位3名を選定',type:'done'},
   ];
   steps.forEach(s=>{
@@ -1990,99 +1991,6 @@ if(numsBar)numObs.observe(numsBar);
   send.addEventListener('click', sendMessage);
   input.addEventListener('keydown', e => { if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } });
 })();
-
-// ── MATCH CANVAS ANIMATION ──
-(function(){
-  const canvas = document.getElementById('matchCanvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  const cx = W/2, cy = H/2;
-  const TEAL = '#06b6d4', NAVY = '#0f2342', TEALFADE = 'rgba(6,182,212,';
-
-  // 中心ノード（CS）
-  const center = {x:cx, y:cy, label:'CS', r:22};
-
-  // 周囲ノード
-  const nodes = [
-    {label:'企業A', angle:0,    dist:72, r:14, color:NAVY},
-    {label:'企業B', angle:72,   dist:68, r:13, color:NAVY},
-    {label:'企業C', angle:144,  dist:74, r:14, color:NAVY},
-    {label:'プロA', angle:216,  dist:70, r:13, color:TEAL},
-    {label:'プロB', angle:288,  dist:72, r:14, color:TEAL},
-  ];
-
-  let tick = 0;
-  const pulseNodes = [0,2,4]; // パルスするノードのindex
-
-  function drawNode(x, y, r, color, label, alpha){
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    // 外側グロー
-    const grd = ctx.createRadialGradient(x,y,r*0.3,x,y,r*1.8);
-    grd.addColorStop(0, color==='#06b6d4' ? 'rgba(6,182,212,0.25)' : 'rgba(15,35,66,0.15)');
-    grd.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.beginPath(); ctx.arc(x,y,r*1.8,0,Math.PI*2);
-    ctx.fillStyle = grd; ctx.fill();
-    // 円
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
-    ctx.fillStyle = color; ctx.fill();
-    // ラベル
-    ctx.font = `bold ${r > 18 ? 9 : 8}px sans-serif`;
-    ctx.fillStyle = '#fff';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(label, x, y);
-    ctx.restore();
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    tick++;
-
-    nodes.forEach((n, i) => {
-      // ゆらぎ
-      const wobble = Math.sin(tick * 0.04 + i * 1.2) * 4;
-      const rad = (n.angle + wobble * 0.5) * Math.PI / 180;
-      n.cx = cx + Math.cos(rad) * (n.dist + wobble);
-      n.cy = cy + Math.sin(rad) * (n.dist + wobble * 0.7);
-
-      // 線（パルス）
-      const progress = ((tick * 0.015 + i * 0.2) % 1);
-      // ベース線
-      ctx.beginPath();
-      ctx.moveTo(center.x, center.y);
-      ctx.lineTo(n.cx, n.cy);
-      ctx.strokeStyle = n.color === TEAL ? 'rgba(6,182,212,0.15)' : 'rgba(15,35,66,0.1)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      // パルス玉
-      const px = center.x + (n.cx - center.x) * progress;
-      const py = center.y + (n.cy - center.y) * progress;
-      ctx.beginPath();
-      ctx.arc(px, py, 2.5, 0, Math.PI*2);
-      ctx.fillStyle = n.color === TEAL ? TEAL : NAVY;
-      ctx.globalAlpha = 0.8;
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    });
-
-    // 中心ノード（呼吸エフェクト）
-    const pulse = 1 + Math.sin(tick * 0.05) * 0.08;
-    drawNode(center.x, center.y, center.r * pulse, TEAL, 'CS', 1);
-
-    // 周囲ノード
-    nodes.forEach((n, i) => {
-      const a = 0.7 + Math.sin(tick * 0.03 + i) * 0.2;
-      drawNode(n.cx, n.cy, n.r, n.color, n.label, a);
-    });
-
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
 </script>
 </body>
 </html>
