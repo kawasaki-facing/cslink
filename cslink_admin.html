@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSLINK 運営管理画面</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--teal:#06b6d4;--navy:#0f2342;--navy-m:#1e3a5f;--text:#1a2744;--muted:#64748b;--bg:#f0f7fa;--white:#fff;--border:#e2e8f0;--ok:#22c55e;--warn:#f59e0b;--err:#ef4444;}
+body{font-family:'Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ログイン画面 */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-m) 100%);}
+.login-card{background:var(--white);border-radius:20px;padding:48px 40px;width:380px;box-shadow:0 24px 64px rgba(0,0,0,0.3);}
+.login-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px;}
+.login-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--teal),#0891b2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;}
+.login-logo span{font-size:22px;font-weight:800;color:var(--navy);}
+.login-logo b{color:var(--teal);}
+.login-subtitle{text-align:center;font-size:13px;color:var(--muted);margin-bottom:32px;}
+.login-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;display:block;}
+.login-input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;outline:none;transition:border .2s;}
+.login-input:focus{border-color:var(--teal);}
+.login-btn{width:100%;padding:14px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px;transition:all .2s;}
+.login-btn:hover{background:#0891b2;transform:translateY(-1px);}
+.login-err{color:var(--err);font-size:13px;text-align:center;margin-top:12px;display:none;}
+
+/* メイン画面 */
+#mainScreen{display:none;}
+.header{background:var(--navy);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.header-logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:18px;font-weight:800;}
+.header-logo-icon{width:28px;height:28px;background:var(--teal);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+.header-right{display:flex;align-items:center;gap:16px;}
+.header-badge{background:rgba(6,182,212,0.2);color:var(--teal);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;}
+.logout-btn{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:7px 16px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s;}
+.logout-btn:hover{background:rgba(255,255,255,0.2);}
+
+/* タブ */
+.tabs{background:var(--white);border-bottom:1px solid var(--border);padding:0 32px;display:flex;gap:0;}
+.tab{padding:16px 24px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;}
+.tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.tab-count{display:inline-block;background:var(--bg);color:var(--muted);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:8px;}
+.tab.active .tab-count{background:rgba(6,182,212,0.1);color:var(--teal);}
+
+/* コンテンツ */
+.content{padding:32px;max-width:1400px;margin:0 auto;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* サマリーカード */
+.summary-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.summary-card{background:var(--white);border-radius:14px;padding:20px 24px;border:1px solid var(--border);}
+.summary-num{font-size:32px;font-weight:900;color:var(--navy);}
+.summary-label{font-size:13px;color:var(--muted);margin-top:4px;}
+.summary-sub{font-size:11px;color:var(--teal);margin-top:8px;font-weight:600;}
+
+/* テーブル */
+.table-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.table-title{font-size:16px;font-weight:800;color:var(--navy);}
+.search-input{padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;outline:none;width:240px;}
+.search-input:focus{border-color:var(--teal);}
+.data-table{width:100%;background:var(--white);border-radius:14px;border:1px solid var(--border);overflow:hidden;}
+.data-table table{width:100%;border-collapse:collapse;}
+.data-table th{background:var(--bg);padding:12px 16px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);border-bottom:1px solid var(--border);}
+.data-table td{padding:14px 16px;font-size:13px;border-bottom:1px solid var(--border);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:#f8fafc;}
+
+/* ステータスバッジ */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-pending{background:#f1f5f9;color:var(--muted);}
+.badge-reviewing{background:#fef3c7;color:#92400e;}
+.badge-approved{background:#d1fae5;color:#065f46;}
+.badge-matched{background:#dbeafe;color:#1e40af;}
+.badge-rejected{background:#fee2e2;color:#991b1b;}
+.badge-closed{background:#f1f5f9;color:var(--muted);}
+.badge-proposed{background:#ede9fe;color:#5b21b6;}
+.badge-contracted{background:#d1fae5;color:#065f46;}
+
+/* アクションボタン */
+.btn-detail{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:7px;font-size:12px;cursor:pointer;transition:all .2s;}
+.btn-detail:hover{border-color:var(--teal);color:var(--teal);}
+.status-select{border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:12px;color:var(--text);cursor:pointer;background:var(--white);}
+
+/* モーダル */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--white);border-radius:18px;padding:36px;width:640px;max-height:80vh;overflow-y:auto;position:relative;}
+.modal-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);}
+.modal-title{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:24px;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.modal-field{padding:12px;background:var(--bg);border-radius:10px;}
+.modal-field-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;}
+.modal-field-value{font-size:14px;color:var(--text);}
+.modal-field.full{grid-column:1/-1;}
+
+/* マッチング作成 */
+.match-form{background:var(--white);border-radius:14px;padding:28px;border:1px solid var(--border);margin-bottom:24px;}
+.match-form h3{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:20px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end;}
+.form-group label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;}
+.form-select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;outline:none;}
+.form-select:focus{border-color:var(--teal);}
+.btn-create{padding:11px 24px;background:var(--teal);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.btn-create:hover{background:#0891b2;}
+
+/* メッセージ送信 */
+.msg-area{background:var(--white);border-radius:14px;padding:24px;border:1px solid var(--border);margin-top:16px;}
+.msg-list{max-height:300px;overflow-y:auto;margin-bottom:16px;}
+.msg-item{padding:10px 14px;border-radius:10px;margin-bottom:8px;font-size:13px;}
+.msg-admin{background:#dbeafe;align-self:flex-end;}
+.msg-company{background:#f1f5f9;}
+.msg-pro{background:#d1fae5;}
+.msg-input-row{display:flex;gap:10px;}
+.msg-input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;outline:none;}
+.msg-send{padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;}
+
+/* ローディング */
+.loading{text-align:center;padding:60px;color:var(--muted);font-size:14px;}
+.empty{text-align:center;padding:60px;color:var(--muted);font-size:14px;}
+
+/* 更新ボタン */
+.refresh-btn{background:var(--white);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:9px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.refresh-btn:hover{border-color:var(--teal);color:var(--teal);}
+</style>
+</head>
+<body>
+
+<!-- ログイン画面 -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">CS</div>
+      <span>CS<b>LINK</b></span>
+    </div>
+    <p class="login-subtitle">運営管理画面 — facing株式会社専用</p>
+    <label class="login-label">管理パスワード</label>
+    <input type="password" class="login-input" id="pwInput" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">ログイン</button>
+    <p class="login-err" id="loginErr">パスワードが違います</p>
+  </div>
+</div>
+
+<!-- メイン画面 -->
+<div id="mainScreen">
+  <div class="header">
+    <div class="header-logo">
+      <div class="header-logo-icon">CS</div>
+      CSLINK <span style="color:var(--teal);margin-left:8px;font-size:14px;">運営管理</span>
+    </div>
+    <div class="header-right">
+      <span class="header-badge" id="lastUpdated">読み込み中...</span>
+      <button class="logout-btn" onclick="doLogout()">ログアウト</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('companies')">企業一覧 <span class="tab-count" id="cnt-companies">0</span></div>
+    <div class="tab" onclick="switchTab('professionals')">CSプロ一覧 <span class="tab-count" id="cnt-professionals">0</span></div>
+    <div class="tab" onclick="switchTab('matchings')">マッチング管理 <span class="tab-count" id="cnt-matchings">0</span></div>
+  </div>
+
+  <div class="content">
+
+    <!-- サマリー -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="summary-num" id="sum-companies">—</div>
+        <div class="summary-label">登録企業数</div>
+        <div class="summary-sub" id="sum-companies-pending">確認待ち: —</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-num" id="sum-professionals">—</div>
+        <div class="summary-label">登録CSプロ数</div>
+        <div class="summary-sub" id="sum-professionals-pending">審査待ち: —</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-num" id="sum-matchings">—</div>
+        <div class="summary-label">マッチング数</div>
+        <div class="summary-sub" id="sum-matchings-active">成約: —</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-num" id="sum-messages">—</div>
+        <div class="summary-label">メッセージ数</div>
+        <div class="summary-sub" id="sum-messages-unread">未読: —</div>
+      </div>
+    </div>
+
+    <!-- 企業一覧 -->
+    <div class="panel active" id="panel-companies">
+      <div class="table-header">
+        <div class="table-title">登録企業一覧</div>
+        <div style="display:flex;gap:10px;">
+          <input class="search-input" placeholder="企業名・メールで検索" oninput="filterTable('companies',this.value)">
+          <button class="refresh-btn" onclick="loadAll()">↺ 更新</button>
+        </div>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr>
+              <th>会社名</th>
+              <th>業種</th>
+              <th>CS課題</th>
+              <th>担当者</th>
+              <th>メール</th>
+              <th>ステータス</th>
+              <th>登録日</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="companiesBody"><tr><td colspan="8" class="loading">読み込み中...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CSプロ一覧 -->
+    <div class="panel" id="panel-professionals">
+      <div class="table-header">
+        <div class="table-title">CSプロ一覧</div>
+        <div style="display:flex;gap:10px;">
+          <input class="search-input" placeholder="氏名・専門領域で検索" oninput="filterTable('professionals',this.value)">
+          <button class="refresh-btn" onclick="loadAll()">↺ 更新</button>
+        </div>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr>
+              <th>氏名</th>
+              <th>活動形態</th>
+              <th>専門領域</th>
+              <th>経験年数</th>
+              <th>希望単価</th>
+              <th>メール</th>
+              <th>ステータス</th>
+              <th>登録日</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="professionalsBody"><tr><td colspan="9" class="loading">読み込み中...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- マッチング管理 -->
+    <div class="panel" id="panel-matchings">
+      <!-- マッチング作成フォーム -->
+      <div class="match-form">
+        <h3>＋ 新しいマッチングを作成</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>企業を選択</label>
+            <select class="form-select" id="matchCompany"></select>
+          </div>
+          <div class="form-group">
+            <label>CSプロを選択</label>
+            <select class="form-select" id="matchPro"></select>
+          </div>
+          <button class="btn-create" onclick="createMatching()">マッチング作成</button>
+        </div>
+      </div>
+
+      <div class="table-header">
+        <div class="table-title">マッチング一覧</div>
+        <button class="refresh-btn" onclick="loadAll()">↺ 更新</button>
+      </div>
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr>
+              <th>企業名</th>
+              <th>CSプロ名</th>
+              <th>ステータス</th>
+              <th>メモ</th>
+              <th>作成日</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="matchingsBody"><tr><td colspan="6" class="loading">読み込み中...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 詳細モーダル -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-title" id="modalTitle"></div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ===== Supabase設定 =====
+const SUPABASE_URL = 'https://xatjfhleqgubgrnqzxrs.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_TWPuwEddFu3sgGDGSlnFFA_HaLiP7Tw';
+const ADMIN_PASSWORD = 'facing0610';
+
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// データキャッシュ
+let allCompanies = [];
+let allProfessionals = [];
+let allMatchings = [];
+
+// ===== ログイン =====
+function doLogin(){
+  const pw = document.getElementById('pwInput').value;
+  if(pw === ADMIN_PASSWORD){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('mainScreen').style.display='block';
+    loadAll();
+  } else {
+    document.getElementById('loginErr').style.display='block';
+  }
+}
+function doLogout(){
+  document.getElementById('mainScreen').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('pwInput').value='';
+}
+
+// ===== タブ切り替え =====
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    const names=['companies','professionals','matchings'];
+    t.classList.toggle('active', names[i]===name);
+  });
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+}
+
+// ===== データ読み込み =====
+async function loadAll(){
+  await Promise.all([loadCompanies(), loadProfessionals(), loadMatchings(), loadMessages()]);
+  updateSummary();
+  updateLastUpdated();
+}
+
+async function loadCompanies(){
+  const {data,error} = await db.from('companies').select('*').order('created_at',{ascending:false});
+  if(error){console.error(error);return;}
+  allCompanies = data || [];
+  renderCompanies(allCompanies);
+  document.getElementById('cnt-companies').textContent = allCompanies.length;
+  // マッチング作成用セレクト更新
+  const sel = document.getElementById('matchCompany');
+  sel.innerHTML = allCompanies.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+async function loadProfessionals(){
+  const {data,error} = await db.from('professionals').select('*').order('created_at',{ascending:false});
+  if(error){console.error(error);return;}
+  allProfessionals = data || [];
+  renderProfessionals(allProfessionals);
+  document.getElementById('cnt-professionals').textContent = allProfessionals.length;
+  // マッチング作成用セレクト更新
+  const sel = document.getElementById('matchPro');
+  sel.innerHTML = allProfessionals.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+}
+
+async function loadMatchings(){
+  const {data,error} = await db.from('matchings').select('*').order('created_at',{ascending:false});
+  if(error){console.error(error);return;}
+  allMatchings = data || [];
+  renderMatchings(allMatchings);
+  document.getElementById('cnt-matchings').textContent = allMatchings.length;
+}
+
+async function loadMessages(){
+  const {data} = await db.from('messages').select('*');
+  const msgs = data || [];
+  const unread = msgs.filter(m=>!m.is_read).length;
+  document.getElementById('sum-messages').textContent = msgs.length;
+  document.getElementById('sum-messages-unread').textContent = `未読: ${unread}`;
+}
+
+// ===== サマリー更新 =====
+function updateSummary(){
+  document.getElementById('sum-companies').textContent = allCompanies.length;
+  const pendingC = allCompanies.filter(c=>c.status==='pending').length;
+  document.getElementById('sum-companies-pending').textContent = `確認待ち: ${pendingC}`;
+
+  document.getElementById('sum-professionals').textContent = allProfessionals.length;
+  const pendingP = allProfessionals.filter(p=>p.status==='pending').length;
+  document.getElementById('sum-professionals-pending').textContent = `審査待ち: ${pendingP}`;
+
+  document.getElementById('sum-matchings').textContent = allMatchings.length;
+  const contracted = allMatchings.filter(m=>m.status==='contracted').length;
+  document.getElementById('sum-matchings-active').textContent = `成約: ${contracted}`;
+}
+
+function updateLastUpdated(){
+  const now = new Date();
+  document.getElementById('lastUpdated').textContent =
+    `最終更新: ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+}
+
+// ===== ステータスバッジ =====
+function badge(status){
+  const map={
+    pending:'未確認',reviewing:'確認中',approved:'承認済',matched:'マッチング済',
+    rejected:'否認',closed:'クローズ',proposed:'提案中',accepted:'承諾',
+    rejected:'拒否',contracted:'成約',closed:'終了'
+  };
+  return `<span class="badge badge-${status}">${map[status]||status}</span>`;
+}
+
+// ===== 日付フォーマット =====
+function fmtDate(d){
+  if(!d)return'—';
+  const dt=new Date(d);
+  return `${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`;
+}
+
+// ===== 企業テーブル描画 =====
+function renderCompanies(data){
+  const tbody = document.getElementById('companiesBody');
+  if(!data.length){tbody.innerHTML='<tr><td colspan="8" class="empty">登録企業はありません</td></tr>';return;}
+  tbody.innerHTML = data.map(c=>`
+    <tr>
+      <td><strong>${esc(c.name)}</strong></td>
+      <td>${esc(c.industry||'—')}</td>
+      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.challenges||c.detail||'—')}</td>
+      <td>${esc(c.contact_name||'—')}</td>
+      <td><a href="mailto:${esc(c.email)}" style="color:var(--teal)">${esc(c.email)}</a></td>
+      <td>
+        <select class="status-select" onchange="updateStatus('companies','${c.id}',this.value)">
+          ${['pending','reviewing','matched','closed'].map(s=>`<option value="${s}" ${c.status===s?'selected':''}>${{pending:'未確認',reviewing:'確認中',matched:'マッチング済',closed:'クローズ'}[s]}</option>`).join('')}
+        </select>
+      </td>
+      <td>${fmtDate(c.created_at)}</td>
+      <td><button class="btn-detail" onclick="showCompanyDetail('${c.id}')">詳細</button></td>
+    </tr>
+  `).join('');
+}
+
+// ===== CSプロテーブル描画 =====
+function renderProfessionals(data){
+  const tbody = document.getElementById('professionalsBody');
+  if(!data.length){tbody.innerHTML='<tr><td colspan="9" class="empty">登録CSプロはありません</td></tr>';return;}
+  tbody.innerHTML = data.map(p=>`
+    <tr>
+      <td><strong>${esc(p.name)}</strong></td>
+      <td>${esc(p.activity||'—')}</td>
+      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.specialties||'—')}</td>
+      <td>${esc(p.experience||'—')}</td>
+      <td>${esc(p.rate||'—')}</td>
+      <td><a href="mailto:${esc(p.email)}" style="color:var(--teal)">${esc(p.email)}</a></td>
+      <td>
+        <select class="status-select" onchange="updateStatus('professionals','${p.id}',this.value)">
+          ${['pending','reviewing','approved','rejected'].map(s=>`<option value="${s}" ${p.status===s?'selected':''}>${{pending:'審査待ち',reviewing:'審査中',approved:'承認済',rejected:'否認'}[s]}</option>`).join('')}
+        </select>
+      </td>
+      <td>${fmtDate(p.created_at)}</td>
+      <td><button class="btn-detail" onclick="showProDetail('${p.id}')">詳細</button></td>
+    </tr>
+  `).join('');
+}
+
+// ===== マッチングテーブル描画 =====
+function renderMatchings(data){
+  const tbody = document.getElementById('matchingsBody');
+  if(!data.length){tbody.innerHTML='<tr><td colspan="6" class="empty">マッチングはまだありません</td></tr>';return;}
+  tbody.innerHTML = data.map(m=>{
+    const company = allCompanies.find(c=>c.id===m.company_id);
+    const pro = allProfessionals.find(p=>p.id===m.professional_id);
+    return `
+    <tr>
+      <td><strong>${esc(company?.name||'—')}</strong></td>
+      <td>${esc(pro?.name||'—')}</td>
+      <td>
+        <select class="status-select" onchange="updateStatus('matchings','${m.id}',this.value)">
+          ${['proposed','accepted','rejected','contracted','closed'].map(s=>`<option value="${s}" ${m.status===s?'selected':''}>${{proposed:'提案中',accepted:'承諾',rejected:'拒否',contracted:'成約',closed:'終了'}[s]}</option>`).join('')}
+        </select>
+      </td>
+      <td style="max-width:200px">${esc(m.admin_note||'—')}</td>
+      <td>${fmtDate(m.created_at)}</td>
+      <td>
+        <button class="btn-detail" onclick="showMatchingDetail('${m.id}')">詳細/メモ</button>
+      </td>
+    </tr>
+  `}).join('');
+}
+
+// ===== ステータス更新 =====
+async function updateStatus(table, id, status){
+  const {error} = await db.from(table).update({status}).eq('id',id);
+  if(error){alert('更新に失敗しました: '+error.message);return;}
+  await loadAll();
+}
+
+// ===== 検索フィルター =====
+function filterTable(type, query){
+  const q = query.toLowerCase();
+  if(type==='companies'){
+    const filtered = allCompanies.filter(c=>
+      (c.name||'').toLowerCase().includes(q) ||
+      (c.email||'').toLowerCase().includes(q) ||
+      (c.industry||'').toLowerCase().includes(q)
+    );
+    renderCompanies(filtered);
+  } else if(type==='professionals'){
+    const filtered = allProfessionals.filter(p=>
+      (p.name||'').toLowerCase().includes(q) ||
+      (p.specialties||'').toLowerCase().includes(q) ||
+      (p.email||'').toLowerCase().includes(q)
+    );
+    renderProfessionals(filtered);
+  }
+}
+
+// ===== マッチング作成 =====
+async function createMatching(){
+  const companyId = document.getElementById('matchCompany').value;
+  const proId = document.getElementById('matchPro').value;
+  if(!companyId || !proId){alert('企業とCSプロを選択してください');return;}
+
+  const {error} = await db.from('matchings').insert({
+    company_id: companyId,
+    professional_id: proId,
+    status: 'proposed'
+  });
+  if(error){alert('作成に失敗しました: '+error.message);return;}
+  alert('マッチングを作成しました！');
+  await loadAll();
+}
+
+// ===== 詳細モーダル =====
+function showCompanyDetail(id){
+  const c = allCompanies.find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('modalTitle').textContent = `企業詳細：${c.name}`;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-grid">
+      <div class="modal-field"><div class="modal-field-label">会社名</div><div class="modal-field-value">${esc(c.name)}</div></div>
+      <div class="modal-field"><div class="modal-field-label">業種</div><div class="modal-field-value">${esc(c.industry||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">従業員数</div><div class="modal-field-value">${esc(c.size||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">月次売上</div><div class="modal-field-value">${esc(c.revenue||'—')}</div></div>
+      <div class="modal-field full"><div class="modal-field-label">プロダクト概要</div><div class="modal-field-value">${esc(c.product||'—')}</div></div>
+      <div class="modal-field full"><div class="modal-field-label">CS課題（チェック）</div><div class="modal-field-value">${esc(c.challenges||'—')}</div></div>
+      <div class="modal-field full"><div class="modal-field-label">課題詳細</div><div class="modal-field-value">${esc(c.detail||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">希望稼働形態</div><div class="modal-field-value">${esc(c.worktype||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">希望開始時期</div><div class="modal-field-value">${esc(c.starttime||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">予算</div><div class="modal-field-value">${esc(c.budget||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">担当者名</div><div class="modal-field-value">${esc(c.contact_name||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">メール</div><div class="modal-field-value">${esc(c.email)}</div></div>
+      <div class="modal-field"><div class="modal-field-label">電話</div><div class="modal-field-value">${esc(c.tel||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">URL</div><div class="modal-field-value">${c.url?`<a href="${esc(c.url)}" target="_blank" style="color:var(--teal)">${esc(c.url)}</a>`:'—'}</div></div>
+      <div class="modal-field full"><div class="modal-field-label">備考</div><div class="modal-field-value">${esc(c.memo||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">ステータス</div><div class="modal-field-value">${badge(c.status)}</div></div>
+      <div class="modal-field"><div class="modal-field-label">登録日</div><div class="modal-field-value">${fmtDate(c.created_at)}</div></div>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function showProDetail(id){
+  const p = allProfessionals.find(x=>x.id===id);
+  if(!p)return;
+  document.getElementById('modalTitle').textContent = `CSプロ詳細：${p.name}`;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-grid">
+      <div class="modal-field"><div class="modal-field-label">氏名</div><div class="modal-field-value">${esc(p.name)}</div></div>
+      <div class="modal-field"><div class="modal-field-label">活動形態</div><div class="modal-field-value">${esc(p.activity||'—')}</div></div>
+      <div class="modal-field full"><div class="modal-field-label">専門領域</div><div class="modal-field-value">${esc(p.specialties||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">CS経験年数</div><div class="modal-field-value">${esc(p.experience||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">希望月額単価</div><div class="modal-field-value">${esc(p.rate||'—')}</div></div>
+      <div class="modal-field full"><div class="modal-field-label">支援実績</div><div class="modal-field-value">${esc(p.achievement||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">稼働可能形態</div><div class="modal-field-value">${esc(p.worktype||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">稼働可能時期</div><div class="modal-field-value">${esc(p.starttime||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">メール</div><div class="modal-field-value">${esc(p.email)}</div></div>
+      <div class="modal-field"><div class="modal-field-label">電話</div><div class="modal-field-value">${esc(p.tel||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">LinkedIn/URL</div><div class="modal-field-value">${p.url?`<a href="${esc(p.url)}" target="_blank" style="color:var(--teal)">${esc(p.url)}</a>`:'—'}</div></div>
+      <div class="modal-field full"><div class="modal-field-label">自己PR</div><div class="modal-field-value">${esc(p.memo||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">ステータス</div><div class="modal-field-value">${badge(p.status)}</div></div>
+      <div class="modal-field"><div class="modal-field-label">登録日</div><div class="modal-field-value">${fmtDate(p.created_at)}</div></div>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+async function showMatchingDetail(id){
+  const m = allMatchings.find(x=>x.id===id);
+  if(!m)return;
+  const company = allCompanies.find(c=>c.id===m.company_id);
+  const pro = allProfessionals.find(p=>p.id===m.professional_id);
+
+  // メッセージ取得
+  const {data:msgs} = await db.from('messages').select('*').eq('matching_id',id).order('created_at');
+
+  document.getElementById('modalTitle').textContent = `マッチング詳細`;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-grid" style="margin-bottom:24px;">
+      <div class="modal-field"><div class="modal-field-label">企業</div><div class="modal-field-value">${esc(company?.name||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">CSプロ</div><div class="modal-field-value">${esc(pro?.name||'—')}</div></div>
+      <div class="modal-field"><div class="modal-field-label">ステータス</div><div class="modal-field-value">${badge(m.status)}</div></div>
+      <div class="modal-field"><div class="modal-field-label">作成日</div><div class="modal-field-value">${fmtDate(m.created_at)}</div></div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;">管理メモを更新</div>
+    <textarea id="adminNote" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:13px;min-height:80px;resize:vertical;margin-bottom:12px">${esc(m.admin_note||'')}</textarea>
+    <button onclick="saveNote('${id}')" style="padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:24px">メモを保存</button>
+
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;">メッセージ履歴 (${(msgs||[]).length}件)</div>
+    <div class="msg-area">
+      <div class="msg-list" id="msgList">
+        ${(msgs||[]).map(msg=>`
+          <div class="msg-item msg-${msg.sender_type}">
+            <span style="font-size:10px;color:var(--muted);font-weight:700;">${{admin:'運営',company:'企業',professional:'CSプロ'}[msg.sender_type]} · ${fmtDate(msg.created_at)}</span>
+            <div style="margin-top:4px">${esc(msg.content)}</div>
+          </div>
+        `).join('') || '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">メッセージはありません</div>'}
+      </div>
+      <div class="msg-input-row">
+        <input class="msg-input" id="msgInput" placeholder="運営としてメッセージを送る…">
+        <button class="msg-send" onclick="sendAdminMsg('${id}')">送信</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+async function saveNote(matchingId){
+  const note = document.getElementById('adminNote').value;
+  const {error} = await db.from('matchings').update({admin_note:note}).eq('id',matchingId);
+  if(error){alert('保存失敗: '+error.message);return;}
+  alert('メモを保存しました');
+  await loadMatchings();
+}
+
+async function sendAdminMsg(matchingId){
+  const content = document.getElementById('msgInput').value.trim();
+  if(!content)return;
+  const {error} = await db.from('messages').insert({
+    matching_id: matchingId,
+    sender_type: 'admin',
+    sender_id: '00000000-0000-0000-0000-000000000000',
+    content
+  });
+  if(error){alert('送信失敗: '+error.message);return;}
+  document.getElementById('msgInput').value='';
+  await showMatchingDetail(matchingId);
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== 初期化 =====
+document.getElementById('pwInput').focus();
+
+// 自動更新（5分ごと）
+setInterval(()=>{
+  if(document.getElementById('mainScreen').style.display!=='none'){loadAll();}
+}, 300000);
+</script>
+</body>
+</html>
