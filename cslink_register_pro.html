@@ -1,14 +1,609 @@
-<!DOCTYPE html> <html lang="ja" style="scroll-behavior:smooth"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>CS人材登録 | CSLINK — CSプロとして案件を受注</title> <meta name="description" content="CSLINKにCS人材・CS企業として登録して、案件を受注しよう。登録無料・facing審査通過でCSLINKに掲載。成約時のみ10%の成功報酬。"> <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2306b6d4'/><text x='16' y='22' font-family='Arial' font-size='14' font-weight='900' fill='white' text-anchor='middle'>CS</text></svg>"> <link rel="preconnect" href="https://fonts.googleapis.com"> <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet"> <style> *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;} :root{ --teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f; --text:#1a2744;--muted:#64748b;--bg:#f8fafc;--bg2:#f0f7fa; --border:rgba(6,182,212,0.15);--blue:#2563ff; --err:#ef4444;--ok:#22c55e; } html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;overflow-x:hidden;} nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);} .nav-logo{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--navy);} .nav-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;} .nav-links{display:flex;gap:28px;list-style:none;} .nav-links a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:500;transition:color .2s;} .nav-links a:hover{color:var(--navy);} .nav-links a.active{font-weight:700;color:var(--teal-d);} .nav-login{font-size:13px;color:var(--muted);text-decoration:none;padding:8px 14px;} .nav-cta{font-size:13px;padding:9px 20px;border-radius:8px;background:var(--teal);color:#fff;text-decoration:none;font-weight:700;box-shadow:0 4px 14px rgba(6,182,212,.35);transition:all .2s;} .nav-cta:hover{background:var(--teal-d);transform:translateY(-1px);} .page-wrap{min-height:100vh;padding-top:64px;display:grid;grid-template-columns:1fr 480px;align-items:stretch;} .left-panel{ background:linear-gradient(160deg,#e8f7fb 0%,#f0f9ff 60%,#e0f2f7 100%); border-right:1px solid var(--border); position:relative;overflow:hidden; padding:72px 64px;display:flex;flex-direction:column;justify-content:center; } .left-panel-bg{ position:absolute;inset:0;z-index:0; background-image:url('https://cdn.midjourney.com/6eb2aaa6-b961-477b-82b0-e353ebf4b9b0/0_0_640_N.webp?method=shortest'); background-size:cover;background-position:center top; } .left-panel-bg::after{ content:'';position:absolute;inset:0; background:linear-gradient(160deg,rgba(232,247,251,0.88) 0%,rgba(240,249,255,0.82) 50%,rgba(224,242,247,0.90) 100%); } .left-panel::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(6,182,212,0.1) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;} .left-panel::after{content:'';position:absolute;bottom:-200px;left:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,0.12) 0%,transparent 65%);pointer-events:none;} .left-inner{position:relative;z-index:2;} .left-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);display:flex;align-items:center;gap:10px;margin-bottom:24px;} .left-eyebrow::before{content:'';width:24px;height:2px;background:var(--teal);border-radius:2px;} .left-title{font-size:clamp(28px,2.8vw,40px);font-weight:900;color:var(--navy);letter-spacing:-1.5px;line-height:1.15;margin-bottom:16px;} .left-title em{font-style:normal;color:var(--teal);} .left-desc{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:40px;} .left-features{display:flex;flex-direction:column;gap:14px;margin-bottom:48px;} .left-feat{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:rgba(255,255,255,0.75);border:1px solid rgba(6,182,212,0.15);border-radius:14px;transition:all .2s;backdrop-filter:blur(8px);} .left-feat:hover{background:rgba(255,255,255,0.97);box-shadow:0 4px 16px rgba(6,182,212,0.1);transform:translateX(2px);} .left-feat-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(6,182,212,0.12),rgba(37,99,255,0.08));border:1px solid rgba(6,182,212,0.18);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;} .left-feat-body{} .left-feat-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px;} .left-feat-desc{font-size:11px;color:var(--muted);line-height:1.65;} .left-proof{display:flex;gap:0;padding:20px 0 0;border-top:1px solid rgba(6,182,212,0.15);} .proof-item{flex:1;text-align:center;padding:0 8px;border-right:1px solid rgba(6,182,212,0.12);} .proof-item:last-child{border-right:none;} .proof-num{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-1px;line-height:1;} .proof-num em{color:var(--teal);font-style:normal;} .proof-label{font-size:10px;color:var(--muted);font-weight:700;margin-top:3px;} .right-panel-outer{background:#fff;display:flex;justify-content:center;} .right-panel{padding:56px 48px;display:flex;flex-direction:column;width:100%;max-width:520px;} .form-header{margin-bottom:32px;} .form-step-bar{display:flex;gap:0;margin-bottom:28px;} .step-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;} .step-item::after{content:'';position:absolute;top:14px;left:50%;width:100%;height:2px;background:var(--border);z-index:0;} .step-item:last-child::after{display:none;} .step-item.done::after{background:var(--teal);} .step-circle{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--muted);z-index:2;transition:all .3s;} .step-item.active .step-circle{border-color:var(--teal);background:var(--teal);color:#fff;} .step-item.done .step-circle{border-color:var(--teal);background:var(--teal);color:#fff;} .step-label{font-size:10px;font-weight:700;color:var(--muted);} .step-item.active .step-label{color:var(--teal-d);} .step-item.done .step-label{color:var(--teal-d);} .form-title{font-size:22px;font-weight:900;color:var(--navy);letter-spacing:-0.8px;margin-bottom:4px;} .form-sub{font-size:13px;color:var(--muted);} .form-section{margin-bottom:24px;} .form-section-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;} .form-section-label::before{content:'';width:16px;height:2px;background:var(--teal);border-radius:2px;} .field{margin-bottom:16px;} .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;} label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;} label .req{color:var(--teal);margin-left:3px;} label .opt{color:var(--muted);font-weight:400;margin-left:4px;font-size:11px;} input[type=text],input[type=email],input[type=tel],select,textarea{ width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px; font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:var(--text); background:#fff;outline:none;transition:border .2s,box-shadow .2s; -webkit-appearance:none;appearance:none; } input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(6,182,212,0.1);} input.error,select.error,textarea.error{border-color:var(--err);} input::placeholder,textarea::placeholder{color:rgba(100,116,139,0.5);} select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;} textarea{resize:vertical;min-height:88px;line-height:1.7;} .field-hint{font-size:11px;color:var(--muted);margin-top:5px;} .field-error{font-size:11px;color:var(--err);margin-top:5px;display:none;} .field.has-error .field-error{display:block;} .field.has-error input,.field.has-error select,.field.has-error textarea{border-color:var(--err);} .check-group{display:flex;flex-direction:column;gap:8px;} .check-item{display:flex;align-items:flex-start;gap:10px;} .check-item input[type=checkbox]{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);flex-shrink:0;margin-top:1px;accent-color:var(--teal);} .check-item label{font-size:13px;font-weight:400;color:var(--text);margin:0;} .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;} .radio-group{display:flex;gap:10px;flex-wrap:wrap;} .radio-pill{position:relative;} .radio-pill input{position:absolute;opacity:0;width:0;height:0;} .radio-pill label{display:flex;align-items:center;gap:6px;padding:8px 16px;border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:700;color:var(--muted);transition:all .2s;white-space:nowrap;} .radio-pill input:checked + label{border-color:var(--teal);color:var(--teal-d);background:rgba(6,182,212,0.07);} .radio-pill label:hover{border-color:rgba(6,182,212,0.3);color:var(--text);} .btn-back{padding:12px 24px;border-radius:12px;background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:700;transition:all .2s;white-space:nowrap;flex-shrink:0;} .btn-back:hover{border-color:var(--teal);color:var(--teal-d);} .submit-area{margin-top:28px;} .submit-btn{width:100%;padding:15px 0;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;border:none;box-shadow:0 8px 28px rgba(6,182,212,0.38);transition:all .25s;position:relative;overflow:hidden;} .submit-btn:hover{transform:translateY(-1px);box-shadow:0 12px 36px rgba(6,182,212,0.48);} .submit-btn:disabled{opacity:.7;transform:none;} .submit-btn::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:shimmer 1.8s infinite;} @keyframes shimmer{to{left:100%;}} .submit-note{text-align:center;font-size:11px;color:var(--muted);margin-top:12px;line-height:1.7;} .submit-note a{color:var(--teal-d);text-decoration:none;} .success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px;flex:1;} .success-screen.show{display:flex;} .success-icon{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:24px;box-shadow:0 12px 36px rgba(6,182,212,0.32);} .success-title{font-size:24px;font-weight:900;color:var(--navy);letter-spacing:-1px;margin-bottom:12px;} .success-desc{font-size:14px;color:var(--muted);line-height:1.85;max-width:360px;margin-bottom:32px;} .success-next{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;} .success-btn-p{padding:13px 0;border-radius:10px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-size:14px;font-weight:700;text-decoration:none;text-align:center;box-shadow:0 6px 20px rgba(6,182,212,0.3);} .success-btn-s{padding:12px 0;border-radius:10px;border:1.5px solid var(--border);color:var(--muted);font-size:14px;font-weight:700;text-decoration:none;text-align:center;transition:all .2s;} .success-btn-s:hover{border-color:var(--teal);color:var(--teal-d);} .success-timing{background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.15);border-radius:12px;padding:16px 20px;margin-bottom:24px;width:100%;max-width:320px;text-align:left;} .success-timing-title{font-size:11px;font-weight:700;color:var(--teal-d);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;} .success-timing-item{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text);margin-bottom:6px;} .success-timing-item:last-child{margin-bottom:0;} footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;justify-content:space-between;} .footer-logo{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:8px;} .footer-logo-icon{width:20px;height:20px;border-radius:5px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;} .footer-copy{font-size:11px;color:rgba(255,255,255,0.2);} @media(max-width:900px){ .page-wrap{grid-template-columns:1fr;} .right-panel-outer{justify-content:flex-start;} .check-grid{grid-template-columns:1fr!important;} .left-panel{padding:48px 28px;min-height:auto;} .right-panel{padding:32px 20px;} nav{padding:0 20px;} .nav-links{display:none;} footer{padding:20px 24px;flex-direction:column;gap:10px;text-align:center;} } </style> </head> <body> <nav> <a href="index.html" class="nav-logo"><div class="nav-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></a> <ul class="nav-links"> <li><a href="index.html">TOP</a></li> <li><a href="cslink_features_v5.html">機能</a></li> <li><a href="cslink_howto_fixed.html">使い方・事例</a></li> <li><a href="cslink_pricing.html">料金</a></li> <li><a href="cslink_register_client.html">企業向け</a></li> <li><a href="cslink_register_pro.html" class="active">CS人材向け</a></li> </ul> <a href="cslink_list_v2.html" class="nav-login">CS会社を見る</a> <a href="cslink_register_client.html" class="nav-cta">無料で始める</a> </nav> <div class="page-wrap"> <div class="left-panel"> <div class="left-panel-bg"></div> <div class="left-inner"> <div class="left-eyebrow">FOR CS PROFESSIONALS</div> <h1 class="left-title">CSプロとして、<br><em>案件を獲得</em>しよう</h1> <p class="left-desc">登録・掲載は完全無料。facing審査を通過するとCSLINKに掲載され、AIが最適な企業とマッチングします。成約時のみ10%の成功報酬。</p> <div class="left-features"> <div class="left-feat"><div class="left-feat-icon">📩</div><div class="left-feat-body"><div class="left-feat-title">登録後、AIが案件をマッチング</div><div class="left-feat-desc">あなたのスキル・経験をAIが分析し、最適な企業案件を自動提案。営業不要で案件獲得。</div></div></div> <div class="left-feat"><div class="left-feat-icon">💰</div><div class="left-feat-body"><div class="left-feat-title">成約時のみ10%・登録は完全無料</div><div class="left-feat-desc">登録費用・掲載費用・面談費用はすべて0円。成約した際のみ契約額の10%をご負担いただきます。</div></div></div> <div class="left-feat"><div class="left-feat-icon">🛡️</div><div class="left-feat-body"><div class="left-feat-title">facing株式会社が審査・品質保証</div><div class="left-feat-desc">審査通過後、facing監修の「審査済みプロ」として掲載。企業からの信頼度が高まります。</div></div></div> </div> <div class="left-proof"> <div class="proof-item"><div class="proof-num"><em>500</em>社+</div><div class="proof-label">発注企業数</div></div> <div class="proof-item"><div class="proof-num"><em>80</em>万円+</div><div class="proof-label">平均月額単価</div></div> <div class="proof-item"><div class="proof-num"><em>94</em>%</div><div class="proof-label">マッチング満足度</div></div> <div class="proof-item"><div class="proof-num"><em>28</em>秒</div><div class="proof-label">平均マッチング</div></div> </div> </div> </div> <div class="right-panel-outer"> <div class="right-panel"> <div class="form-header"> <div class="form-step-bar"> <div class="step-item active" id="step1-dot"><div class="step-circle">1</div><div class="step-label">プロ情報</div></div> <div class="step-item" id="step2-dot"><div class="step-circle">2</div><div class="step-label">実績・条件</div></div> <div class="step-item" id="step3-dot"><div class="step-circle">3</div><div class="step-label">連絡先</div></div> </div> <div class="form-title" id="formTitle">プロ基本情報を入力</div> <div class="form-sub" id="formSub">まずはあなたの基本情報をお聞かせください</div> </div> <!-- STEP 1 --> <div id="step1"> <div class="form-section"> <div class="form-section-label">基本情報</div> <div class="field-row"> <div class="field" id="f-lastname"><label>姓<span class="req">*</span></label><input type="text" id="lastname" placeholder="山田" autocomplete="family-name"><div class="field-error">姓を入力してください</div></div> <div class="field" id="f-firstname"><label>名<span class="req">*</span></label><input type="text" id="firstname" placeholder="太郎" autocomplete="given-name"><div class="field-error">名を入力してください</div></div> </div> <div class="field" id="f-activity"> <label>活動形態<span class="req">*</span></label> <select id="activity"><option value="">選択してください</option><option>フリーランス（個人）</option><option>副業（会社員）</option><option>CS企業・法人</option><option>その他</option></select> <div class="field-error">活動形態を選択してください</div> </div> <div class="field" id="f-specialty"> <label>専門領域<span class="req">*</span>（複数選択可）</label> <div class="check-grid check-group" id="specialties"> <div class="check-item"><input type="checkbox" id="s1" value="解約防止・チャーン対策"><label for="s1">📉 解約防止・チャーン対策</label></div> <div class="check-item"><input type="checkbox" id="s2" value="LTV向上・アップセル"><label for="s2">📈 LTV向上・アップセル</label></div> <div class="check-item"><input type="checkbox" id="s3" value="オンボーディング設計"><label for="s3">🚀 オンボーディング設計</label></div> <div class="check-item"><input type="checkbox" id="s4" value="CS組織構築・戦略"><label for="s4">🏢 CS組織構築・戦略</label></div> <div class="check-item"><input type="checkbox" id="s5" value="ヘルススコア設計"><label for="s5">💊 ヘルススコア設計</label></div> <div class="check-item"><input type="checkbox" id="s6" value="KPI管理・データ分析"><label for="s6">📊 KPI管理・データ分析</label></div> <div class="check-item"><input type="checkbox" id="s7" value="BPO・CS業務代行"><label for="s7">⚙️ BPO・CS業務代行</label></div> <div class="check-item"><input type="checkbox" id="s8" value="カスタマーサクセス全般"><label for="s8">💬 カスタマーサクセス全般</label></div> </div> <div class="field-error" id="specialty-error">1つ以上選択してください</div> </div> </div> <button class="submit-btn" onclick="goStep2()">次へ → 実績・条件を入力</button> </div> <!-- STEP 2 --> <div id="step2" style="display:none"> <div class="form-section"> <div class="form-section-label">実績・稼働条件</div> <div class="field" id="f-experience"> <label>CS領域の経験年数<span class="req">*</span></label> <select id="experience"><option value="">選択してください</option><option>1年未満</option><option>1〜3年</option><option>3〜5年</option><option>5〜10年</option><option>10年以上</option></select> <div class="field-error">経験年数を選択してください</div> </div> <div class="field" id="f-achievement"> <label>直近の支援実績<span class="req">*</span></label> <textarea id="achievement" placeholder="例：SaaS企業のチャーンレートを6%→2%に改善。オンボーディング設計から定着支援まで一貫してサポート。NPS+30向上。" style="min-height:100px;"></textarea> <div class="field-error">支援実績を入力してください</div> </div> <div class="field"> <label>稼働可能な形態</label> <div class="radio-group"> <div class="radio-pill"><input type="radio" name="worktype" id="w1" value="フルタイム" checked><label for="w1">フルタイム</label></div> <div class="radio-pill"><input type="radio" name="worktype" id="w2" value="週3以上"><label for="w2">週3以上</label></div> <div class="radio-pill"><input type="radio" name="worktype" id="w3" value="週1〜2（副業）"><label for="w3">週1〜2（副業）</label></div> <div class="radio-pill"><input type="radio" name="worktype" id="w4" value="スポット・単発"><label for="w4">スポット・単発</label></div> <div class="radio-pill"><input type="radio" name="worktype" id="w5" value="応相談"><label for="w5">応相談</label></div> </div> </div> <div class="field-row"> <div class="field"><label>稼働可能時期</label><select id="starttime"><option>即日〜</option><option>1ヶ月以内</option><option>1〜3ヶ月以内</option><option>3ヶ月以降</option><option>未定・相談</option></select></div> <div class="field"><label>希望月額単価<span class="opt">任意</span></label><select id="rate"><option value="">選択してください</option><option>〜30万円/月</option><option>30〜50万円/月</option><option>50〜80万円/月</option><option>80〜100万円/月</option><option>100万円〜/月</option><option>要相談</option></select></div> </div> </div> <div style="display:flex;gap:12px;"> <button class="btn-back" onclick="goStep1()">← 戻る</button> <button class="submit-btn" style="flex:1;" onclick="goStep3()">次へ → 連絡先を入力</button> </div> </div> <!-- STEP 3 --> <div id="step3" style="display:none"> <div class="form-section"> <div class="form-section-label">連絡先情報</div> <div class="field" id="f-email"> <label>メールアドレス<span class="req">*</span></label> <input type="email" id="email" placeholder="taro@example.com" autocomplete="email"> <div class="field-hint">審査結果・マッチング案件をこちらに送信します</div> <div class="field-error">正しいメールアドレスを入力してください</div> </div> <div class="field"><label>電話番号<span class="opt">任意</span></label><input type="tel" id="tel" placeholder="090-0000-0000" autocomplete="tel"></div> <div class="field"><label>LinkedIn / ポートフォリオURL<span class="opt">任意</span></label><input type="text" id="url" placeholder="https://linkedin.com/in/yourname" autocomplete="url"></div> <div class="field"><label>自己PR・一言<span class="opt">任意</span></label><textarea id="memo" placeholder="例：SaaS・IT業界でのCSに5年以上特化。チャーン削減の実績多数。フットワーク軽く対応します。…"></textarea></div> <div class="field"> <div class="check-item"><input type="checkbox" id="agree"><label for="agree" style="font-size:12px;"><a href="privacy.html" style="color:var(--teal-d)">プライバシーポリシー</a>および<a href="terms.html" style="color:var(--teal-d)">利用規約</a>に同意します<span class="req">*</span></label></div> <div class="field-error" id="agree-error" style="display:none;">同意が必要です</div> </div> </div> <div style="display:flex;gap:12px;"> <button class="btn-back" onclick="goStep2Back()">← 戻る</button> <button class="submit-btn" style="flex:1;" id="submitBtn" onclick="submitForm()">審査に申し込む ✦</button> </div> <div class="submit-note">送信後、facing担当者が審査し<strong>3営業日以内</strong>にご連絡します。<br><a href="cslink_pricing.html">料金の詳細はこちら</a>｜登録・掲載は完全無料</div> </div> <!-- 完了画面 --> <div class="success-screen" id="successScreen"> <div class="success-icon">✓</div> <div class="success-title">申し込みが完了しました！</div> <p class="success-desc">ご登録ありがとうございます。facing担当者が審査を開始します。審査通過後、CSLINKに掲載されAIが案件をマッチングします。</p> <div class="success-timing"> <div class="success-timing-title">次のステップ</div> <div class="success-timing-item">📋 <strong>今すぐ</strong> — facing担当者が審査開始</div> <div class="success-timing-item">📧 <strong>3営業日以内</strong> — 審査結果をメール通知</div> <div class="success-timing-item">📞 <strong>審査通過後</strong> — CSLINKに掲載・AIマッチング開始</div> <div class="success-timing-item">🤝 <strong>最短1週間</strong> — 案件マッチング・稼働開始</div> </div> <div class="success-next"> <a href="cslink_list_v2.html" class="success-btn-p">CSプロ一覧を見る →</a> <a href="cslink_features_v5.html" class="success-btn-s">CSLINKの機能を見る</a> </div> </div> </div></div> </div> <footer> <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div> <div class="footer-copy">© 2026 facing株式会社. All rights reserved.</div> </footer> <script>
+<!DOCTYPE html>
+<html lang="ja" style="scroll-behavior:smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS人材登録 | CSLINK — あなたのCSスキルを必要とする企業とつながる</title>
+<meta name="description" content="CS経験を活かして活躍したい人材向けの登録フォーム。AIが経歴をスクリーニングし、最適な企業案件とマッチング。登録無料・副業/フルタイム問わず参加可能。">
+<link rel="canonical" href="https://cslink.link/cslink_register_pro.html">
+<meta property="og:title" content="CS人材登録 | CSLINK">
+<meta property="og:description" content="CS経験を活かして活躍したい人材向けの登録フォーム。AIスクリーニング付き。登録無料。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cslink.link/cslink_register_pro.html">
+<meta property="og:image" content="https://cslink.link/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="CSLINK">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CS人材登録 | CSLINK">
+<meta name="twitter:description" content="CS経験を活かして活躍したい人材向けの登録フォーム。AIスクリーニング付き。登録無料。">
+<meta name="twitter:image" content="https://cslink.link/ogp.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#06b6d4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f;
+  --text:#1a2744;--muted:#64748b;--bg:#f8fafc;--bg2:#f0f7fa;
+  --border:rgba(6,182,212,0.15);--blue:#2563ff;
+  --err:#ef4444;--ok:#22c55e;--warn:#f59e0b;
+  --purple:#8b5cf6;--purple-bg:rgba(139,92,246,0.08);--purple-d:#7c3aed;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--navy);}
+.nav-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--navy);}
+.nav-back{font-size:13px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s;}
+.nav-back:hover{color:var(--navy);}
+
+.page-wrap{min-height:100vh;padding-top:64px;display:grid;grid-template-columns:1fr 520px;align-items:stretch;}
+
+.left-panel{
+  background:linear-gradient(160deg,#f5f3ff 0%,#ede9fe 60%,#e0e7ff 100%);
+  border-right:1px solid var(--border);
+  position:relative;overflow:hidden;
+  padding:72px 64px;display:flex;flex-direction:column;justify-content:center;
+}
+.left-panel::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(139,92,246,0.1) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
+.left-panel::after{content:'';position:absolute;bottom:-200px;left:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,0.12) 0%,transparent 65%);pointer-events:none;}
+.left-inner{position:relative;z-index:2;}
+.left-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple-d);display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.left-eyebrow::before{content:'';width:24px;height:2px;background:var(--purple);border-radius:2px;}
+.left-title{font-size:clamp(28px,2.8vw,40px);font-weight:900;color:var(--navy);letter-spacing:-1.5px;line-height:1.15;margin-bottom:16px;}
+.left-title em{font-style:normal;color:var(--purple);}
+.left-desc{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:40px;}
+
+.left-features{display:flex;flex-direction:column;gap:14px;margin-bottom:40px;}
+.left-feat{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:rgba(255,255,255,0.75);border:1px solid rgba(139,92,246,0.15);border-radius:14px;transition:all .2s;backdrop-filter:blur(8px);}
+.left-feat:hover{background:rgba(255,255,255,0.97);box-shadow:0 4px 16px rgba(139,92,246,0.1);transform:translateX(2px);}
+.left-feat-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(37,99,255,0.08));border:1px solid rgba(139,92,246,0.18);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.left-feat-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.left-feat-desc{font-size:11px;color:var(--muted);line-height:1.65;}
+
+.left-proof{display:flex;gap:0;padding:20px 0 0;border-top:1px solid rgba(139,92,246,0.15);}
+.proof-item{flex:1;text-align:center;padding:0 8px;border-right:1px solid rgba(139,92,246,0.12);}
+.proof-item:last-child{border-right:none;}
+.proof-num{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-1px;line-height:1;}
+.proof-num em{color:var(--purple);font-style:normal;}
+.proof-label{font-size:10px;color:var(--muted);font-weight:700;margin-top:3px;}
+
+.right-panel-outer{background:#fff;display:flex;justify-content:center;}
+.right-panel{padding:56px 48px;display:flex;flex-direction:column;width:100%;max-width:560px;}
+.form-header{margin-bottom:32px;}
+.form-step-bar{display:flex;gap:0;margin-bottom:28px;}
+.step-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
+.step-item::after{content:'';position:absolute;top:14px;left:50%;width:100%;height:2px;background:var(--border);z-index:0;}
+.step-item:last-child::after{display:none;}
+.step-item.done::after{background:var(--purple);}
+.step-circle{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--muted);z-index:2;transition:all .3s;}
+.step-item.active .step-circle{border-color:var(--purple);background:var(--purple);color:#fff;}
+.step-item.done .step-circle{border-color:var(--purple);background:var(--purple);color:#fff;}
+.step-label{font-size:10px;font-weight:700;color:var(--muted);text-align:center;}
+.step-item.active .step-label{color:var(--purple);}
+.step-item.done .step-label{color:var(--purple);}
+
+.form-title{font-size:22px;font-weight:900;color:var(--navy);letter-spacing:-0.8px;margin-bottom:4px;}
+.form-sub{font-size:13px;color:var(--muted);}
+
+.form-section{margin-bottom:24px;}
+.form-section-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.form-section-label::before{content:'';width:16px;height:2px;background:var(--purple);border-radius:2px;}
+
+.field{margin-bottom:16px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
+label .req{color:var(--purple);margin-left:3px;}
+label .opt{color:var(--muted);font-weight:400;margin-left:4px;font-size:11px;}
+
+input[type=text],input[type=email],input[type=tel],input[type=number],input[type=url],select,textarea{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:var(--text);
+  background:#fff;outline:none;transition:border .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,0.1);}
+input::placeholder,textarea::placeholder{color:rgba(100,116,139,0.5);}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+textarea{resize:vertical;min-height:100px;line-height:1.7;}
+.field-hint{font-size:11px;color:var(--muted);margin-top:5px;}
+.field-error{font-size:11px;color:var(--err);margin-top:5px;display:none;}
+.field.has-error .field-error{display:block;}
+.field.has-error input,.field.has-error select,.field.has-error textarea{border-color:var(--err);}
+.char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:5px;}
+.char-count.low{color:var(--warn);}
+.char-count.ok{color:var(--ok);}
+
+.check-group{display:flex;flex-direction:column;gap:8px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;}
+.check-item input[type=checkbox]{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);flex-shrink:0;margin-top:1px;accent-color:var(--purple);}
+.check-item label{font-size:13px;font-weight:400;color:var(--text);margin:0;}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+.radio-group{display:flex;gap:10px;flex-wrap:wrap;}
+.radio-pill{position:relative;}
+.radio-pill input{position:absolute;opacity:0;width:0;height:0;}
+.radio-pill label{display:flex;align-items:center;gap:6px;padding:8px 16px;border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:700;color:var(--muted);transition:all .2s;white-space:nowrap;cursor:pointer;}
+.radio-pill input:checked + label{border-color:var(--purple);color:var(--purple);background:var(--purple-bg);}
+.radio-pill label:hover{border-color:rgba(139,92,246,0.3);color:var(--text);}
+
+.btn-back{padding:12px 24px;border-radius:12px;background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:700;transition:all .2s;white-space:nowrap;flex-shrink:0;cursor:pointer;}
+.btn-back:hover{border-color:var(--purple);color:var(--purple);}
+.submit-area{margin-top:28px;}
+.submit-btn{
+  width:100%;padding:15px 24px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--purple),#6366f1);color:#fff;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:transform .15s,box-shadow .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(139,92,246,0.35);}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.submit-note{font-size:11px;color:var(--muted);text-align:center;margin-top:14px;line-height:1.7;}
+.submit-note a{color:var(--purple);text-decoration:none;}
+
+.screening-screen{display:none;}
+.screening-screen.show{display:block;animation:fadeInUp .5s ease;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+.screening-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;
+  font-size:12px;font-weight:700;margin-bottom:20px;
+}
+.screening-badge.pass{background:rgba(34,197,94,0.1);color:#15803d;border:1.5px solid rgba(34,197,94,0.3);}
+.screening-badge.review{background:rgba(245,158,11,0.1);color:#b45309;border:1.5px solid rgba(245,158,11,0.3);}
+.screening-badge.hold{background:rgba(239,68,68,0.1);color:#b91c1c;border:1.5px solid rgba(239,68,68,0.3);}
+
+.screening-score{
+  background:linear-gradient(135deg,#f5f3ff,#ede9fe);
+  border:1.5px solid rgba(139,92,246,0.2);border-radius:18px;
+  padding:24px;margin-bottom:24px;
+}
+.screening-score-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.screening-score-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+.screening-score-value{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:800;color:var(--purple);letter-spacing:-1px;}
+.screening-score-value em{font-style:normal;font-size:18px;color:var(--muted);font-weight:500;}
+.screening-bar{height:8px;background:rgba(139,92,246,0.15);border-radius:100px;overflow:hidden;margin-bottom:16px;}
+.screening-bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),#6366f1);border-radius:100px;width:0%;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.screening-comment{font-size:14px;color:var(--text);line-height:1.8;}
+
+.screening-next{
+  background:#f8fafc;border-radius:14px;padding:20px;margin-bottom:24px;
+  border:1px solid var(--border);
+}
+.screening-next-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.screening-next-item{font-size:13px;color:var(--text);padding:6px 0;display:flex;align-items:flex-start;gap:10px;line-height:1.6;}
+.screening-next-item::before{content:'→';color:var(--purple);font-weight:700;flex-shrink:0;}
+
+.screening-actions{display:flex;gap:12px;}
+.screening-actions a{
+  flex:1;padding:14px;border-radius:12px;text-align:center;
+  text-decoration:none;font-size:13px;font-weight:700;transition:all .2s;
+}
+.screening-btn-p{background:var(--purple);color:#fff;}
+.screening-btn-p:hover{background:var(--purple-d);box-shadow:0 6px 16px rgba(139,92,246,0.3);}
+.screening-btn-s{background:none;border:1.5px solid var(--border);color:var(--muted);}
+.screening-btn-s:hover{border-color:var(--purple);color:var(--purple);}
+
+.ai-loading{text-align:center;padding:60px 20px;}
+.ai-loading-icon{
+  width:64px;height:64px;margin:0 auto 20px;
+  border:3px solid rgba(139,92,246,0.15);border-top-color:var(--purple);
+  border-radius:50%;animation:spin 0.9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ai-loading-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.ai-loading-sub{font-size:13px;color:var(--muted);}
+
+footer{background:#fff;border-top:1px solid var(--border);padding:32px 56px;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px;}
+.footer-logo-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;}
+.footer-copy{font-size:11px;color:var(--muted);}
+
+@media(max-width:900px){
+  .page-wrap{grid-template-columns:1fr;}
+  .left-panel{padding:48px 32px 32px;}
+  .right-panel{padding:32px 24px;}
+  nav{padding:0 24px;}
+  footer{padding:24px;flex-direction:column;gap:12px;text-align:center;}
+  .field-row{grid-template-columns:1fr;}
+  .check-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></a>
+  <ul class="nav-links" style="display:flex;">
+    <li><a href="cslink_features_v5.html">サービス</a></li>
+    <li><a href="cslink_list_v2.html">CSプロ一覧</a></li>
+    <li><a href="cslink_pricing.html">料金</a></li>
+  </ul>
+  <a href="index.html" class="nav-back">← トップへ戻る</a>
+</nav>
+
+<div class="page-wrap">
+  <div class="left-panel">
+    <div class="left-inner">
+      <div class="left-eyebrow"><span>FOR CS PROFESSIONALS</span></div>
+      <h1 class="left-title">あなたのCSスキル、<br><em>必要としている企業</em>があります。</h1>
+      <p class="left-desc">
+        CS経験を活かしてもっと活躍したい。そんな想いを持つCS人材を、AIが最適な企業とマッチング。副業・フルタイム・スポット、あなたの希望に合わせて案件をご紹介します。
+      </p>
+
+      <div class="left-features">
+        <div class="left-feat">
+          <div class="left-feat-icon">🤖</div>
+          <div class="left-feat-body">
+            <div class="left-feat-title">AIスクリーニングで最適マッチ</div>
+            <div class="left-feat-desc">経歴と得意領域をAIが分析。あなたに合う案件だけを厳選してご紹介します。</div>
+          </div>
+        </div>
+        <div class="left-feat">
+          <div class="left-feat-icon">💰</div>
+          <div class="left-feat-body">
+            <div class="left-feat-title">登録無料・案件紹介も無料</div>
+            <div class="left-feat-desc">成約まで費用は一切かかりません。成約時のみ契約額の一定率を手数料として頂戴。</div>
+          </div>
+        </div>
+        <div class="left-feat">
+          <div class="left-feat-icon">⚡</div>
+          <div class="left-feat-body">
+            <div class="left-feat-title">最短1週間で稼働開始</div>
+            <div class="left-feat-desc">登録→AIスクリーニング→面談→マッチング。最短1週間で新しい案件に取り組めます。</div>
+          </div>
+        </div>
+        <div class="left-feat">
+          <div class="left-feat-icon">🛡️</div>
+          <div class="left-feat-body">
+            <div class="left-feat-title">facing監修による信頼性</div>
+            <div class="left-feat-desc">facing株式会社が事務局として間に入り、トラブル時もサポート。安心して活動できます。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="left-proof">
+        <div class="proof-item"><div class="proof-num"><em>24</em>h</div><div class="proof-label">初回連絡</div></div>
+        <div class="proof-item"><div class="proof-num"><em>3</em>種</div><div class="proof-label">稼働形態</div></div>
+        <div class="proof-item"><div class="proof-num"><em>AI</em></div><div class="proof-label">スクリーニング</div></div>
+        <div class="proof-item"><div class="proof-num"><em>0</em>円</div><div class="proof-label">登録・紹介</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel-outer">
+  <div class="right-panel">
+
+    <div class="form-header">
+      <div class="form-step-bar">
+        <div class="step-item active" id="step1-dot"><div class="step-circle">1</div><div class="step-label">基本情報</div></div>
+        <div class="step-item" id="step2-dot"><div class="step-circle">2</div><div class="step-label">経歴・専門性</div></div>
+        <div class="step-item" id="step3-dot"><div class="step-circle">3</div><div class="step-label">稼働条件</div></div>
+        <div class="step-item" id="step4-dot"><div class="step-circle">✓</div><div class="step-label">AI判定</div></div>
+      </div>
+      <div class="form-title" id="formTitle">基本情報を入力</div>
+      <div class="form-sub" id="formSub">まずは連絡先をお聞かせください</div>
+    </div>
+
+    <!-- STEP 1：基本情報 -->
+    <div id="step1">
+      <div class="form-section">
+        <div class="form-section-label">連絡先</div>
+        <div class="field-row">
+          <div class="field" id="f-lastname">
+            <label>姓<span class="req">*</span></label>
+            <input type="text" id="lastname" placeholder="山田" autocomplete="family-name">
+            <div class="field-error">姓を入力してください</div>
+          </div>
+          <div class="field" id="f-firstname">
+            <label>名<span class="req">*</span></label>
+            <input type="text" id="firstname" placeholder="太郎" autocomplete="given-name">
+            <div class="field-error">名を入力してください</div>
+          </div>
+        </div>
+        <div class="field" id="f-email">
+          <label>メールアドレス<span class="req">*</span></label>
+          <input type="email" id="email" placeholder="taro@example.com" autocomplete="email">
+          <div class="field-hint">案件紹介などのご連絡はこちらに送信します</div>
+          <div class="field-error">正しいメールアドレスを入力してください</div>
+        </div>
+        <div class="field">
+          <label>電話番号<span class="opt">任意</span></label>
+          <input type="tel" id="tel" placeholder="090-0000-0000" autocomplete="tel">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-label">所属・肩書き</div>
+        <div class="field" id="f-affiliation">
+          <label>現在の活動形態<span class="req">*</span></label>
+          <div class="radio-group">
+            <div class="radio-pill"><input type="radio" name="affiliation" id="aff1" value="フリーランス・個人事業主"><label for="aff1">フリーランス</label></div>
+            <div class="radio-pill"><input type="radio" name="affiliation" id="aff2" value="法人代表"><label for="aff2">法人代表</label></div>
+            <div class="radio-pill"><input type="radio" name="affiliation" id="aff3" value="副業・兼業"><label for="aff3">副業・兼業</label></div>
+            <div class="radio-pill"><input type="radio" name="affiliation" id="aff4" value="会社員（独立予定）"><label for="aff4">会社員（独立予定）</label></div>
+            <div class="radio-pill"><input type="radio" name="affiliation" id="aff5" value="その他"><label for="aff5">その他</label></div>
+          </div>
+          <div class="field-error" id="affiliation-error" style="display:none;">選択してください</div>
+        </div>
+        <div class="field">
+          <label>屋号・会社名<span class="opt">任意</span></label>
+          <input type="text" id="company_name" placeholder="例：〇〇CSコンサルティング、株式会社サンプル">
+          <div class="field-hint">個人の場合は空欄で結構です</div>
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="goStep2()">次へ → 経歴を入力</button>
+    </div>
+
+    <!-- STEP 2：経歴・専門性 -->
+    <div id="step2" style="display:none">
+      <div class="form-section">
+        <div class="form-section-label">CS経験</div>
+        <div class="field-row">
+          <div class="field" id="f-experience">
+            <label>CS経験年数<span class="req">*</span></label>
+            <select id="experience">
+              <option value="">選択してください</option>
+              <option>1年未満</option>
+              <option>1〜3年</option>
+              <option>3〜5年</option>
+              <option>5〜10年</option>
+              <option>10年以上</option>
+            </select>
+            <div class="field-error">経験年数を選択してください</div>
+          </div>
+          <div class="field" id="f-role">
+            <label>直近の役職<span class="req">*</span></label>
+            <select id="role">
+              <option value="">選択してください</option>
+              <option>CS担当・メンバー</option>
+              <option>CSリーダー</option>
+              <option>CSマネージャー</option>
+              <option>CS責任者（部長・VP）</option>
+              <option>CEO・役員</option>
+              <option>コンサルタント</option>
+              <option>その他</option>
+            </select>
+            <div class="field-error">役職を選択してください</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-label">専門分野</div>
+        <div class="field" id="f-industries">
+          <label>経験のある業界<span class="req">*</span>（複数選択可）</label>
+          <div class="check-grid check-group" id="industries">
+            <div class="check-item"><input type="checkbox" id="i1" value="SaaS"><label for="i1">💻 SaaS・クラウド</label></div>
+            <div class="check-item"><input type="checkbox" id="i2" value="Eコマース"><label for="i2">🛒 Eコマース・小売</label></div>
+            <div class="check-item"><input type="checkbox" id="i3" value="フィンテック"><label for="i3">💳 金融・フィンテック</label></div>
+            <div class="check-item"><input type="checkbox" id="i4" value="HR・教育"><label for="i4">🎓 HR・人材・教育</label></div>
+            <div class="check-item"><input type="checkbox" id="i5" value="ヘルスケア"><label for="i5">🏥 医療・ヘルスケア</label></div>
+            <div class="check-item"><input type="checkbox" id="i6" value="製造業"><label for="i6">🏭 製造・メーカー</label></div>
+            <div class="check-item"><input type="checkbox" id="i7" value="マーケティング"><label for="i7">📣 広告・マーケティング</label></div>
+            <div class="check-item"><input type="checkbox" id="i8" value="その他業界"><label for="i8">💬 その他</label></div>
+          </div>
+          <div class="field-error" id="industries-error">1つ以上選択してください</div>
+        </div>
+        <div class="field" id="f-specialties">
+          <label>得意なCS領域<span class="req">*</span>（複数選択可）</label>
+          <div class="check-grid check-group" id="specialties">
+            <div class="check-item"><input type="checkbox" id="s1" value="解約率改善"><label for="s1">📉 解約率改善</label></div>
+            <div class="check-item"><input type="checkbox" id="s2" value="LTV向上"><label for="s2">📈 LTV・アップセル</label></div>
+            <div class="check-item"><input type="checkbox" id="s3" value="オンボーディング設計"><label for="s3">🚀 オンボーディング設計</label></div>
+            <div class="check-item"><input type="checkbox" id="s4" value="CS組織構築"><label for="s4">🏢 CS組織構築</label></div>
+            <div class="check-item"><input type="checkbox" id="s5" value="ヘルススコア設計"><label for="s5">💊 ヘルススコア設計</label></div>
+            <div class="check-item"><input type="checkbox" id="s6" value="CS採用・育成"><label for="s6">👥 CS採用・育成</label></div>
+            <div class="check-item"><input type="checkbox" id="s7" value="KPI設計・分析"><label for="s7">📊 KPI設計・分析</label></div>
+            <div class="check-item"><input type="checkbox" id="s8" value="ツール運用"><label for="s8">🛠️ CSツール運用</label></div>
+          </div>
+          <div class="field-error" id="specialties-error">1つ以上選択してください</div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-label">実績・自己PR <span style="color:var(--purple);font-weight:700;text-transform:none;letter-spacing:normal;">（AIが分析します）</span></div>
+        <div class="field" id="f-achievement">
+          <label>最大の成果・具体的な実績<span class="req">*</span></label>
+          <textarea id="achievement" placeholder="例：SaaS企業で月次解約率を3.2%→1.1%に改善。オンボーディング設計からKPIモニタリングまで一貫して担当し、年間で約8,000万円のLTV向上に貢献した。"></textarea>
+          <div class="char-count" id="achievement-count">0 / 推奨 100文字以上</div>
+          <div class="field-error">実績を具体的に記入してください（50文字以上）</div>
+        </div>
+        <div class="field" id="f-pr">
+          <label>自己PR・強み<span class="req">*</span></label>
+          <textarea id="pr" placeholder="例：BtoB SaaSのエンタープライズ領域でのCS経験が豊富。特に大手企業向けのアカウント戦略設計とカスタマージャーニー設計に強みがあります。英語対応可。"></textarea>
+          <div class="char-count" id="pr-count">0 / 推奨 150文字以上</div>
+          <div class="field-error">自己PRを記入してください（50文字以上）</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;">
+        <button class="btn-back" onclick="goStep1()">← 戻る</button>
+        <button class="submit-btn" style="flex:1;" onclick="goStep3()">次へ → 稼働条件</button>
+      </div>
+    </div>
+
+    <!-- STEP 3：稼働条件 -->
+    <div id="step3" style="display:none">
+      <div class="form-section">
+        <div class="form-section-label">稼働形態・報酬</div>
+        <div class="field" id="f-worktype">
+          <label>希望する稼働形態<span class="req">*</span>（複数選択可）</label>
+          <div class="check-grid check-group" id="worktypes">
+            <div class="check-item"><input type="checkbox" id="w1" value="フルタイム"><label for="w1">💼 フルタイム</label></div>
+            <div class="check-item"><input type="checkbox" id="w2" value="週3〜4"><label for="w2">📆 週3〜4日</label></div>
+            <div class="check-item"><input type="checkbox" id="w3" value="週1〜2（副業）"><label for="w3">🌙 週1〜2（副業）</label></div>
+            <div class="check-item"><input type="checkbox" id="w4" value="スポット・単発"><label for="w4">⚡ スポット・単発</label></div>
+          </div>
+          <div class="field-error" id="worktype-error">1つ以上選択してください</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field" id="f-rate">
+            <label>希望報酬（月額換算）<span class="req">*</span></label>
+            <select id="rate">
+              <option value="">選択してください</option>
+              <option>〜30万円/月</option>
+              <option>30〜50万円/月</option>
+              <option>50〜80万円/月</option>
+              <option>80〜120万円/月</option>
+              <option>120万円〜/月</option>
+              <option>時給制を希望</option>
+              <option>応相談</option>
+            </select>
+            <div class="field-error">希望報酬を選択してください</div>
+          </div>
+          <div class="field">
+            <label>時給単価<span class="opt">任意</span></label>
+            <input type="text" id="hourly" placeholder="例：8,000円">
+            <div class="field-hint">時給制を希望の場合</div>
+          </div>
+        </div>
+
+        <div class="field" id="f-availability">
+          <label>稼働開始時期<span class="req">*</span></label>
+          <select id="availability">
+            <option value="">選択してください</option>
+            <option>すぐに（即日〜1週間）</option>
+            <option>1ヶ月以内</option>
+            <option>1〜3ヶ月以内</option>
+            <option>3ヶ月以降</option>
+            <option>良い案件があれば検討</option>
+          </select>
+          <div class="field-error">稼働開始時期を選択してください</div>
+        </div>
+
+        <div class="field">
+          <label>勤務場所の希望</label>
+          <div class="radio-group">
+            <div class="radio-pill"><input type="radio" name="location" id="l1" value="フルリモート" checked><label for="l1">フルリモート希望</label></div>
+            <div class="radio-pill"><input type="radio" name="location" id="l2" value="ハイブリッド"><label for="l2">ハイブリッド可</label></div>
+            <div class="radio-pill"><input type="radio" name="location" id="l3" value="出社可"><label for="l3">出社可（関東）</label></div>
+            <div class="radio-pill"><input type="radio" name="location" id="l4" value="出社可（地方）"><label for="l4">出社可（地方含む）</label></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-label">補足情報</div>
+        <div class="field">
+          <label>ポートフォリオ・LinkedIn URL<span class="opt">任意</span></label>
+          <input type="url" id="portfolio" placeholder="https://linkedin.com/in/yourname">
+          <div class="field-hint">ご自身の実績が分かるリンクがあれば</div>
+        </div>
+        <div class="field">
+          <label>その他希望・質問<span class="opt">任意</span></label>
+          <textarea id="memo" placeholder="参画したい業界や避けたい企業規模、気になる点などあればご記入ください"></textarea>
+        </div>
+        <div class="field">
+          <div class="check-item">
+            <input type="checkbox" id="agree">
+            <label for="agree" style="font-size:12px;">
+              <a href="privacy.html" style="color:var(--purple)">プライバシーポリシー</a>および<a href="terms.html" style="color:var(--purple)">利用規約</a>に同意します<span class="req">*</span>
+            </label>
+          </div>
+          <div class="field-error" id="agree-error" style="display:none;">同意が必要です</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;">
+        <button class="btn-back" onclick="goStep2Back()">← 戻る</button>
+        <button class="submit-btn" style="flex:1;" id="submitBtn" onclick="submitScreening()">
+          <span>AIスクリーニングを開始する</span>
+          <span style="font-size:16px;">✦</span>
+        </button>
+      </div>
+      <div class="submit-note">
+        送信後、AIが経歴を分析し最適な案件マッチング可能性を判定します。<br>
+        <strong>24時間以内</strong>にfacing担当者よりご連絡します。
+      </div>
+    </div>
+
+    <!-- STEP 4：AI分析中 -->
+    <div id="step4-loading" style="display:none">
+      <div class="ai-loading">
+        <div class="ai-loading-icon"></div>
+        <div class="ai-loading-title">AIが経歴を分析中…</div>
+        <div class="ai-loading-sub" id="loadingStatus">プロフィールを読み取っています</div>
+      </div>
+    </div>
+
+    <!-- STEP 4：AIスクリーニング結果 -->
+    <div class="screening-screen" id="screeningResult">
+      <div id="screeningBadge" class="screening-badge pass">
+        <span id="badgeIcon">✓</span>
+        <span id="badgeText">マッチング可能</span>
+      </div>
+
+      <div class="screening-score">
+        <div class="screening-score-header">
+          <div class="screening-score-label">AI評価スコア</div>
+          <div class="screening-score-value"><span id="scoreValue">0</span><em>/100</em></div>
+        </div>
+        <div class="screening-bar">
+          <div class="screening-bar-fill" id="scoreBar"></div>
+        </div>
+        <div class="screening-comment" id="screeningComment">
+          分析中…
+        </div>
+      </div>
+
+      <div class="screening-next" id="screeningNext">
+        <div class="screening-next-title">📋 次のステップ</div>
+        <div id="nextItems"></div>
+      </div>
+
+      <div class="screening-actions">
+        <a href="index.html" class="screening-btn-s">トップへ戻る</a>
+        <a href="cslink_list_v2.html" class="screening-btn-p">CSプロ一覧を見る →</a>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div>
+  <div class="footer-copy">© 2026 facing株式会社. All rights reserved.</div>
+</footer>
+
+<script>
+const WORKER_URL = 'https://cslink-ai-proxy.kawasaki-be9.workers.dev';
+
 function setStep(n){
-  [1,2,3].forEach(i=>{
-    document.getElementById('step'+i).style.display = i===n?'block':'none';
+  ['step1','step2','step3','step4-loading'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+  document.getElementById('screeningResult').classList.remove('show');
+  if(n <= 3){
+    document.getElementById('step'+n).style.display = 'block';
+  }
+  [1,2,3,4].forEach(i=>{
     const dot = document.getElementById('step'+i+'-dot');
     dot.classList.remove('active','done');
     if(i===n) dot.classList.add('active');
     if(i<n) dot.classList.add('done');
   });
-  const titles = ['プロ基本情報を入力','実績・稼働条件を入力','連絡先を入力'];
-  const subs = ['まずはあなたの基本情報をお聞かせください','CS領域での実績と稼働条件を教えてください','審査結果をお送りするメールアドレスをご入力ください'];
+  const titles = ['基本情報を入力','経歴・専門性を入力','稼働条件を入力','AI分析結果'];
+  const subs = [
+    'まずは連絡先をお聞かせください',
+    'あなたのCS経験と強みを教えてください',
+    'どのような働き方をご希望ですか？',
+    'あなたのプロフィールをAIが分析しました'
+  ];
   document.getElementById('formTitle').textContent = titles[n-1];
   document.getElementById('formSub').textContent = subs[n-1];
   window.scrollTo({top:0,behavior:'smooth'});
@@ -16,167 +611,234 @@ function setStep(n){
 
 function validate1(){
   let ok = true;
-  if(!document.getElementById('lastname').value.trim()){
-    document.getElementById('f-lastname').classList.add('has-error'); ok=false;
-  } else document.getElementById('f-lastname').classList.remove('has-error');
-  if(!document.getElementById('firstname').value.trim()){
-    document.getElementById('f-firstname').classList.add('has-error'); ok=false;
-  } else document.getElementById('f-firstname').classList.remove('has-error');
-  if(!document.getElementById('activity').value){
-    document.getElementById('f-activity').classList.add('has-error'); ok=false;
-  } else document.getElementById('f-activity').classList.remove('has-error');
-  const checked = document.querySelectorAll('#specialties input:checked');
-  if(checked.length===0){
-    document.getElementById('f-specialty').classList.add('has-error');
-    document.getElementById('specialty-error').style.display='block'; ok=false;
-  } else {
-    document.getElementById('f-specialty').classList.remove('has-error');
-    document.getElementById('specialty-error').style.display='none';
-  }
+  ['lastname','firstname'].forEach(id=>{
+    const v = document.getElementById(id).value.trim();
+    const c = document.getElementById('f-'+id);
+    if(!v){ c.classList.add('has-error'); ok=false; } else c.classList.remove('has-error');
+  });
+  const email = document.getElementById('email').value.trim();
+  const fe = document.getElementById('f-email');
+  if(!email || !email.includes('@') || !email.includes('.')){ fe.classList.add('has-error'); ok=false; } else fe.classList.remove('has-error');
+  const aff = document.querySelector('input[name=affiliation]:checked');
+  if(!aff){ document.getElementById('affiliation-error').style.display='block'; ok=false; } else document.getElementById('affiliation-error').style.display='none';
   return ok;
 }
 
 function validate2(){
   let ok = true;
-  if(!document.getElementById('experience').value){
-    document.getElementById('f-experience').classList.add('has-error'); ok=false;
-  } else document.getElementById('f-experience').classList.remove('has-error');
-  if(!document.getElementById('achievement').value.trim()){
+  const exp = document.getElementById('experience').value;
+  if(!exp){ document.getElementById('f-experience').classList.add('has-error'); ok=false; } else document.getElementById('f-experience').classList.remove('has-error');
+  const role = document.getElementById('role').value;
+  if(!role){ document.getElementById('f-role').classList.add('has-error'); ok=false; } else document.getElementById('f-role').classList.remove('has-error');
+  if(document.querySelectorAll('#industries input:checked').length===0){
+    document.getElementById('f-industries').classList.add('has-error'); ok=false;
+  } else document.getElementById('f-industries').classList.remove('has-error');
+  if(document.querySelectorAll('#specialties input:checked').length===0){
+    document.getElementById('f-specialties').classList.add('has-error'); ok=false;
+  } else document.getElementById('f-specialties').classList.remove('has-error');
+  if(document.getElementById('achievement').value.trim().length < 50){
     document.getElementById('f-achievement').classList.add('has-error'); ok=false;
   } else document.getElementById('f-achievement').classList.remove('has-error');
+  if(document.getElementById('pr').value.trim().length < 50){
+    document.getElementById('f-pr').classList.add('has-error'); ok=false;
+  } else document.getElementById('f-pr').classList.remove('has-error');
   return ok;
 }
 
 function validate3(){
   let ok = true;
-  const email = document.getElementById('email').value.trim();
-  if(!email || !email.includes('@') || !email.includes('.')){
-    document.getElementById('f-email').classList.add('has-error'); ok=false;
-  } else document.getElementById('f-email').classList.remove('has-error');
+  if(document.querySelectorAll('#worktypes input:checked').length===0){
+    document.getElementById('f-worktype').classList.add('has-error'); ok=false;
+  } else document.getElementById('f-worktype').classList.remove('has-error');
+  if(!document.getElementById('rate').value){
+    document.getElementById('f-rate').classList.add('has-error'); ok=false;
+  } else document.getElementById('f-rate').classList.remove('has-error');
+  if(!document.getElementById('availability').value){
+    document.getElementById('f-availability').classList.add('has-error'); ok=false;
+  } else document.getElementById('f-availability').classList.remove('has-error');
   if(!document.getElementById('agree').checked){
     document.getElementById('agree-error').style.display='block'; ok=false;
   } else document.getElementById('agree-error').style.display='none';
   return ok;
 }
 
+function goStep1(){ setStep(1); }
 function goStep2(){ if(validate1()) setStep(2); }
 function goStep3(){ if(validate2()) setStep(3); }
-function goStep1(){ setStep(1); }
 function goStep2Back(){ setStep(2); }
 
-async function submitForm(){
-  if(!validate3()) return;
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = '送信中… ✦';
+function setupCounter(inputId, countId, recommend){
+  const input = document.getElementById(inputId);
+  const count = document.getElementById(countId);
+  input.addEventListener('input', ()=>{
+    const len = input.value.trim().length;
+    count.textContent = `${len} / 推奨 ${recommend}文字以上`;
+    count.classList.remove('low','ok');
+    if(len >= recommend) count.classList.add('ok');
+    else if(len > 0) count.classList.add('low');
+  });
+}
+setupCounter('achievement', 'achievement-count', 100);
+setupCounter('pr', 'pr-count', 150);
 
-  const specialties = [...document.querySelectorAll('#specialties input:checked')].map(c=>c.value).join('、');
-  const worktype = document.querySelector('input[name=worktype]:checked')?.value || '';
-  const data = {
-    type: 'pro',
-    name: document.getElementById('lastname').value + ' ' + document.getElementById('firstname').value,
-    activity: document.getElementById('activity').value,
-    specialties,
+function collectFormData(){
+  const industries = [...document.querySelectorAll('#industries input:checked')].map(c=>c.value);
+  const specialties = [...document.querySelectorAll('#specialties input:checked')].map(c=>c.value);
+  const worktypes = [...document.querySelectorAll('#worktypes input:checked')].map(c=>c.value);
+  return {
+    last_name: document.getElementById('lastname').value.trim(),
+    first_name: document.getElementById('firstname').value.trim(),
+    name: document.getElementById('lastname').value.trim() + ' ' + document.getElementById('firstname').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    tel: document.getElementById('tel').value.trim(),
+    affiliation: document.querySelector('input[name=affiliation]:checked')?.value || '',
+    company_name: document.getElementById('company_name').value.trim(),
     experience: document.getElementById('experience').value,
-    achievement: document.getElementById('achievement').value,
-    worktype,
-    starttime: document.getElementById('starttime').value,
+    role: document.getElementById('role').value,
+    industries: industries.join('、'),
+    specialties: specialties.join('、'),
+    achievement: document.getElementById('achievement').value.trim(),
+    pr: document.getElementById('pr').value.trim(),
+    worktypes: worktypes.join('、'),
     rate: document.getElementById('rate').value,
-    email: document.getElementById('email').value,
-    tel: document.getElementById('tel').value,
-    url: document.getElementById('url').value,
-    memo: document.getElementById('memo').value,
+    hourly: document.getElementById('hourly').value.trim(),
+    availability: document.getElementById('availability').value,
+    location: document.querySelector('input[name=location]:checked')?.value || 'フルリモート',
+    portfolio: document.getElementById('portfolio').value.trim(),
+    memo: document.getElementById('memo').value.trim(),
     submitted_at: new Date().toLocaleString('ja-JP'),
     source: 'CSLINKプロ登録フォーム'
   };
+}
 
-  // facing社への通知（Cloudflare Workers経由）
+function cycleLoadingStatus(){
+  const msgs = [
+    'プロフィールを読み取っています…',
+    '経験と強みを分析中…',
+    '案件マッチングの可能性を評価中…',
+    '最終スコアを算出しています…'
+  ];
+  let i = 0;
+  const el = document.getElementById('loadingStatus');
+  return setInterval(()=>{
+    i = (i+1) % msgs.length;
+    if(el) el.textContent = msgs[i];
+  }, 1600);
+}
+
+async function submitScreening(){
+  if(!validate3()) return;
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+
+  document.getElementById('step3').style.display = 'none';
+  document.getElementById('step4-loading').style.display = 'block';
+  document.getElementById('formTitle').textContent = 'AI分析中…';
+  document.getElementById('formSub').textContent = 'あなたの経歴から最適な案件を判定しています';
+  [1,2,3].forEach(i=>{
+    document.getElementById('step'+i+'-dot').classList.remove('active');
+    document.getElementById('step'+i+'-dot').classList.add('done');
+  });
+  document.getElementById('step4-dot').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const loadingInterval = cycleLoadingStatus();
+  const data = collectFormData();
+
   try {
-    await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev/register', {
+    const res = await fetch(`${WORKER_URL}/screen`, {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(data)
+      headers: {'Content-Type':'text/plain'},
+      body: JSON.stringify(data),
+      redirect: 'follow'
     });
+    const result = await res.json();
+    clearInterval(loadingInterval);
+    showScreeningResult(result);
   } catch(e) {
-    console.log('通知エラー:', e);
+    console.error('Screening error:', e);
+    clearInterval(loadingInterval);
+    showScreeningResult({
+      status: 'review',
+      score: 65,
+      comment: 'ご登録ありがとうございます。担当者がプロフィールを確認し、24時間以内にご連絡します。',
+      next_steps: [
+        'facing担当者より24時間以内にメールでご連絡',
+        '初回カジュアル面談（30分・オンライン）',
+        'マッチする案件のご紹介'
+      ]
+    });
+  }
+}
+
+function showScreeningResult(result){
+  document.getElementById('step4-loading').style.display = 'none';
+  document.getElementById('formTitle').textContent = 'AI分析完了 🎉';
+  document.getElementById('formSub').textContent = 'あなたのプロフィールの評価結果です';
+
+  const badge = document.getElementById('screeningBadge');
+  const badgeIcon = document.getElementById('badgeIcon');
+  const badgeText = document.getElementById('badgeText');
+
+  badge.classList.remove('pass','review','hold');
+  const status = result.status || 'review';
+  if(status === 'pass'){
+    badge.classList.add('pass');
+    badgeIcon.textContent = '✓';
+    badgeText.textContent = 'マッチング可能';
+  } else if(status === 'review'){
+    badge.classList.add('review');
+    badgeIcon.textContent = '◐';
+    badgeText.textContent = '面談後に判定';
+  } else {
+    badge.classList.add('hold');
+    badgeIcon.textContent = '◻';
+    badgeText.textContent = '追加情報をお願いします';
   }
 
-  // Supabaseへ保存
-  try {
-    await fetch('https://xatjfhleqgubgrnqzxrs.supabase.co/rest/v1/professionals', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdGpmaGxlcWd1YmdybnF6eHJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MDk1MDYsImV4cCI6MjA5MTk4NTUwNn0.GVHjmNah2oq1i5tI_VTBwspLfDrpY0cv2apTmpe4MFU',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdGpmaGxlcWd1YmdybnF6eHJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MDk1MDYsImV4cCI6MjA5MTk4NTUwNn0.GVHjmNah2oq1i5tI_VTBwspLfDrpY0cv2apTmpe4MFU',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        name:        data.name,
-        activity:    data.activity,
-        specialties: data.specialties,
-        experience:  data.experience,
-        achievement: data.achievement,
-        worktype:    data.worktype,
-        starttime:   data.starttime,
-        rate:        data.rate,
-        email:       data.email,
-        tel:         data.tel,
-        url:         data.url,
-        memo:        data.memo,
-        status:      'pending',
-        source:      'CSLINKプロ登録フォーム'
-      })
-    });
-  } catch(e) {
-    console.log('Supabase保存エラー:', e);
-  }
+  const score = Math.max(0, Math.min(100, result.score || 70));
+  document.getElementById('screeningComment').textContent = result.comment || 'ご登録ありがとうございます。';
 
-  // Supabaseへ保存
-  try {
-    await fetch('https://xatjfhleqgubgrnqzxrs.supabase.co/rest/v1/professionals', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdGpmaGxlcWd1YmdybnF6eHJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MDk1MDYsImV4cCI6MjA5MTk4NTUwNn0.GVHjmNah2oq1i5tI_VTBwspLfDrpY0cv2apTmpe4MFU',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdGpmaGxlcWd1YmdybnF6eHJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MDk1MDYsImV4cCI6MjA5MTk4NTUwNn0.GVHjmNah2oq1i5tI_VTBwspLfDrpY0cv2apTmpe4MFU',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        name:        data.name,
-        activity:    data.activity,
-        specialties: data.specialties,
-        experience:  data.experience,
-        achievement: data.achievement,
-        worktype:    data.worktype,
-        starttime:   data.starttime,
-        rate:        data.rate,
-        email:       data.email,
-        tel:         data.tel,
-        url:         data.url,
-        memo:        data.memo,
-        status:      'pending',
-        source:      'CSLINKプロ登録フォーム'
-      })
-    });
-  } catch(e) {
-    console.log('Supabase保存エラー:', e);
-  }
+  const scoreEl = document.getElementById('scoreValue');
+  const barEl = document.getElementById('scoreBar');
+  let current = 0;
+  const step = Math.max(1, Math.ceil(score / 40));
+  const timer = setInterval(()=>{
+    current += step;
+    if(current >= score){ current = score; clearInterval(timer); }
+    scoreEl.textContent = current;
+  }, 30);
+  setTimeout(()=>{ barEl.style.width = score + '%'; }, 200);
 
-  // 完了画面
-  setTimeout(()=>{
-    document.getElementById('step3').style.display='none';
-    document.getElementById('successScreen').classList.add('show');
-    document.getElementById('step3-dot').classList.remove('active');
-    document.getElementById('step3-dot').classList.add('done');
-    document.getElementById('formTitle').textContent = '申し込み完了 🎉';
-    document.getElementById('formSub').textContent = 'ご登録ありがとうございます';
-  }, 1800);
+  const nextItems = document.getElementById('nextItems');
+  nextItems.innerHTML = '';
+  const steps = result.next_steps && result.next_steps.length > 0 ? result.next_steps : [
+    'facing担当者より24時間以内にメールでご連絡',
+    '初回カジュアル面談（30分・オンライン）',
+    'マッチする案件のご紹介'
+  ];
+  steps.forEach(s=>{
+    const div = document.createElement('div');
+    div.className = 'screening-next-item';
+    div.textContent = s;
+    nextItems.appendChild(div);
+  });
+
+  document.getElementById('screeningResult').classList.add('show');
+  document.getElementById('step4-dot').classList.remove('active');
+  document.getElementById('step4-dot').classList.add('done');
 }
 
 document.querySelectorAll('input,select,textarea').forEach(el=>{
   el.addEventListener('input',()=>{
     el.closest('.field')?.classList.remove('has-error');
+  });
+  el.addEventListener('change',()=>{
+    el.closest('.field')?.classList.remove('has-error');
+    if(el.type === 'radio'){
+      const errEl = document.getElementById(el.name+'-error');
+      if(errEl) errEl.style.display = 'none';
+    }
   });
 });
 </script>

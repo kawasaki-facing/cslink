@@ -5,7 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>企業登録 | CSLINK — CSプロを無料で探す</title>
 <meta name="description" content="CSLINKに企業登録して、facing監修のCS専門家と無料でマッチング。登録から成約まで企業側は完全無料。最短28秒でCS課題を解決するプロが見つかります。">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2306b6d4'/><text x='16' y='22' font-family='Arial' font-size='14' font-weight='900' fill='white' text-anchor='middle'>CS</text></svg>">
+<link rel="canonical" href="https://cslink.link/cslink_register_client.html">
+<meta property="og:title" content="企業登録 | CSLINK — CSプロを無料で探す">
+<meta property="og:description" content="CSLINKに企業登録して、facing監修のCS専門家と無料でマッチング。登録から成約まで企業側は完全無料。最短28秒でCS課題を解決するプロが見つかります。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cslink.link/cslink_register_client.html">
+<meta property="og:image" content="https://cslink.link/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="CSLINK">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="企業登録 | CSLINK — CSプロを無料で探す">
+<meta name="twitter:description" content="CSLINKに企業登録して、facing監修のCS専門家と無料でマッチング。登録から成約まで企業側は完全無料。最短28秒でCS課題を解決するプロが見つかります。">
+<meta name="twitter:image" content="https://cslink.link/ogp.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="theme-color" content="#06b6d4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -606,47 +624,15 @@ async function submitForm(){
 
   // facing社への通知（Cloudflare Workers経由）
   try {
-    await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev/register', {
+    const res = await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev/register', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(data)
     });
+    // 通知に関わらず完了画面へ
   } catch(e) {
+    // エラーでも完了画面へ（UXを損なわない）
     console.log('通知エラー:', e);
-  }
-
-  // Supabaseへ保存
-  try {
-    await fetch('https://xatjfhleqgubgrnqzxrs.supabase.co/rest/v1/companies', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdGpmaGxlcWd1YmdybnF6eHJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MDk1MDYsImV4cCI6MjA5MTk4NTUwNn0.GVHjmNah2oq1i5tI_VTBwspLfDrpY0cv2apTmpe4MFU',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdGpmaGxlcWd1YmdybnF6eHJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MDk1MDYsImV4cCI6MjA5MTk4NTUwNn0.GVHjmNah2oq1i5tI_VTBwspLfDrpY0cv2apTmpe4MFU',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        name:         data.company,
-        industry:     data.industry,
-        size:         data.size,
-        revenue:      data.revenue,
-        product:      data.product,
-        challenges:   data.challenges,
-        detail:       data.detail,
-        worktype:     data.worktype,
-        starttime:    data.starttime,
-        budget:       data.budget,
-        contact_name: data.name,
-        email:        data.email,
-        tel:          data.tel,
-        url:          data.url,
-        memo:         data.memo,
-        status:       'pending',
-        source:       'CSLINK企業登録フォーム'
-      })
-    });
-  } catch(e) {
-    console.log('Supabase保存エラー:', e);
   }
 
   // 完了画面
