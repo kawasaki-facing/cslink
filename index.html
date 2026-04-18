@@ -25,7 +25,7 @@
 <link rel="shortcut icon" href="/favicon.ico">
 <meta name="theme-color" content="#06b6d4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700&family=Yuji+Syuku&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;cursor:none!important;}
 :root{--teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f;--text:#1a2744;--muted:#64748b;--bg2:#f0f7fa;--border:rgba(6,182,212,0.15);}
@@ -358,6 +358,26 @@ canvas#sakura{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer
 .footer-badges{display:flex;gap:10px;}
 .footer-badge{font-size:11px;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);}
 
+/* OUR STORY セクション */
+.story-section{background:#fff;padding:80px 56px;border-top:1px solid var(--border);}
+.story-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.story-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;}
+.story-title{font-family:'Yuji Syuku',serif;font-size:clamp(24px,2.4vw,36px);color:var(--navy);line-height:1.55;margin-bottom:24px;letter-spacing:1px;word-break:keep-all;overflow-wrap:break-word;}
+.story-title em{font-style:normal;color:var(--teal);}
+.story-body{font-size:14px;color:var(--muted);line-height:1.95;margin-bottom:28px;}
+.story-body > div{margin-bottom:8px;}
+.story-body > div:last-child{color:var(--navy);font-weight:500;margin-bottom:0;}
+.story-profile{display:flex;align-items:center;gap:14px;padding-top:20px;border-top:1px solid var(--border);}
+.story-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-family:'Yuji Syuku',serif;font-size:22px;color:#fff;flex-shrink:0;box-shadow:0 4px 14px rgba(6,182,212,0.28);}
+.story-profile-name{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.story-profile-role{font-size:11px;color:var(--muted);letter-spacing:.5px;}
+.story-video-wrap{position:relative;border-radius:20px;overflow:hidden;background:#0f2342;box-shadow:0 24px 64px rgba(6,182,212,0.15);aspect-ratio:16/9;}
+@media(max-width:900px){
+  .story-section{padding:60px 24px;}
+  .story-inner{grid-template-columns:1fr;gap:40px;}
+  .story-title{font-size:26px;}
+}
+
 </style>
 <script>/*! @license ScrollReveal v4.0.9
 
@@ -468,7 +488,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
         <span class="chip">LTV改善</span><span class="chip">顧客分析</span><span class="chip">BPO</span>
       </div>
       <p class="hero-desc">
-        課題を入力するだけ。AIが1,200件以上のCS企業・フリーランスから<strong>全自動で最適候補を選定。</strong>
+        課題を入力するだけ。AIが<strong>最適なCS企業・フリーランスを選定</strong>してご提案します。
         企業側の利用は<strong>完全無料。</strong>成約時のみCS側に10%。
       </p>
       <div class="cta-row">
@@ -484,52 +504,52 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
 
   <div class="stats-bar">
     <div class="stat-item">
-      <div class="stat-num"><em>94</em>%</div>
-      <div class="stat-label">マッチング満足度</div>
-      <div class="stat-source">導入企業アンケート n=312</div>
-      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="94"></div></div>
+      <div class="stat-num"><em>AI</em>分析</div>
+      <div class="stat-label">要件をAIがヒアリング</div>
+      <div class="stat-source">Claude搭載のスクリーニング</div>
+      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="95"></div></div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">最短<em>1日</em></div>
-      <div class="stat-label">マッチング完了速度</div>
-      <div class="stat-source">2025年度実績平均</div>
-      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="76"></div></div>
+      <div class="stat-num"><em>24時間</em>以内</div>
+      <div class="stat-label">コンシェルジュ対応</div>
+      <div class="stat-source">初回連絡まで</div>
+      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="80"></div></div>
     </div>
     <div class="stat-item">
-      <div class="stat-num"><em>40</em>%</div>
-      <div class="stat-label">平均コスト削減率</div>
-      <div class="stat-source">従来採用比較</div>
-      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="40"></div></div>
+      <div class="stat-num"><em>0</em>円</div>
+      <div class="stat-label">初期費用・登録費用</div>
+      <div class="stat-source">成約時のみ手数料10%</div>
+      <div class="stat-bar-inner"><div class="stat-bar-fill" data-w="90"></div></div>
     </div>
   </div>
   <div class="trust-bar">
     <div class="proof-bar">
       <div class="proof-item">
-        <div class="proof-icon">💰</div>
+        <div class="proof-icon">🎯</div>
         <div>
-          <div class="proof-num"><em>10億円</em>以上</div>
-          <div class="proof-desc">facing累計CSサポート支援金額</div>
+          <div class="proof-num"><em>CS特化</em></div>
+          <div class="proof-desc">カスタマーサクセス領域に特化したプラットフォーム</div>
         </div>
       </div>
       <div class="proof-item">
         <div class="proof-icon">🤝</div>
         <div>
-          <div class="proof-num"><em>500社</em>以上</div>
-          <div class="proof-desc">facing累計支援企業数</div>
+          <div class="proof-num"><em>BPO連携</em></div>
+          <div class="proof-desc">CSマッチング不成立時はfacing BPOが受注</div>
         </div>
       </div>
       <div class="proof-item">
-        <div class="proof-icon">⭐</div>
+        <div class="proof-icon">✨</div>
         <div>
-          <div class="proof-num"><em>5年</em>以上</div>
-          <div class="proof-desc">CS領域における実績・ノウハウ</div>
+          <div class="proof-num"><em>完全無料</em></div>
+          <div class="proof-desc">企業は登録から紹介まで一切費用なし</div>
         </div>
       </div>
       <div class="proof-item">
-        <div class="proof-icon">🔄</div>
+        <div class="proof-icon">🔒</div>
         <div>
-          <div class="proof-num">継続率<em>98%</em></div>
-          <div class="proof-desc">支援後のクライアント継続率</div>
+          <div class="proof-num"><em>法人運営</em></div>
+          <div class="proof-desc">facing株式会社が事務局として信頼性を担保</div>
         </div>
       </div>
     </div>
@@ -558,6 +578,42 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
         <input class="chat-input" id="chatInput" placeholder="CS課題を入力してください…" maxlength="200">
         <button class="chat-send" id="chatSend"><svg viewBox="0 0 16 16"><path d="M1 1l14 7-14 7V9.5l10-1.5L1 6.5V1z"/></svg></button>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== OUR STORY ====================== -->
+<section class="story-section" id="our-story">
+  <div class="story-inner">
+    <!-- 左側：テキストとプロフィール -->
+    <div>
+      <div class="story-eyebrow">Our Story</div>
+      <h2 class="story-title">CSの現場を、<br><em>本気で変えたい</em>と<wbr>思った。</h2>
+      <div class="story-body">
+        <div>解約の裏には、必ず理由がある。その声を拾えなかった、誰かの後悔がある。</div>
+        <div>CSLINKは、「もっと早く出会えていたら」をなくすために生まれました。</div>
+        <div>雇用を生み、企業を救い、世の中を動かす。CSにはその力があります。</div>
+        <div>そして、CSLINKならそれができる。</div>
+      </div>
+      <div class="story-profile">
+        <div class="story-avatar">髙</div>
+        <div>
+          <div class="story-profile-name">COO 髙橋明日香 / facing株式会社</div>
+          <div class="story-profile-role">カスタマーサクセス支援 / CSLINK 運営</div>
+        </div>
+      </div>
+    </div>
+    <!-- 右側：YouTube動画 -->
+    <div class="story-video-wrap" id="storyVideoWrap">
+      <iframe
+        id="storyIframe"
+        src="https://www.youtube.com/embed/j-2hSPuwZ8A?rel=0&modestbranding=1"
+        title="facing株式会社 紹介動画"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="width:100%;height:100%;position:absolute;top:0;left:0;">
+      </iframe>
     </div>
   </div>
 </section>
