@@ -63,14 +63,12 @@ nav{position:fixed;top:36px;left:0;right:0;z-index:100;height:64px;display:flex;
 .list-hero{padding:calc(36px + 64px + 56px) 56px 0;background:#fff;position:relative;overflow:hidden;}
 .list-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(6,182,212,0.05) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
 .list-hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;padding-bottom:56px;}
-.list-hero-left{}
 .list-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);display:flex;align-items:center;gap:10px;margin-bottom:20px;}
 .list-eyebrow::before{content:'';width:24px;height:2px;background:var(--teal);border-radius:2px;}
 .list-hero h1{font-size:clamp(32px,4vw,52px);font-weight:900;color:var(--navy);letter-spacing:-2.5px;line-height:1.08;margin-bottom:20px;}
 .list-hero h1 em{font-style:normal;color:var(--teal);}
 .list-hero-desc{font-size:15px;color:var(--muted);line-height:1.85;max-width:480px;margin-bottom:32px;}
 .list-hero-stats{display:flex;gap:32px;}
-.hero-stat{}
 .hero-stat-num{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-1.5px;line-height:1;}
 .hero-stat-num em{color:var(--teal);font-style:normal;}
 .hero-stat-label{font-size:11px;color:var(--muted);font-weight:700;margin-top:4px;}
@@ -89,7 +87,7 @@ nav{position:fixed;top:36px;left:0;right:0;z-index:100;height:64px;display:flex;
 .result-num strong{color:var(--navy);}
 
 /* ── FEATURED SECTION ── */
-.featured-section{padding:64px 56px 0;max-width:1200px;margin:0 auto;}
+.featured-section{padding:64px 56px 80px;max-width:1200px;margin:0 auto;}
 .featured-section-label{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);display:flex;align-items:center;gap:10px;margin-bottom:32px;}
 .featured-section-label::before{content:'';width:24px;height:2px;background:var(--teal);border-radius:2px;}
 
@@ -136,33 +134,6 @@ nav{position:fixed;top:36px;left:0;right:0;z-index:100;height:64px;display:flex;
 .pe-btn-s{padding:12px 20px;border-radius:10px;border:1.5px solid var(--border);color:var(--muted);font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;}
 .pe-btn-s:hover{border-color:var(--teal);color:var(--teal-d);}
 
-/* ── COMPACT GRID ── */
-.compact-section{padding:48px 56px 80px;max-width:1200px;margin:0 auto;}
-.compact-label{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);display:flex;align-items:center;gap:10px;margin-bottom:28px;}
-.compact-label::before{content:'';width:24px;height:2px;background:var(--teal);border-radius:2px;}
-.compact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.compact-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .3s;opacity:0;transform:translateY(16px);}
-.compact-card.visible{opacity:1;transform:translateY(0);}
-.compact-card:hover{border-color:rgba(6,182,212,0.3);box-shadow:0 10px 32px rgba(6,182,212,0.1);transform:translateY(-2px);}
-.cc-img{height:160px;position:relative;overflow:hidden;}
-.cc-img img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .4s;}
-.compact-card:hover .cc-img img{transform:scale(1.05);}
-.cc-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,35,66,0.6) 0%,transparent 55%);}
-.cc-img-info{position:absolute;bottom:12px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-end;}
-.cc-name{font-size:13px;font-weight:700;color:#fff;}
-.cc-score{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:#fff;line-height:1;}
-.cc-score span{font-size:12px;}
-.cc-body{padding:16px;}
-.cc-sub{font-size:11px;color:var(--muted);margin-bottom:10px;}
-.cc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;}
-.cc-tag{font-size:9px;font-weight:700;padding:2px 8px;border-radius:100px;color:var(--teal-d);background:rgba(6,182,212,0.07);border:1px solid rgba(6,182,212,0.12);}
-.cc-desc{font-size:11px;color:var(--muted);line-height:1.65;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.cc-meta{font-size:10px;color:var(--muted);margin-bottom:12px;}
-.cc-meta strong{color:var(--text);}
-.cc-btn{display:block;width:100%;padding:9px 0;border-radius:8px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-size:12px;font-weight:700;text-align:center;text-decoration:none;transition:all .2s;}
-.cc-btn:hover{transform:translateY(-1px);}
-.cc-av-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:48px;font-weight:800;color:#fff;}
-
 /* FOOTER */
 footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;justify-content:space-between;}
 .footer-logo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:8px;}
@@ -176,14 +147,12 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 .fade-in.visible{opacity:1;transform:translateY(0);}
 
 @media(max-width:1024px){
-  .compact-grid{grid-template-columns:repeat(2,1fr);}
   .profile-editorial,.profile-editorial.reverse{grid-template-columns:1fr;}
   .list-hero-inner{grid-template-columns:1fr;}
 }
 @media(max-width:768px){
-  nav,.list-hero,.featured-section,.compact-section,footer{padding-left:20px;padding-right:20px;}
+  nav,.list-hero,.featured-section,footer{padding-left:20px;padding-right:20px;}
   .search-wrap{padding-left:20px;padding-right:20px;}
-  .compact-grid{grid-template-columns:1fr;}
   .nav-links{display:none;}
   footer{flex-direction:column;gap:14px;text-align:center;}
 }
@@ -191,11 +160,13 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 </head>
 <body>
 
+<!-- TICKER -->
 <div class="ai-ticker">
   <div class="ticker-label"><span class="ticker-dot"></span>AI MATCHING</div>
   <div class="ticker-track"><div class="ticker-inner" id="tickerEl"></div></div>
 </div>
 
+<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo"><div class="nav-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></a>
   <ul class="nav-links">
@@ -212,6 +183,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   </div>
 </nav>
 
+<!-- HERO -->
 <div class="list-hero">
   <div class="list-hero-inner">
     <div class="fade-in">
@@ -219,9 +191,9 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
       <h1>facing監修の<br><em>CS専門家</em>一覧</h1>
       <p class="list-hero-desc">全プロフェッショナルがfacing株式会社の審査を通過済み。マッチングしない場合はfacingが直接支援するので、CS課題は必ず解決されます。</p>
       <div class="list-hero-stats">
-        <div class="hero-stat"><div class="hero-stat-num"><em>9</em></div><div class="hero-stat-label">登録プロ</div></div>
-        <div class="hero-stat"><div class="hero-stat-num"><em>28</em><span style="font-size:16px">秒</span></div><div class="hero-stat-label">平均マッチング</div></div>
-        <div class="hero-stat"><div class="hero-stat-num"><em>100</em>%</div><div class="hero-stat-label">課題解決保証</div></div>
+        <div><div class="hero-stat-num"><em>審査</em>制</div><div class="hero-stat-label">facing監修</div></div>
+        <div><div class="hero-stat-num"><em>28</em><span style="font-size:16px">秒</span></div><div class="hero-stat-label">平均マッチング</div></div>
+        <div><div class="hero-stat-num"><em>100</em>%</div><div class="hero-stat-label">課題解決保証</div></div>
       </div>
     </div>
     <div class="fade-in" style="border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(15,35,66,0.12);">
@@ -230,6 +202,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   </div>
 </div>
 
+<!-- SEARCH -->
 <div class="search-wrap">
   <div class="search-inner">
     <div class="search-field">
@@ -242,7 +215,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
       <button class="pill" data-filter="org">CS組織構築</button>
       <button class="pill" data-filter="saas">SaaS特化</button>
     </div>
-    <div class="result-num" id="resultNum"><strong>9</strong>名のプロ</div>
+    <div class="result-num"><strong>2</strong>名のプロ</div>
   </div>
 </div>
 
@@ -258,9 +231,11 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   </div>
 </div>
 
+<!-- FEATURED PROFILES -->
 <div class="featured-section">
   <div class="featured-section-label">FEATURED PROFESSIONALS</div>
 
+  <!-- プロフィール1 -->
   <div class="profile-editorial fade-in" data-spec="churn ltv">
     <div class="pe-img">
       <img src="https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_1_640_N.webp?method=shortest" alt="田中美咲"/>
@@ -295,6 +270,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
     </div>
   </div>
 
+  <!-- プロフィール2 -->
   <div class="profile-editorial reverse fade-in" data-spec="churn saas">
     <div class="pe-img">
       <img src="https://cdn.midjourney.com/7f98ceba-c0c0-46f6-97a4-61182d1dcdab/0_1_640_N.webp?method=shortest" alt="リテンションラボ株式会社" loading="lazy"/>
@@ -328,12 +304,6 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
       </div>
     </div>
   </div>
-</div>
-
-<!-- COMPACT GRID -->
-<div class="compact-section">
-  <div class="compact-label">ALL PROFESSIONALS</div>
-  <div class="compact-grid" id="compactGrid"></div>
 </div>
 
 <!-- FACING BPO DETAIL -->
@@ -415,6 +385,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
         </div>
       </div>
 
+      <!-- 料金プラン -->
       <div style="background:linear-gradient(135deg,#0f2342,#1e3a5f);border-radius:24px;padding:48px;margin-bottom:56px;">
         <div style="text-align:center;margin-bottom:36px;">
           <div style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:#06b6d4;margin-bottom:8px;">PRICING</div>
@@ -475,77 +446,25 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 </footer>
 
 <script>
+// TICKER
 const tData=[
   {av:'R',bg:'#2563ff',name:'リテンションラボ株式会社',tag:'解約防止',score:98},
   {av:'T',bg:'#7c3aed',name:'田中 美咲',tag:'LTV改善',score:94},
-  {av:'K',bg:'#059669',name:'株式会社CS Partners',tag:'顧客成功',score:91},
-  {av:'S',bg:'#ea580c',name:'鈴木 健太',tag:'LTV改善',score:89},
-  {av:'N',bg:'#0891b2',name:'中村 あかり',tag:'SaaS特化',score:87},
 ];
 const tEl=document.getElementById('tickerEl');
-[...tData,...tData].forEach(d=>{
+[...tData,...tData,...tData,...tData].forEach(d=>{
   tEl.innerHTML+=`<div class="ticker-item"><div class="t-av" style="background:${d.bg}">${d.av}</div>${d.name}<span style="font-size:9px;color:rgba(255,255,255,0.4)">${d.tag}</span><span class="t-score">${d.score}%</span><span class="t-ok">✓ 完了</span></div>`;
 });
 
-const pros=[
-  {name:'株式会社CS Partners',sub:'CS組織構築・顧客成功',av:'K',bg:'linear-gradient(135deg,#059669,#2563ff)',score:91,tags:['顧客成功','CS組織構築'],desc:'顧客成功・解約分析を得意とする10名規模のCS専門会社。CS組織設計から実務まで一貫対応。',work:'フルタイム・スポット',price:'月80万〜',spec:'org',img:'https://cdn.midjourney.com/7f98ceba-c0c0-46f6-97a4-61182d1dcdab/0_1_640_N.webp?method=shortest'},
-  {name:'鈴木 健太',sub:'個人事業主 / CSスペシャリスト',av:'S',bg:'linear-gradient(135deg,#ea580c,#f59e0b)',score:89,tags:['LTV改善','オンボーディング'],desc:'BtoB SaaSのオンボーディング設計・LTV改善を得意とする。大手SaaS企業でCS部門立ち上げ経験あり。',work:'週4〜フルタイム',price:'月50万〜',spec:'ltv',img:'https://cdn.midjourney.com/52325910-eacd-4679-8d42-c3290469d6cf/0_1_640_N.webp?method=shortest'},
-  {name:'中村 あかり',sub:'CSコンサルタント',av:'N',bg:'linear-gradient(135deg,#0891b2,#7c3aed)',score:87,tags:['SaaS特化','ヘルススコア'],desc:'SaaSプロダクトのヘルススコア設計・チャーン分析が専門。データドリブンなCS戦略で解約率を平均35%削減。',work:'週3〜',price:'月45万〜',spec:'saas',img:'https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_0_640_N.webp?method=shortest'},
-  {name:'アクセルCS株式会社',sub:'CS組織構築・実務支援',av:'A',bg:'linear-gradient(135deg,#2563ff,#059669)',score:85,tags:['CS組織構築','解約防止'],desc:'CS組織を0から構築する専門会社。採用支援・マネージャー育成・KPI設計まで一気通貫でサポート。',work:'フルタイム・スポット',price:'月100万〜',spec:'org',img:'https://cdn.midjourney.com/7f98ceba-c0c0-46f6-97a4-61182d1dcdab/0_2_640_N.webp?method=shortest'},
-  {name:'山本 拓也',sub:'フリーランス CSエンジニア',av:'Y',bg:'linear-gradient(135deg,#7c3aed,#ea580c)',score:83,tags:['オンボーディング','自動化'],desc:'CS業務の自動化・オンボーディング設計が得意。Gainsight・Salesforce等のCSツール導入実績多数。',work:'週2〜週4',price:'月35万〜',spec:'saas',img:'https://cdn.midjourney.com/52325910-eacd-4679-8d42-c3290469d6cf/0_0_640_N.webp?method=shortest'},
-  {name:'Metrics Lab 合同会社',sub:'KPI管理・データ分析',av:'M',bg:'linear-gradient(135deg,#06b6d4,#059669)',score:82,tags:['KPI管理','チャーン分析'],desc:'CS領域のKPI設計・データ分析基盤構築が専門。BigQuery・Lookerを活用したCS可視化で意思決定を加速。',work:'スポット・週3〜',price:'月70万〜',spec:'ltv',img:'https://cdn.midjourney.com/7f98ceba-c0c0-46f6-97a4-61182d1dcdab/0_0_640_N.webp?method=shortest'},
-  {name:'伊藤 さやか',sub:'カスタマーサクセスマネージャー',av:'I',bg:'linear-gradient(135deg,#0891b2,#059669)',score:81,tags:['エンタープライズ','QBR設計'],desc:'エンタープライズ向けCSが専門。QBR設計・ハイタッチCSの体制構築に強み。英語・中国語対応可能。',work:'週4〜フルタイム',price:'月65万〜',spec:'org',img:'https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_2_640_N.webp?method=shortest'}];
-
-function renderGrid(filter='all', q=''){
-  const grid=document.getElementById('compactGrid');
-  if(!grid) return;
-  const filtered=pros.filter(p=>{
-    const mf=filter==='all'||p.spec.includes(filter)||(filter==='churn'&&p.tags.some(t=>t.includes('解約')))||(filter==='ltv'&&p.tags.some(t=>t.includes('LTV')))||(filter==='org'&&p.tags.some(t=>t.includes('組織')))||(filter==='saas'&&p.tags.some(t=>t.includes('SaaS')||t.includes('ヘルス')||t.includes('オンボーディング')));
-    const mq=!q||(p.name+p.sub+p.tags.join('')).toLowerCase().includes(q.toLowerCase());
-    return mf&&mq;
-  });
-  document.getElementById('resultNum').innerHTML=`<strong>${filtered.length+2}</strong>名のプロ`;
-  grid.innerHTML='';
-  filtered.forEach((p,i)=>{
-    const hasImg=p.img&&p.img!=='https://cdn.midjourney.com/7f98ceba-c0c0-46f6-97a4-61182d1dcdab/0_0_640_N.webp?method=shortest'&&p.img!=='https://cdn.midjourney.com/52325910-eacd-4679-8d42-c3290469d6cf/0_1_640_N.webp?method=shortest';
-    const card=document.createElement('div');
-    card.className='compact-card';
-    card.innerHTML=`
-      <div class="cc-img">
-        ${hasImg ? `<img src="${p.img}" alt="${p.name}" loading="lazy"/>` : `<div class="cc-av-fallback" style="background:${p.bg}">${p.av}</div>`}
-        <div class="cc-img-overlay"></div>
-        <div style='position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.55);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:100px;letter-spacing:1px;'>サンプル</div>
-        <div class="cc-img-info">
-          <span class="cc-name">${p.name}</span>
-          <span class="cc-score">${p.score}<span>%</span></span>
-        </div>
-      </div>
-      <div class="cc-body">
-        <div class="cc-sub">${p.sub}</div>
-        <div class="cc-tags">${p.tags.map(t=>`<span class="cc-tag">${t}</span>`).join('')}</div>
-        <div class="cc-desc">${p.desc}</div>
-        <div class="cc-meta">⏱ ${p.work} &nbsp;💰 ${p.price}</div>
-        <a href="cslink_pro_detail.html" class="cc-btn">無料でマッチング →</a>
-      </div>
-    `;
-    grid.appendChild(card);
-    setTimeout(()=>card.classList.add('visible'),i*80);
-  });
-}
-renderGrid();
-
+// フィルター（サンプル表示のみなので実処理なし）
 document.querySelectorAll('.pill').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.pill').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');
-    renderGrid(btn.dataset.filter, document.getElementById('searchInput').value);
   });
 });
-document.getElementById('searchInput').addEventListener('input',e=>{
-  const activeFilter=document.querySelector('.pill.on')?.dataset.filter||'all';
-  renderGrid(activeFilter, e.target.value);
-});
 
+// IntersectionObserver for animations
 const io=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
@@ -554,7 +473,7 @@ const io=new IntersectionObserver(entries=>{
     }
   });
 },{threshold:0.1});
-document.querySelectorAll('.fade-in,.compact-card').forEach(el=>io.observe(el));
+document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
