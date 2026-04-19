@@ -179,6 +179,48 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
   .flow-bar{padding:20px;}
 }
 
+/* SCROLL ANIMATION */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(0.4,0,0.2,1),transform .8s cubic-bezier(0.4,0,0.2,1);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.fade-up.delay-1{transition-delay:0.1s;}
+.fade-up.delay-2{transition-delay:0.2s;}
+.fade-up.delay-3{transition-delay:0.3s;}
+
+/* teal→blue gradient em unification */
+.pricing-hero h1 em,.s-title em,.cta-h em{
+  background:linear-gradient(120deg,var(--teal) 0%,var(--blue) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  color:var(--teal);
+}
+.cta-h em{
+  background:none;-webkit-text-fill-color:var(--teal);color:var(--teal);
+}
+.s-title em{-webkit-text-fill-color:transparent;}
+
+/* Price card hover */
+.price-card{transition:transform .35s cubic-bezier(0.4,0,0.2,1),box-shadow .35s cubic-bezier(0.4,0,0.2,1),border-color .3s ease;}
+.price-card.free-card:hover{transform:translateY(-6px);box-shadow:0 24px 56px rgba(6,182,212,0.22);border-color:rgba(6,182,212,0.4);}
+.price-card.pro-card:hover{transform:translateY(-6px);box-shadow:0 32px 72px rgba(15,35,66,0.35),0 0 0 1px rgba(6,182,212,0.25);}
+
+/* BOTTOM CTA（company.html と同テイスト） */
+.cta-bottom{padding:110px 48px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-m) 100%);color:#fff;position:relative;overflow:hidden;text-align:center;}
+.cta-bottom::before{content:'';position:absolute;top:-300px;left:50%;transform:translateX(-50%);width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,0.15) 0%,transparent 60%);pointer-events:none;}
+.cta-bottom::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(6,182,212,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.cta-bottom-inner{max-width:820px;margin:0 auto;position:relative;z-index:1;}
+.cta-bottom-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-bottom:22px;display:inline-flex;align-items:center;gap:12px;}
+.cta-bottom-eyebrow::before,.cta-bottom-eyebrow::after{content:'';width:30px;height:2px;background:var(--teal);border-radius:2px;}
+.cta-bottom-title{font-size:clamp(30px,4.2vw,52px);font-weight:900;color:#fff;letter-spacing:-1.8px;line-height:1.15;margin-bottom:20px;}
+.cta-bottom-title em{font-style:normal;color:var(--teal);}
+.cta-bottom-sub{font-size:15px;color:rgba(255,255,255,0.7);line-height:1.9;margin-bottom:44px;max-width:600px;margin-left:auto;margin-right:auto;}
+.cta-bottom-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.cta-bottom-btn-p{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;padding:16px 36px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 14px 40px rgba(6,182,212,0.45);transition:all .3s ease;}
+.cta-bottom-btn-p:hover{transform:translateY(-3px);box-shadow:0 20px 48px rgba(6,182,212,0.55);}
+.cta-bottom-btn-s{display:inline-flex;align-items:center;gap:10px;background:transparent;color:#fff;padding:16px 28px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;border:1.5px solid rgba(255,255,255,0.18);transition:all .25s ease;}
+.cta-bottom-btn-s:hover{border-color:var(--teal);background:rgba(6,182,212,0.08);}
+
+/* Stat count unit */
+.stat-count{display:inline-block;}
+
 </style>
 </head>
 <body>
@@ -203,10 +245,10 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
 </nav>
 
 <section class="pricing-hero">
-  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>PRICING</div>
-  <h1>シンプルで<em>透明性の高い</em><br>料金体系</h1>
-  <p class="pricing-hero-sub">複雑なプランは一切なし。企業側は登録から成約まで完全無料。CSプロ側は成約時のみ10%の成功報酬。</p>
-  <div class="pricing-hero-badge">✓ 隠れた費用ゼロ &nbsp;✓ 解約手数料なし &nbsp;✓ 最低契約期間なし</div>
+  <div class="hero-eyebrow fade-up"><span class="hero-eyebrow-dot"></span>PRICING</div>
+  <h1 class="fade-up delay-1">シンプルで<em>透明性の高い</em><br>料金体系</h1>
+  <p class="pricing-hero-sub fade-up delay-2">複雑なプランは一切なし。企業側は登録から成約まで完全無料。CSプロ側は成約時のみ<span class="stat-count" data-target="10">0</span>%の成功報酬。</p>
+  <div class="pricing-hero-badge fade-up delay-3">✓ 隠れた費用ゼロ &nbsp;✓ 解約手数料なし &nbsp;✓ 最低契約期間なし</div>
 </section>
 
 <div class="flow-bar sr">
@@ -225,12 +267,12 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
 </div>
 
 <section class="cards-section">
-  <div class="sec-header sr">
+  <div class="sec-header sr fade-up">
     <div class="s-ey">PLAN</div>
     <h2 class="s-title">2つの<em>シンプルなプラン</em></h2>
   </div>
   <div class="cards-grid">
-    <div class="price-card free-card sr">
+    <div class="price-card free-card sr fade-up delay-1">
       <div class="card-badge">🏢 企業向け</div>
       <div class="card-who">CS課題を持つ企業</div>
       <div class="card-price">¥0</div>
@@ -245,10 +287,10 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
       </ul>
       <a href="cslink_register_client.html" class="card-btn">CSのプロを無料で探す →</a>
     </div>
-    <div class="price-card pro-card sr">
+    <div class="price-card pro-card sr fade-up delay-2">
       <div class="card-badge">💼 CS企業・人材向け</div>
       <div class="card-who">CSプロ・CS企業</div>
-      <div class="card-price" style="position:relative;z-index:1;">10<span style="font-size:24px;letter-spacing:-1px">%</span></div>
+      <div class="card-price" style="position:relative;z-index:1;"><span class="stat-count" data-target="10">0</span><span style="font-size:24px;letter-spacing:-1px">%</span></div>
       <div class="card-price-sub">成約時のみ発生する成功報酬</div>
       <ul class="card-list">
         <li>プロフィール・実績の掲載（無料）</li>
@@ -271,11 +313,11 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
 </section>
 
 <section class="compare-section">
-  <div class="sec-header sr">
+  <div class="sec-header sr fade-up">
     <div class="s-ey">COMPARISON</div>
     <h2 class="s-title">他の調達手段と<em>比較</em></h2>
   </div>
-  <table class="compare-table sr">
+  <table class="compare-table sr fade-up delay-1">
     <thead>
       <tr>
         <th style="background:rgba(15,35,66,0.04);text-align:left;padding:18px 24px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:800;color:var(--muted);"></th>
@@ -287,7 +329,7 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
     <tbody>
       <tr><td>企業側の初期費用</td><td class="col-cslink"><span class="c-yes">✓</span><span class="c-val c-teal">0円</span></td><td><span class="c-no">✗</span><span class="c-val">着手金あり</span></td><td><span class="c-no">✗</span><span class="c-val">掲載費用</span></td></tr>
       <tr><td>CS特化の専門性</td><td class="col-cslink"><span class="c-yes">✓</span><span class="c-val c-teal">CS専門のみ</span></td><td><span class="c-part">△</span><span class="c-val">汎用</span></td><td><span class="c-no">✗</span><span class="c-val">汎用</span></td></tr>
-      <tr><td>マッチング速度</td><td class="col-cslink"><span class="c-val c-teal" style="font-size:15px;font-family:'Space Grotesk',sans-serif;font-weight:800;">⚡ 28秒</span></td><td><span class="c-val">〜2週間</span></td><td><span class="c-val">〜1ヶ月</span></td></tr>
+      <tr><td>マッチング速度</td><td class="col-cslink"><span class="c-val c-teal" style="font-size:15px;font-family:'Space Grotesk',sans-serif;font-weight:800;">⚡ <span class="stat-count" data-target="28">0</span>秒</span></td><td><span class="c-val">〜2週間</span></td><td><span class="c-val">〜1ヶ月</span></td></tr>
       <tr><td>品質保証</td><td class="col-cslink"><span class="c-yes">✓</span><span class="c-val c-teal">facing審査済</span></td><td><span class="c-yes">✓</span><span class="c-val">審査あり</span></td><td><span class="c-no">✗</span><span class="c-val">なし</span></td></tr>
       <tr><td>成約後サポート</td><td class="col-cslink"><span class="c-yes">✓</span><span class="c-val c-teal">KPI管理まで</span></td><td><span class="c-part">△</span><span class="c-val">フォローのみ</span></td><td><span class="c-no">✗</span><span class="c-val">なし</span></td></tr>
       <tr><td>企業側の成功報酬</td><td class="col-cslink"><span class="c-yes">✓</span><span class="c-val c-teal">0円</span></td><td><span class="c-val">年収35%〜</span></td><td><span class="c-val">なし</span></td></tr>
@@ -296,7 +338,7 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
 </section>
 
 <section class="faq-section">
-  <div class="sec-header sr">
+  <div class="sec-header sr fade-up">
     <div class="s-ey">FAQ</div>
     <h2 class="s-title">よくある<em>ご質問</em></h2>
   </div>
@@ -328,6 +370,22 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
   </div>
 </section>
 
+<!-- BOTTOM CTA（料金ページ向け） -->
+<section class="cta-bottom">
+  <div class="cta-bottom-inner">
+    <div class="cta-bottom-eyebrow fade-up">Ready to start?</div>
+    <h2 class="cta-bottom-title fade-up delay-1">料金で悩むより、<br>まず<em>28秒で相談</em>を。</h2>
+    <p class="cta-bottom-sub fade-up delay-2">AIが課題を分析し、最適なCSプロフェッショナルを即座に提案。隠れた費用も違約金も一切ありません。</p>
+    <div class="cta-bottom-btns fade-up delay-2">
+      <a href="cslink_register_client.html" class="cta-bottom-btn-p">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" stroke-opacity=".5" stroke-width="1.5"/><path d="M6 5l5 3-5 3V5z" fill="white"/></svg>
+        CSのプロを探す
+      </a>
+      <a href="cslink_register_pro.html" class="cta-bottom-btn-s">CS人材として登録する →</a>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div>
   <div class="footer-links"><a href="index.html">トップ</a><a href="terms.html">利用規約</a><a href="terms.html#tokushoho">特商法表記</a><a href="privacy.html">プライバシーポリシー</a><a href="company.html">会社概要</a></div>
@@ -344,6 +402,41 @@ const td=[{av:'R',col:'#2563ff',name:'リテンションラボ株式会社',tag:
 function toggleFaq(btn){const item=btn.closest('.faq-item');const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');}
 const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:0.1});
 document.querySelectorAll('.sr,.price-card').forEach((el,i)=>{const siblings=Array.from(el.parentElement.children).filter(c=>c.classList.contains('sr')||c.classList.contains('price-card'));el.style.transitionDelay=(siblings.indexOf(el)*0.1)+'s';observer.observe(el);});
+
+// fade-up (company.html 同等)
+const fadeEls=document.querySelectorAll('.fade-up');
+const fadeObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+fadeEls.forEach(el=>fadeObserver.observe(el));
+
+// Counter animation for stats（company.html と同等）
+const counters=document.querySelectorAll('.stat-count');
+const counterObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const el=entry.target;
+      const target=parseInt(el.dataset.target,10);
+      const duration=1600;
+      const start=performance.now();
+      const tick=(now)=>{
+        const elapsed=now-start;
+        const progress=Math.min(elapsed/duration,1);
+        const eased=1-Math.pow(1-progress,3);
+        el.textContent=Math.round(eased*target);
+        if(progress<1)requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      counterObserver.unobserve(el);
+    }
+  });
+},{threshold:0.4});
+counters.forEach(c=>counterObserver.observe(c));
 </script>
 </body>
 </html>
