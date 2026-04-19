@@ -573,7 +573,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
       <h2 class="chatbot-title">CS課題を話すだけで<br><span>最適な人材</span>が見つかる</h2>
       <p class="chatbot-desc">AIが課題をヒアリングして、最適なCSプロフェッショナルを即座にレコメンド。今すぐ試してみてください。</p>
       <div class="chatbot-bullets">
-        <div class="chatbot-bullet"><div class="bullet-check">✓</div>課題入力から最短30秒でマッチング提案</div>
+        <div class="chatbot-bullet"><div class="bullet-check">✓</div>課題入力から最短28秒でマッチング提案</div>
         <div class="chatbot-bullet"><div class="bullet-check">✓</div>解約防止・LTV改善・CS戦略に特化したAI</div>
         <div class="chatbot-bullet"><div class="bullet-check">✓</div>無料で何度でも相談できます</div>
       </div>
@@ -1006,11 +1006,12 @@ if(typeof ScrollReveal !== 'undefined') {
         <div class="footer-col-title">会社情報</div>
         <a href="company.html">会社概要</a>
         <a href="terms.html">利用規約</a>
+        <a href="terms.html#tokushoho">特商法表記</a>
         <a href="privacy.html">プライバシーポリシー</a>
       </div>
     </div>
     <div class="site-footer-bottom">
-      <p>© 2026 facing株式会社 All Rights Reserved.</p>
+      <p>© <span id="copyYear">2026</span> facing株式会社 All Rights Reserved.</p>
       <div class="footer-badges">
         <span class="footer-badge">🛡️ facing監修</span>
         <span class="footer-badge">🤖 AI powered</span>
@@ -1019,5 +1020,6 @@ if(typeof ScrollReveal !== 'undefined') {
     </div>
   </div>
 </footer>
+<script>document.getElementById('copyYear').textContent=new Date().getFullYear();</script>
 </body>
 </html>

@@ -515,7 +515,7 @@ footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;
       </div>
     </div>
     <div class="site-footer-bottom">
-      <p>© 2026 facing株式会社 All Rights Reserved.</p>
+      <p>© <span id="copyYear">2026</span> facing株式会社 All Rights Reserved.</p>
       <div class="footer-badges">
         <span class="footer-badge">🛡️ facing監修</span>
         <span class="footer-badge">🤖 AI powered</span>
@@ -526,6 +526,7 @@ footer{background:var(--navy);padding:24px 56px;display:flex;align-items:center;
 </footer>
 
 <script>
+document.getElementById('copyYear').textContent=new Date().getFullYear();
 // ステップ管理
 function setStep(n){
   [1,2,3].forEach(i=>{

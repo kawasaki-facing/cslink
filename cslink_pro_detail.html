@@ -522,13 +522,16 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 
 <footer>
   <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div>
-  <div class="footer-copy">© 2026 facing株式会社. All rights reserved.</div>
+  <div class="footer-copy">© <span id="copyYear">2026</span> facing株式会社. All rights reserved.</div>
   <div class="footer-links">
-    <a href="privacy.html">プライバシーポリシー</a>
+    <a href="index.html">トップ</a>
     <a href="terms.html">利用規約</a>
+    <a href="terms.html#tokushoho">特商法表記</a>
+    <a href="privacy.html">プライバシーポリシー</a>
     <a href="company.html">会社概要</a>
   </div>
 </footer>
+<script>document.getElementById('copyYear').textContent=new Date().getFullYear();</script>
 
 <script>
 // AI TICKER

@@ -578,8 +578,9 @@ footer{background:#fff;border-top:1px solid var(--border);padding:32px 56px;disp
 
 <footer>
   <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div>
-  <div class="footer-copy">© 2026 facing株式会社. All rights reserved.</div>
+  <div class="footer-copy">© <span id="copyYear">2026</span> facing株式会社. All rights reserved.</div>
 </footer>
+<script>document.getElementById('copyYear').textContent=new Date().getFullYear();</script>
 
 <script>
 const WORKER_URL = 'https://cslink-ai-proxy.kawasaki-be9.workers.dev';
