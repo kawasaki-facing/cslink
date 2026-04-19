@@ -7,7 +7,7 @@
 <meta name="description" content="AIが要件を聞いて、最適なCS企業・人材を28秒で提案。日本初・CS特化AIマッチング。企業側完全無料、成約時のみCS側10%。">
 <link rel="canonical" href="https://cslink.link/">
 <meta property="og:title" content="CSLINK – 解約が止まる。CSのプロが、今日つながる。">
-<meta property="og:description" content="AIが要件を聞いて、最適なCS企業・人材を28秒で提案。日本初・CS特化AIマッチング。企業側完全無料。">
+<meta property="og:description" content="AIが要件を聞いて、最適なCS企業・人材を28秒で提案。日本初・CS特化AIマッチング。企業側完全無料、成約時のみCS側10%。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cslink.link/">
 <meta property="og:image" content="https://cslink.link/ogp.png">
@@ -17,7 +17,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CSLINK – 解約が止まる。CSのプロが、今日つながる。">
-<meta name="twitter:description" content="AIが要件を聞いて、最適なCS企業・人材を28秒で提案。企業側完全無料。">
+<meta name="twitter:description" content="AIが要件を聞いて、最適なCS企業・人材を28秒で提案。日本初・CS特化AIマッチング。企業側完全無料、成約時のみCS側10%。">
 <meta name="twitter:image" content="https://cslink.link/ogp.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -27,7 +27,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700&family=Yuji+Syuku&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;cursor:none!important;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+@media (pointer:fine){*,*::before,*::after{cursor:none!important;}}
+@media (pointer:coarse){#cursor,#cursor-ring{display:none!important;}}
 :root{--teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f;--text:#1a2744;--muted:#64748b;--bg2:#f0f7fa;--border:rgba(6,182,212,0.15);}
 html,body{width:100%;min-height:100vh;background:#fff;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;overflow-x:hidden}
 
@@ -313,6 +315,14 @@ canvas#sakura{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer
 }
 
 /* ===== MOBILE RESPONSIVE ===== */
+@media(max-width:1024px){
+  nav{padding:0 32px;}
+  .hero-body{padding:32px 32px 0;}
+  .hero-photo{width:46%;}
+  .hero-left{max-width:480px;}
+  .trust-bar{padding:14px 32px;}
+  .chatbot-section{padding:56px 32px;}
+}
 @media(max-width:768px){
   nav{padding:0 20px;height:56px;}
   .nav-links{display:none;}
@@ -576,7 +586,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
       <div class="chat-body" id="chatBody"></div>
       <div class="chat-input-row">
         <input class="chat-input" id="chatInput" placeholder="CS課題を入力してください…" maxlength="200">
-        <button class="chat-send" id="chatSend"><svg viewBox="0 0 16 16"><path d="M1 1l14 7-14 7V9.5l10-1.5L1 6.5V1z"/></svg></button>
+        <button class="chat-send" id="chatSend" aria-label="メッセージを送信"><svg viewBox="0 0 16 16"><path d="M1 1l14 7-14 7V9.5l10-1.5L1 6.5V1z"/></svg></button>
       </div>
     </div>
   </div>
@@ -647,13 +657,34 @@ function buildTicker() {
     tickerData.forEach(d => {
       const item = document.createElement('div');
       item.className = 'ticker-item';
-      item.innerHTML = `
-        <div class="ticker-avatar" style="background:${d.color}">${d.avatar}</div>
-        <span class="ticker-name">${d.name}</span>
-        <span class="ticker-tag">${d.tag}</span>
-        <span class="ticker-score">${d.score}</span>
-        <span class="ticker-match">✓ ${d.match}</span>
-      `;
+
+      const avatar = document.createElement('div');
+      avatar.className = 'ticker-avatar';
+      avatar.style.setProperty('background', d.color);
+      avatar.textContent = d.avatar;
+
+      const name = document.createElement('span');
+      name.className = 'ticker-name';
+      name.textContent = d.name;
+
+      const tag = document.createElement('span');
+      tag.className = 'ticker-tag';
+      tag.textContent = d.tag;
+
+      const score = document.createElement('span');
+      score.className = 'ticker-score';
+      score.textContent = d.score;
+
+      const match = document.createElement('span');
+      match.className = 'ticker-match';
+      match.textContent = '✓ ' + d.match;
+
+      item.appendChild(avatar);
+      item.appendChild(name);
+      item.appendChild(tag);
+      item.appendChild(score);
+      item.appendChild(match);
+
       inner.appendChild(item);
     });
   });
@@ -806,14 +837,12 @@ async function sendChat() {
   const am = document.createElement('div'); am.className='msg ai'; am.textContent='考え中…'; body.appendChild(am);
   body.scrollTop = body.scrollHeight;
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev/chat', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,
-        system:'あなたはCSLINKのAIアシスタントです。CS（カスタマーサクセス）の課題解決とマッチングについて簡潔に日本語で答えてください。',
-        messages:[{role:'user',content:text}]})
+      body: JSON.stringify({messages:[{role:'user',content:text}]})
     });
     const data = await res.json();
-    am.textContent = data.content?.[0]?.text || 'エラーが発生しました';
+    am.textContent = data.reply || 'エラーが発生しました';
   } catch(e) { am.textContent = 'エラーが発生しました。'; }
   body.scrollTop = body.scrollHeight;
 }

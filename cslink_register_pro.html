@@ -416,14 +416,14 @@ footer{background:#fff;border-top:1px solid var(--border);padding:32px 56px;disp
         <div class="form-section-label">実績・自己PR <span style="color:var(--purple);font-weight:700;text-transform:none;letter-spacing:normal;">（AIが分析します）</span></div>
         <div class="field" id="f-achievement">
           <label>最大の成果・具体的な実績<span class="req">*</span></label>
-          <textarea id="achievement" placeholder="例：SaaS企業で月次解約率を3.2%→1.1%に改善。オンボーディング設計からKPIモニタリングまで一貫して担当し、年間で約8,000万円のLTV向上に貢献した。"></textarea>
-          <div class="char-count" id="achievement-count">0 / 推奨 100文字以上</div>
+          <textarea id="achievement" data-min="50" data-recommend="100" placeholder="例：SaaS企業で月次解約率を3.2%→1.1%に改善。オンボーディング設計からKPIモニタリングまで一貫して担当し、年間で約8,000万円のLTV向上に貢献した。"></textarea>
+          <div class="char-count" id="achievement-count">0 / 50文字以上（推奨100文字以上）</div>
           <div class="field-error">実績を具体的に記入してください（50文字以上）</div>
         </div>
         <div class="field" id="f-pr">
           <label>自己PR・強み<span class="req">*</span></label>
-          <textarea id="pr" placeholder="例：BtoB SaaSのエンタープライズ領域でのCS経験が豊富。特に大手企業向けのアカウント戦略設計とカスタマージャーニー設計に強みがあります。英語対応可。"></textarea>
-          <div class="char-count" id="pr-count">0 / 推奨 150文字以上</div>
+          <textarea id="pr" data-min="50" data-recommend="150" placeholder="例：BtoB SaaSのエンタープライズ領域でのCS経験が豊富。特に大手企業向けのアカウント戦略設計とカスタマージャーニー設計に強みがあります。英語対応可。"></textarea>
+          <div class="char-count" id="pr-count">0 / 50文字以上（推奨150文字以上）</div>
           <div class="field-error">自己PRを記入してください（50文字以上）</div>
         </div>
       </div>
@@ -667,19 +667,19 @@ function goStep2(){ if(validate1()) setStep(2); }
 function goStep3(){ if(validate2()) setStep(3); }
 function goStep2Back(){ setStep(2); }
 
-function setupCounter(inputId, countId, recommend){
+function setupCounter(inputId, countId, minChars, recommend){
   const input = document.getElementById(inputId);
   const count = document.getElementById(countId);
   input.addEventListener('input', ()=>{
     const len = input.value.trim().length;
-    count.textContent = `${len} / 推奨 ${recommend}文字以上`;
+    count.textContent = `${len} / ${minChars}文字以上（推奨${recommend}文字以上）`;
     count.classList.remove('low','ok');
     if(len >= recommend) count.classList.add('ok');
     else if(len > 0) count.classList.add('low');
   });
 }
-setupCounter('achievement', 'achievement-count', 100);
-setupCounter('pr', 'pr-count', 150);
+setupCounter('achievement', 'achievement-count', 50, 100);
+setupCounter('pr', 'pr-count', 50, 150);
 
 function collectFormData(){
   const industries = [...document.querySelectorAll('#industries input:checked')].map(c=>c.value);
@@ -726,8 +726,11 @@ function cycleLoadingStatus(){
   }, 1600);
 }
 
+let isSubmitting = false;
 async function submitScreening(){
+  if(isSubmitting) return;
   if(!validate3()) return;
+  isSubmitting = true;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
 
@@ -748,7 +751,7 @@ async function submitScreening(){
   try {
     const res = await fetch(`${WORKER_URL}/screen`, {
       method: 'POST',
-      headers: {'Content-Type':'text/plain'},
+      headers: {'Content-Type':'application/json'},
       body: JSON.stringify(data),
       redirect: 'follow'
     });
@@ -756,7 +759,6 @@ async function submitScreening(){
     clearInterval(loadingInterval);
     showScreeningResult(result);
   } catch(e) {
-    console.error('Screening error:', e);
     clearInterval(loadingInterval);
     showScreeningResult({
       status: 'review',

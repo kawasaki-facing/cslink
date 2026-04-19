@@ -593,8 +593,11 @@ function goStep3(){ if(validate2()) setStep(3); }
 function goStep1(){ setStep(1); }
 function goStep2Back(){ setStep(2); }
 
+let isSubmitting = false;
 async function submitForm(){
+  if(isSubmitting) return;
   if(!validate3()) return;
+  isSubmitting = true;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = 'AIが分析中… ✦';
@@ -632,7 +635,6 @@ async function submitForm(){
     // 通知に関わらず完了画面へ
   } catch(e) {
     // エラーでも完了画面へ（UXを損なわない）
-    console.log('通知エラー:', e);
   }
 
   // 完了画面

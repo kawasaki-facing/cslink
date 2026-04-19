@@ -44,9 +44,17 @@ p{font-size:14px;line-height:1.9;color:var(--text);margin-bottom:12px;}
 ol,ul{font-size:14px;line-height:1.9;color:var(--text);padding-left:20px;margin-bottom:12px;}
 li{margin-bottom:6px;}
 .footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;}
-.footer-links{display:flex;gap:20px;justify-content:center;margin-bottom:12px;}
+.footer-links{display:flex;gap:20px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;}
 .footer-links a{color:var(--muted);text-decoration:none;font-size:12px;}
 .footer-links a:hover{color:var(--navy);}
+.tokusho-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:8px;}
+.tokusho-table tr{border-bottom:1px solid var(--border);}
+.tokusho-table tr:last-child{border-bottom:none;}
+.tokusho-table th{width:150px;padding:14px 18px;background:#f8fafc;font-size:13px;font-weight:700;color:var(--navy);text-align:left;vertical-align:top;}
+.tokusho-table td{padding:14px 18px;font-size:13px;line-height:1.8;color:var(--text);}
+.tokusho-table td a{color:var(--teal-d);text-decoration:none;}
+.tokusho-table td a:hover{text-decoration:underline;}
+@media(max-width:640px){.tokusho-table th,.tokusho-table td{display:block;width:100%;}.tokusho-table th{padding:12px 18px 4px;}.tokusho-table td{padding:4px 18px 14px;}}
 </style>
 </head>
 <body>
@@ -132,9 +140,71 @@ li{margin-bottom:6px;}
     <p>本規約は日本法に準拠します。本サービスに関する紛争については、東京地方裁判所を第一審の専属的合意管轄裁判所とします。</p>
   </div>
 
+  <div class="section" id="tokushoho">
+    <h2>特定商取引法に基づく表記</h2>
+    <table class="tokusho-table">
+      <tr>
+        <th>販売事業者名</th>
+        <td>facing株式会社</td>
+      </tr>
+      <tr>
+        <th>代表責任者</th>
+        <td>代表取締役 川﨑 勇樹</td>
+      </tr>
+      <tr>
+        <th>所在地</th>
+        <td>〒103-0004<br>東京都中央区東日本橋2-22-1<br>クロスシー東日本橋ビル2F</td>
+      </tr>
+      <tr>
+        <th>電話番号</th>
+        <td>03-6667-0655<br><span style="font-size:11px;color:var(--muted);">※お問い合わせは原則メール・フォームにて承っております</span></td>
+      </tr>
+      <tr>
+        <th>メールアドレス</th>
+        <td><a href="mailto:cslink@facing.co.jp">cslink@facing.co.jp</a></td>
+      </tr>
+      <tr>
+        <th>サービス名</th>
+        <td>CSLINK（CS特化AIマッチングプラットフォーム）</td>
+      </tr>
+      <tr>
+        <th>役務の対価</th>
+        <td>
+          ・企業（CS課題を持つ側）：登録から成約まで完全無料<br>
+          ・CS提供者（CS専門家・CS支援企業）：成約が成立した場合、契約金額の10%を当社に手数料としてお支払いいただきます
+        </td>
+      </tr>
+      <tr>
+        <th>対価以外に必要な費用</th>
+        <td>本サービス利用に伴う通信費（インターネット接続料金等）および請求書に基づくお振込み時の振込手数料はお客様のご負担となります。</td>
+      </tr>
+      <tr>
+        <th>支払時期</th>
+        <td>CS提供者が本サービス経由で成立した契約に基づき役務を提供した月の末日を締日とし、翌月末日までにお支払いいただきます。</td>
+      </tr>
+      <tr>
+        <th>支払方法</th>
+        <td>当社より発行する請求書に基づき、当社指定の銀行口座へお振込みください。振込手数料はお客様（CS提供者）のご負担とさせていただきます。</td>
+      </tr>
+      <tr>
+        <th>役務の提供時期</th>
+        <td>マッチング成立後、企業とCS提供者との間で合意した開始日より速やかに提供を開始します。</td>
+      </tr>
+      <tr>
+        <th>返品・キャンセル</th>
+        <td>役務の性質上、マッチング成立後のキャンセル・返金は原則お受けできません。ただし、当社に起因する重大な瑕疵がある場合、または企業とCS提供者の双方が合意した場合はこの限りではありません。</td>
+      </tr>
+    </table>
+  </div>
+
   <div class="section">
     <h2>お問い合わせ</h2>
-    <p>facing株式会社<br>本サービスに関するお問い合わせは、本サービス内のお問い合わせフォームよりご連絡ください。</p>
+    <p>
+      facing株式会社<br>
+      〒103-0004 東京都中央区東日本橋2-22-1 クロスシー東日本橋ビル2F<br>
+      TEL: 03-6667-0655 ／ Mail: <a href="mailto:cslink@facing.co.jp" style="color:var(--teal-d);text-decoration:none;">cslink@facing.co.jp</a><br>
+      本サービス内のお問い合わせフォームからもご連絡いただけます。
+    </p>
   </div>
 </div>
 
@@ -142,10 +212,12 @@ li{margin-bottom:6px;}
   <div class="footer-links">
     <a href="index.html">トップ</a>
     <a href="terms.html">利用規約</a>
+    <a href="terms.html#tokushoho">特商法表記</a>
     <a href="privacy.html">プライバシーポリシー</a>
     <a href="company.html">会社概要</a>
   </div>
-  <p>© 2026 facing株式会社 All Rights Reserved.</p>
+  <p>© <span id="copyYear">2026</span> facing株式会社 All Rights Reserved.</p>
 </footer>
+<script>document.getElementById('copyYear').textContent=new Date().getFullYear();</script>
 </body>
 </html>

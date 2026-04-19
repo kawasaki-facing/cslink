@@ -5,20 +5,23 @@
  * 1. プロ登録用のGoogleスプレッドシートを開く
  * 2. 拡張機能 → Apps Script
  * 3. このコード全文を貼り付け
- * 4. 上部の SHEET_ID を実際のスプレッドシートIDに書き換え
- *    （URL の https://docs.google.com/spreadsheets/d/【ここ】/edit の部分）
- * 5. 上部の NOTIFY_EMAIL を確認（デフォルト: kawasaki@facing.co.jp）
- * 6. デプロイ → 新しいデプロイ → 種類: ウェブアプリ
+ * 4. Apps Scriptエディタで「プロジェクトの設定（歯車アイコン）」→「スクリプト プロパティ」を開き、
+ *    以下のキーを登録してください（コード内にハードコーディングしない運用）:
+ *      - SHEET_ID       : プロ登録シートのID（URL の /spreadsheets/d/【ここ】/edit の部分）
+ *      - NOTIFY_EMAIL   : 通知先メール（未設定なら kawasaki@facing.co.jp がデフォルト）
+ * 5. デプロイ → 新しいデプロイ → 種類: ウェブアプリ
  *    - 実行ユーザー: 自分
  *    - アクセスできるユーザー: 全員
- * 7. デプロイされたURLを Cloudflare Worker の GAS_PRO_URL 環境変数に設定
+ * 6. デプロイされたURLを Cloudflare Worker の GAS_PRO_URL 環境変数に設定
  */
 
-// ==================== 設定 ====================
-const SHEET_ID = 'ここにプロ登録シートのIDを貼り付け';
+// ==================== 設定（Script Properties から取得） ====================
+const props = PropertiesService.getScriptProperties();
+const SHEET_ID = props.getProperty('SHEET_ID');
+const NOTIFY_EMAIL = props.getProperty('NOTIFY_EMAIL') || 'kawasaki@facing.co.jp';
 const SHEET_NAME = 'プロ登録'; // タブ名
-const NOTIFY_EMAIL = 'kawasaki@facing.co.jp';
-// ===============================================
+if (!SHEET_ID) throw new Error('SHEET_ID not set in Script Properties');
+// ============================================================================
 
 // ヘッダー行（初回実行時に自動作成）
 const HEADERS = [
@@ -140,36 +143,3 @@ function notifyByEmail(d) {
   });
 }
 
-// デバッグ用：Apps Scriptエディタで直接実行できるテスト関数
-function testDoPost() {
-  const testData = {
-    submitted_at: new Date().toLocaleString('ja-JP'),
-    last_name: 'テスト',
-    first_name: '太郎',
-    name: 'テスト 太郎',
-    email: 'test@example.com',
-    tel: '090-0000-0000',
-    affiliation: 'フリーランス・個人事業主',
-    company_name: '',
-    experience: '5〜10年',
-    role: 'CSマネージャー',
-    industries: 'SaaS、Eコマース',
-    specialties: '解約率改善、オンボーディング設計',
-    achievement: 'SaaS企業で月次解約率を3.2%から1.1%に改善した実績があります。',
-    pr: 'BtoB SaaSのCSが得意です。エンタープライズ向けの戦略設計に強みがあります。',
-    worktypes: '週3〜4',
-    rate: '50〜80万円/月',
-    hourly: '',
-    availability: '1ヶ月以内',
-    location: 'フルリモート',
-    portfolio: '',
-    memo: '',
-    ai_status: 'pass',
-    ai_score: 82,
-    ai_comment: 'CSの専門性が高く、実績にも数値がある。マッチ案件提案に進みます。',
-    source: 'CSLINKプロ登録フォーム（テスト）'
-  };
-  writeToSheet(buildRow(testData));
-  notifyByEmail(testData);
-  console.log('テスト完了');
-}

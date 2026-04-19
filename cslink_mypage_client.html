@@ -192,25 +192,53 @@ const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentCompany = null;
+let isLoggingIn = false;
+const sendingStates = {}; // matchingId -> bool
+
+// ===== DOMヘルパー =====
+function el(tag, opts = {}, children = []){
+  const node = document.createElement(tag);
+  if(opts.className) node.className = opts.className;
+  if(opts.text != null) node.textContent = opts.text;
+  if(opts.attrs){
+    for(const k in opts.attrs){
+      if(opts.attrs[k] != null) node.setAttribute(k, opts.attrs[k]);
+    }
+  }
+  if(opts.style) node.setAttribute('style', opts.style);
+  if(opts.onclick) node.addEventListener('click', opts.onclick);
+  (Array.isArray(children)?children:[children]).forEach(c=>{
+    if(c==null || c===false) return;
+    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return node;
+}
+function clearNode(node){ while(node.firstChild) node.removeChild(node.firstChild); }
 
 async function doLogin(){
+  if(isLoggingIn) return;
   const email = document.getElementById('emailInput').value.trim();
   if(!email){ alert('メールアドレスを入力してください'); return; }
   const btn = document.getElementById('loginBtn');
+  isLoggingIn = true;
   btn.disabled = true; btn.textContent = '確認中…';
 
-  const {data, error} = await db.from('companies').select('*').eq('email', email).single();
-  btn.disabled = false; btn.textContent = 'マイページを表示する →';
+  try {
+    const {data, error} = await db.from('companies').select('*').eq('email', email).single();
 
-  if(error || !data){
-    document.getElementById('loginErr').style.display = 'block';
-    return;
+    if(error || !data){
+      document.getElementById('loginErr').style.display = 'block';
+      return;
+    }
+    currentCompany = data;
+    document.getElementById('loginErr').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'block';
+    renderMain();
+  } finally {
+    isLoggingIn = false;
+    btn.disabled = false; btn.textContent = 'マイページを表示する →';
   }
-  currentCompany = data;
-  document.getElementById('loginErr').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('mainScreen').style.display = 'block';
-  renderMain();
 }
 
 function doLogout(){
@@ -263,12 +291,29 @@ function renderDetail(c){
     {label:'希望開始時期', value:c.starttime},
     {label:'予算感', value:c.budget},
   ];
-  document.getElementById('detailGrid').innerHTML = fields.map(f=>
-    `<div class="detail-item${f.full?' full':''}">
-      <div class="detail-label">${f.label}</div>
-      <div class="detail-value">${esc(f.value||'—')}</div>
-    </div>`
-  ).join('');
+  const grid = document.getElementById('detailGrid');
+  clearNode(grid);
+  fields.forEach(f=>{
+    const item = el('div', {className:'detail-item'+(f.full?' full':'')});
+    item.appendChild(el('div', {className:'detail-label', text: f.label}));
+    item.appendChild(el('div', {className:'detail-value', text: (f.value||'—')}));
+    grid.appendChild(item);
+  });
+}
+
+function renderEmptyState(container, icon, title, desc){
+  clearNode(container);
+  const wrap = el('div', {className:'empty-state'});
+  wrap.appendChild(el('div', {className:'empty-icon', text: icon}));
+  wrap.appendChild(el('div', {className:'empty-title', text: title}));
+  const descNode = el('div', {className:'empty-desc'});
+  // 改行を扱う
+  desc.split('\n').forEach((line, i)=>{
+    if(i>0) descNode.appendChild(document.createElement('br'));
+    descNode.appendChild(document.createTextNode(line));
+  });
+  wrap.appendChild(descNode);
+  container.appendChild(wrap);
 }
 
 async function loadMatchings(companyId){
@@ -276,12 +321,7 @@ async function loadMatchings(companyId){
   const container = document.getElementById('matchingsList');
 
   if(!matchings || !matchings.length){
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <div class="empty-title">マッチング処理中</div>
-        <div class="empty-desc">AIが最適なCSプロを選定中です。<br>マッチングが完了次第、こちらに表示されます。</div>
-      </div>`;
+    renderEmptyState(container, '🔍', 'マッチング処理中', 'AIが最適なCSプロを選定中です。\nマッチングが完了次第、こちらに表示されます。');
     return;
   }
 
@@ -289,36 +329,77 @@ async function loadMatchings(companyId){
   const proIds = matchings.map(m=>m.professional_id);
   const {data:pros} = await db.from('professionals').select('*').in('id', proIds);
 
-  container.innerHTML = matchings.map(m => {
+  clearNode(container);
+  matchings.forEach(m=>{
     const pro = pros?.find(p=>p.id===m.professional_id);
-    if(!pro) return '';
+    if(!pro) return;
     const statusLabel = {proposed:'提案中',accepted:'承諾済',rejected:'見送り',contracted:'成約',closed:'終了'}[m.status]||m.status;
     const badgeClass = 'badge-'+(m.status==='contracted'?'contracted':m.status==='accepted'?'accepted':m.status==='rejected'?'rejected':'proposed');
     const tags = (pro.specialties||'').split('、').filter(Boolean).slice(0,4);
-    return `
-    <div class="match-card" id="match-${m.id}">
-      <div class="match-header">
-        <div>
-          <div class="match-name">${esc(pro.name)}</div>
-          <div class="match-sub">${esc(pro.activity||'')}　|　CS経験 ${esc(pro.experience||'—')}</div>
-          <div style="margin-top:8px"><span class="match-badge ${badgeClass}">${statusLabel}</span></div>
-        </div>
-        <div class="match-score">${m.match_score||'—'}<span>${m.match_score?'% マッチ':''}</span></div>
-      </div>
-      <div class="match-tags">${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.8;background:var(--bg);padding:12px;border-radius:10px;">
-        <strong style="color:var(--navy)">実績：</strong>${esc(pro.achievement||'—').substring(0,150)}${pro.achievement?.length>150?'…':''}
-      </div>
-      <div class="msg-section">
-        <div class="msg-section-title">💬 担当者・CSプロとのメッセージ</div>
-        <div class="msg-list" id="msgs-${m.id}"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">読み込み中...</div></div>
-        <div class="msg-input-row">
-          <input class="msg-input" id="msginput-${m.id}" placeholder="メッセージを入力…">
-          <button class="msg-send" onclick="sendMsg('${m.id}','${companyId}','company')">送信</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+
+    const card = el('div', {className:'match-card', attrs:{id:'match-'+m.id}});
+
+    // ヘッダー
+    const header = el('div', {className:'match-header'});
+    const headerLeft = el('div');
+    headerLeft.appendChild(el('div', {className:'match-name', text: pro.name||''}));
+    headerLeft.appendChild(el('div', {
+      className:'match-sub',
+      text: `${pro.activity||''}　|　CS経験 ${pro.experience||'—'}`
+    }));
+    const badgeWrap = el('div', {style:'margin-top:8px'});
+    badgeWrap.appendChild(el('span', {className:'match-badge '+badgeClass, text: statusLabel}));
+    headerLeft.appendChild(badgeWrap);
+    header.appendChild(headerLeft);
+
+    const score = el('div', {className:'match-score'});
+    score.appendChild(document.createTextNode(m.match_score||'—'));
+    score.appendChild(el('span', {text: m.match_score?'% マッチ':''}));
+    header.appendChild(score);
+    card.appendChild(header);
+
+    // タグ
+    const tagWrap = el('div', {className:'match-tags'});
+    tags.forEach(t=> tagWrap.appendChild(el('span', {className:'tag', text: t})));
+    card.appendChild(tagWrap);
+
+    // 実績
+    const achievementRaw = String(pro.achievement||'—');
+    const achievementText = achievementRaw.length>150 ? achievementRaw.substring(0,150)+'…' : achievementRaw;
+    const achievementBox = el('div', {
+      style:'font-size:13px;color:var(--muted);line-height:1.8;background:var(--bg);padding:12px;border-radius:10px;'
+    });
+    achievementBox.appendChild(el('strong', {style:'color:var(--navy)', text:'実績：'}));
+    achievementBox.appendChild(document.createTextNode(achievementText));
+    card.appendChild(achievementBox);
+
+    // メッセージセクション
+    const msgSection = el('div', {className:'msg-section'});
+    msgSection.appendChild(el('div', {className:'msg-section-title', text:'💬 担当者・CSプロとのメッセージ'}));
+    const msgList = el('div', {className:'msg-list', attrs:{id:'msgs-'+m.id}});
+    msgList.appendChild(el('div', {
+      style:'text-align:center;color:var(--muted);font-size:13px;padding:20px',
+      text:'読み込み中...'
+    }));
+    msgSection.appendChild(msgList);
+
+    const inputRow = el('div', {className:'msg-input-row'});
+    const input = el('input', {
+      className:'msg-input',
+      attrs:{id:'msginput-'+m.id, placeholder:'メッセージを入力…'}
+    });
+    inputRow.appendChild(input);
+    const sendBtn = el('button', {
+      className:'msg-send', text:'送信',
+      attrs:{id:'msgbtn-'+m.id},
+      onclick: ()=> sendMsg(m.id, companyId, 'company')
+    });
+    inputRow.appendChild(sendBtn);
+    msgSection.appendChild(inputRow);
+    card.appendChild(msgSection);
+
+    container.appendChild(card);
+  });
 
   // メッセージ読み込み
   for(const m of matchings){
@@ -330,36 +411,56 @@ async function loadMessages(matchingId, companyId){
   const {data:msgs} = await db.from('messages').select('*').eq('matching_id',matchingId).order('created_at');
   const container = document.getElementById('msgs-'+matchingId);
   if(!container) return;
+  clearNode(container);
   if(!msgs||!msgs.length){
-    container.innerHTML='<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">まだメッセージはありません</div>';
+    container.appendChild(el('div', {
+      style:'text-align:center;color:var(--muted);font-size:13px;padding:20px',
+      text:'まだメッセージはありません'
+    }));
     return;
   }
-  container.innerHTML = msgs.map(msg=>{
+  const who = {company:'あなた',professional:'CSプロ',admin:'CSLINK運営'};
+  msgs.forEach(msg=>{
     const ismine = msg.sender_type==='company' && msg.sender_id===companyId;
     const isadmin = msg.sender_type==='admin';
     const cls = ismine?'mine':isadmin?'admin':'theirs';
-    const who = {company:'あなた',professional:'CSプロ',admin:'CSLINK運営'}[msg.sender_type];
-    return `<div class="msg-bubble ${cls}">
-      ${esc(msg.content)}
-      <div class="msg-meta">${who} · ${fmtDate(msg.created_at)}</div>
-    </div>`;
-  }).join('');
+    const bubble = el('div', {className:'msg-bubble '+cls});
+    bubble.appendChild(document.createTextNode(msg.content||''));
+    bubble.appendChild(el('div', {
+      className:'msg-meta',
+      text: `${who[msg.sender_type]||msg.sender_type} · ${fmtDate(msg.created_at)}`
+    }));
+    container.appendChild(bubble);
+  });
   container.scrollTop = container.scrollHeight;
 }
 
 async function sendMsg(matchingId, senderId, senderType){
+  if(sendingStates[matchingId]) return;
   const input = document.getElementById('msginput-'+matchingId);
+  const btn = document.getElementById('msgbtn-'+matchingId);
   const content = input?.value.trim();
   if(!content) return;
-  const {error} = await db.from('messages').insert({
-    matching_id: matchingId,
-    sender_type: senderType,
-    sender_id: senderId,
-    content
-  });
-  if(error){alert('送信に失敗しました'); return;}
-  input.value = '';
-  await loadMessages(matchingId, senderId);
+
+  sendingStates[matchingId] = true;
+  if(btn){ btn.disabled = true; btn.textContent = '送信中…'; }
+  if(input) input.disabled = true;
+
+  try {
+    const {error} = await db.from('messages').insert({
+      matching_id: matchingId,
+      sender_type: senderType,
+      sender_id: senderId,
+      content
+    });
+    if(error){ alert('送信に失敗しました'); return; }
+    if(input) input.value = '';
+    await loadMessages(matchingId, senderId);
+  } finally {
+    sendingStates[matchingId] = false;
+    if(btn){ btn.disabled = false; btn.textContent = '送信'; }
+    if(input) input.disabled = false;
+  }
 }
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}

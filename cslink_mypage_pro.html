@@ -182,25 +182,54 @@ const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentPro = null;
+let isLoggingIn = false;
+let isResponding = false;
+const sendingStates = {}; // matchingId -> bool
+
+// ===== DOMヘルパー =====
+function el(tag, opts = {}, children = []){
+  const node = document.createElement(tag);
+  if(opts.className) node.className = opts.className;
+  if(opts.text != null) node.textContent = opts.text;
+  if(opts.attrs){
+    for(const k in opts.attrs){
+      if(opts.attrs[k] != null) node.setAttribute(k, opts.attrs[k]);
+    }
+  }
+  if(opts.style) node.setAttribute('style', opts.style);
+  if(opts.onclick) node.addEventListener('click', opts.onclick);
+  (Array.isArray(children)?children:[children]).forEach(c=>{
+    if(c==null || c===false) return;
+    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return node;
+}
+function clearNode(node){ while(node.firstChild) node.removeChild(node.firstChild); }
 
 async function doLogin(){
+  if(isLoggingIn) return;
   const email = document.getElementById('emailInput').value.trim();
   if(!email){ alert('メールアドレスを入力してください'); return; }
   const btn = document.getElementById('loginBtn');
+  isLoggingIn = true;
   btn.disabled = true; btn.textContent = '確認中…';
 
-  const {data, error} = await db.from('professionals').select('*').eq('email', email).single();
-  btn.disabled = false; btn.textContent = 'マイページを表示する →';
+  try {
+    const {data, error} = await db.from('professionals').select('*').eq('email', email).single();
 
-  if(error || !data){
-    document.getElementById('loginErr').style.display = 'block';
-    return;
+    if(error || !data){
+      document.getElementById('loginErr').style.display = 'block';
+      return;
+    }
+    currentPro = data;
+    document.getElementById('loginErr').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'block';
+    renderMain();
+  } finally {
+    isLoggingIn = false;
+    btn.disabled = false; btn.textContent = 'マイページを表示する →';
   }
-  currentPro = data;
-  document.getElementById('loginErr').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('mainScreen').style.display = 'block';
-  renderMain();
 }
 
 function doLogout(){
@@ -246,12 +275,28 @@ function renderProfile(p){
     {label:'稼働可能時期', value:p.starttime},
     {label:'支援実績', value:p.achievement, full:true},
   ];
-  document.getElementById('profileGrid').innerHTML = fields.map(f=>
-    `<div class="detail-item${f.full?' full':''}">
-      <div class="detail-label">${f.label}</div>
-      <div class="detail-value">${esc(f.value||'—')}</div>
-    </div>`
-  ).join('');
+  const grid = document.getElementById('profileGrid');
+  clearNode(grid);
+  fields.forEach(f=>{
+    const item = el('div', {className:'detail-item'+(f.full?' full':'')});
+    item.appendChild(el('div', {className:'detail-label', text: f.label}));
+    item.appendChild(el('div', {className:'detail-value', text: (f.value||'—')}));
+    grid.appendChild(item);
+  });
+}
+
+function renderEmptyState(container, icon, title, desc){
+  clearNode(container);
+  const wrap = el('div', {className:'empty-state'});
+  wrap.appendChild(el('div', {className:'empty-icon', text: icon}));
+  wrap.appendChild(el('div', {className:'empty-title', text: title}));
+  const descNode = el('div', {className:'empty-desc'});
+  desc.split('\n').forEach((line, i)=>{
+    if(i>0) descNode.appendChild(document.createElement('br'));
+    descNode.appendChild(document.createTextNode(line));
+  });
+  wrap.appendChild(descNode);
+  container.appendChild(wrap);
 }
 
 async function loadJobs(proId){
@@ -259,54 +304,99 @@ async function loadJobs(proId){
   const container = document.getElementById('jobsList');
 
   if(!matchings || !matchings.length){
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📋</div>
-        <div class="empty-title">案件マッチング待ち</div>
-        <div class="empty-desc">審査通過後、CSLINKが最適な企業案件をマッチングします。<br>マッチングされた案件はこちらに表示されます。</div>
-      </div>`;
+    renderEmptyState(container, '📋', '案件マッチング待ち', '審査通過後、CSLINKが最適な企業案件をマッチングします。\nマッチングされた案件はこちらに表示されます。');
     return;
   }
 
   const companyIds = matchings.map(m=>m.company_id);
   const {data:companies} = await db.from('companies').select('*').in('id', companyIds);
 
-  container.innerHTML = matchings.map(m => {
+  clearNode(container);
+  matchings.forEach(m=>{
     const company = companies?.find(c=>c.id===m.company_id);
-    if(!company) return '';
+    if(!company) return;
     const statusLabel = {proposed:'提案中',accepted:'対応中',rejected:'見送り',contracted:'成約',closed:'終了'}[m.status]||m.status;
     const badgeClass = 'badge-'+(m.status==='contracted'?'contracted':m.status==='accepted'?'accepted':m.status==='rejected'?'rejected':'proposed');
     const challenges = (company.challenges||'').split('、').filter(Boolean).slice(0,4);
     const canRespond = m.status === 'proposed';
-    return `
-    <div class="job-card" id="job-${m.id}">
-      <div class="job-header">
-        <div>
-          <div class="job-company">${esc(company.name)}</div>
-          <div class="job-sub">${esc(company.industry||'—')}　|　${esc(company.size||'—')}</div>
-          <div style="margin-top:8px"><span class="job-status ${badgeClass}">${statusLabel}</span></div>
-        </div>
-      </div>
-      <div class="job-tags">${challenges.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
-      <div class="job-detail">
-        <strong>CS課題：</strong>${esc(company.detail||company.challenges||'—')}<br>
-        <strong>希望稼働：</strong>${esc(company.worktype||'—')}　<strong>開始希望：</strong>${esc(company.starttime||'—')}　<strong>予算：</strong>${esc(company.budget||'—')}
-      </div>
-      ${canRespond?`
-      <div class="action-row">
-        <button class="btn-accept" onclick="respondToMatch('${m.id}','accepted')">✓ この案件を受ける</button>
-        <button class="btn-decline" onclick="respondToMatch('${m.id}','rejected')">見送る</button>
-      </div>`:''}
-      <div class="msg-section">
-        <div class="msg-section-title">💬 担当者・企業とのメッセージ</div>
-        <div class="msg-list" id="msgs-${m.id}"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">読み込み中...</div></div>
-        <div class="msg-input-row">
-          <input class="msg-input" id="msginput-${m.id}" placeholder="メッセージを入力…">
-          <button class="msg-send" onclick="sendMsg('${m.id}','${proId}','professional')">送信</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+
+    const card = el('div', {className:'job-card', attrs:{id:'job-'+m.id}});
+
+    // ヘッダー
+    const header = el('div', {className:'job-header'});
+    const headerLeft = el('div');
+    headerLeft.appendChild(el('div', {className:'job-company', text: company.name||''}));
+    headerLeft.appendChild(el('div', {
+      className:'job-sub',
+      text: `${company.industry||'—'}　|　${company.size||'—'}`
+    }));
+    const badgeWrap = el('div', {style:'margin-top:8px'});
+    badgeWrap.appendChild(el('span', {className:'job-status '+badgeClass, text: statusLabel}));
+    headerLeft.appendChild(badgeWrap);
+    header.appendChild(headerLeft);
+    card.appendChild(header);
+
+    // タグ
+    const tagWrap = el('div', {className:'job-tags'});
+    challenges.forEach(t=> tagWrap.appendChild(el('span', {className:'tag', text: t})));
+    card.appendChild(tagWrap);
+
+    // 案件詳細
+    const detail = el('div', {className:'job-detail'});
+    detail.appendChild(el('strong', {text:'CS課題：'}));
+    detail.appendChild(document.createTextNode(company.detail||company.challenges||'—'));
+    detail.appendChild(document.createElement('br'));
+    detail.appendChild(el('strong', {text:'希望稼働：'}));
+    detail.appendChild(document.createTextNode((company.worktype||'—')+'　'));
+    detail.appendChild(el('strong', {text:'開始希望：'}));
+    detail.appendChild(document.createTextNode((company.starttime||'—')+'　'));
+    detail.appendChild(el('strong', {text:'予算：'}));
+    detail.appendChild(document.createTextNode(company.budget||'—'));
+    card.appendChild(detail);
+
+    // アクションボタン
+    if(canRespond){
+      const actionRow = el('div', {className:'action-row'});
+      const acceptBtn = el('button', {
+        className:'btn-accept', text:'✓ この案件を受ける',
+        attrs:{id:'accept-'+m.id},
+        onclick: ()=> respondToMatch(m.id, 'accepted')
+      });
+      const declineBtn = el('button', {
+        className:'btn-decline', text:'見送る',
+        attrs:{id:'decline-'+m.id},
+        onclick: ()=> respondToMatch(m.id, 'rejected')
+      });
+      actionRow.appendChild(acceptBtn);
+      actionRow.appendChild(declineBtn);
+      card.appendChild(actionRow);
+    }
+
+    // メッセージセクション
+    const msgSection = el('div', {className:'msg-section'});
+    msgSection.appendChild(el('div', {className:'msg-section-title', text:'💬 担当者・企業とのメッセージ'}));
+    const msgList = el('div', {className:'msg-list', attrs:{id:'msgs-'+m.id}});
+    msgList.appendChild(el('div', {
+      style:'text-align:center;color:var(--muted);font-size:13px;padding:20px',
+      text:'読み込み中...'
+    }));
+    msgSection.appendChild(msgList);
+
+    const inputRow = el('div', {className:'msg-input-row'});
+    inputRow.appendChild(el('input', {
+      className:'msg-input',
+      attrs:{id:'msginput-'+m.id, placeholder:'メッセージを入力…'}
+    }));
+    inputRow.appendChild(el('button', {
+      className:'msg-send', text:'送信',
+      attrs:{id:'msgbtn-'+m.id},
+      onclick: ()=> sendMsg(m.id, proId, 'professional')
+    }));
+    msgSection.appendChild(inputRow);
+    card.appendChild(msgSection);
+
+    container.appendChild(card);
+  });
 
   for(const m of matchings){
     await loadMessages(m.id, proId);
@@ -314,47 +404,80 @@ async function loadJobs(proId){
 }
 
 async function respondToMatch(matchingId, status){
+  if(isResponding) return;
   const label = status==='accepted'?'この案件を受ける':'見送る';
   if(!confirm(`「${label}」でよろしいですか？`)) return;
-  const {error} = await db.from('matchings').update({status}).eq('id', matchingId);
-  if(error){alert('更新に失敗しました'); return;}
-  await loadJobs(currentPro.id);
+
+  isResponding = true;
+  const acceptBtn = document.getElementById('accept-'+matchingId);
+  const declineBtn = document.getElementById('decline-'+matchingId);
+  if(acceptBtn) acceptBtn.disabled = true;
+  if(declineBtn) declineBtn.disabled = true;
+
+  try {
+    const {error} = await db.from('matchings').update({status}).eq('id', matchingId);
+    if(error){ alert('更新に失敗しました'); return; }
+    await loadJobs(currentPro.id);
+  } finally {
+    isResponding = false;
+    // loadJobsで再描画されるためボタン復帰は不要
+  }
 }
 
 async function loadMessages(matchingId, proId){
   const {data:msgs} = await db.from('messages').select('*').eq('matching_id',matchingId).order('created_at');
   const container = document.getElementById('msgs-'+matchingId);
   if(!container) return;
+  clearNode(container);
   if(!msgs||!msgs.length){
-    container.innerHTML='<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px">まだメッセージはありません</div>';
+    container.appendChild(el('div', {
+      style:'text-align:center;color:var(--muted);font-size:13px;padding:20px',
+      text:'まだメッセージはありません'
+    }));
     return;
   }
-  container.innerHTML = msgs.map(msg=>{
+  const who = {company:'企業担当者',professional:'あなた',admin:'CSLINK運営'};
+  msgs.forEach(msg=>{
     const ismine = msg.sender_type==='professional' && msg.sender_id===proId;
     const isadmin = msg.sender_type==='admin';
     const cls = ismine?'mine':isadmin?'admin':'theirs';
-    const who = {company:'企業担当者',professional:'あなた',admin:'CSLINK運営'}[msg.sender_type];
-    return `<div class="msg-bubble ${cls}">
-      ${esc(msg.content)}
-      <div class="msg-meta">${who} · ${fmtDate(msg.created_at)}</div>
-    </div>`;
-  }).join('');
+    const bubble = el('div', {className:'msg-bubble '+cls});
+    bubble.appendChild(document.createTextNode(msg.content||''));
+    bubble.appendChild(el('div', {
+      className:'msg-meta',
+      text: `${who[msg.sender_type]||msg.sender_type} · ${fmtDate(msg.created_at)}`
+    }));
+    container.appendChild(bubble);
+  });
   container.scrollTop = container.scrollHeight;
 }
 
 async function sendMsg(matchingId, senderId, senderType){
+  if(sendingStates[matchingId]) return;
   const input = document.getElementById('msginput-'+matchingId);
+  const btn = document.getElementById('msgbtn-'+matchingId);
   const content = input?.value.trim();
   if(!content) return;
-  const {error} = await db.from('messages').insert({
-    matching_id: matchingId,
-    sender_type: senderType,
-    sender_id: senderId,
-    content
-  });
-  if(error){alert('送信に失敗しました'); return;}
-  input.value = '';
-  await loadMessages(matchingId, senderId);
+
+  sendingStates[matchingId] = true;
+  if(btn){ btn.disabled = true; btn.textContent = '送信中…'; }
+  if(input) input.disabled = true;
+
+  try {
+    const {error} = await db.from('messages').insert({
+      matching_id: matchingId,
+      sender_type: senderType,
+      sender_id: senderId,
+      content
+    });
+    if(error){ alert('送信に失敗しました'); return; }
+    if(input) input.value = '';
+    await loadMessages(matchingId, senderId);
+  } finally {
+    sendingStates[matchingId] = false;
+    if(btn){ btn.disabled = false; btn.textContent = '送信'; }
+    if(input) input.disabled = false;
+  }
 }
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}

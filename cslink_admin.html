@@ -1,4 +1,31 @@
 <!DOCTYPE html>
+<!--
+  管理画面セットアップ（初回のみ）:
+  1. Supabase → Authentication → Users → "Add user" で管理者メアド作成（Auto Confirm ON）
+  2. Supabase → SQL Editor で下記を実行:
+
+     CREATE TABLE IF NOT EXISTS admin_users (
+       email TEXT PRIMARY KEY,
+       created_at TIMESTAMPTZ DEFAULT NOW()
+     );
+     INSERT INTO admin_users (email) VALUES ('kawasaki@facing.co.jp') ON CONFLICT DO NOTHING;
+
+     CREATE OR REPLACE FUNCTION is_admin() RETURNS BOOLEAN AS $$
+       SELECT EXISTS (SELECT 1 FROM admin_users WHERE email = (auth.jwt() ->> 'email'));
+     $$ LANGUAGE SQL SECURITY DEFINER;
+
+     ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
+     ALTER TABLE professionals ENABLE ROW LEVEL SECURITY;
+     ALTER TABLE matchings ENABLE ROW LEVEL SECURITY;
+     ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+
+     CREATE POLICY "admin_full_access" ON companies FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+     CREATE POLICY "admin_full_access" ON professionals FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+     CREATE POLICY "admin_full_access" ON matchings FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+     CREATE POLICY "admin_full_access" ON messages FOR ALL USING (is_admin()) WITH CHECK (is_admin());
+
+     -- （一般ユーザー向け RLS は cslink_mypage_*.html 側で別途設定）
+-->
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -11,19 +38,24 @@
 body{font-family:'Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
 /* ログイン画面 */
-#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-m) 100%);}
-.login-card{background:var(--white);border-radius:20px;padding:48px 40px;width:380px;box-shadow:0 24px 64px rgba(0,0,0,0.3);}
-.login-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px;}
-.login-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--teal),#0891b2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;}
-.login-logo span{font-size:22px;font-weight:800;color:var(--navy);}
-.login-logo b{color:var(--teal);}
-.login-subtitle{text-align:center;font-size:13px;color:var(--muted);margin-bottom:32px;}
-.login-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;display:block;}
-.login-input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;outline:none;transition:border .2s;}
+#loginScreen{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(15,35,66,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+.login-card{background:#fff;border-radius:20px;padding:44px 40px;width:min(420px,92vw);box-shadow:0 20px 60px rgba(6,182,212,0.25), 0 0 0 1px rgba(6,182,212,0.15);animation:cardIn .5s ease;}
+.login-logo{display:flex;flex-direction:column;align-items:center;gap:10px;justify-content:center;margin-bottom:24px;}
+.nav-logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--teal),#0891b2);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;letter-spacing:0.5px;}
+.login-admin-label{font-size:11px;font-weight:700;color:var(--teal);letter-spacing:3px;text-align:center;}
+.login-title{text-align:center;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:28px;}
+.login-field{margin-bottom:18px;}
+.login-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;display:block;letter-spacing:1px;}
+.login-input{width:100%;border:none;border-bottom:1.5px solid rgba(6,182,212,0.2);padding:12px 2px;font-size:14px;outline:none;transition:border-color .2s;background:transparent;color:var(--text);}
 .login-input:focus{border-color:var(--teal);}
-.login-btn{width:100%;padding:14px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px;transition:all .2s;}
-.login-btn:hover{background:#0891b2;transform:translateY(-1px);}
-.login-err{color:var(--err);font-size:13px;text-align:center;margin-top:12px;display:none;}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--teal),#0891b2);color:#fff;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;box-shadow:0 8px 24px rgba(6,182,212,0.35);transition:transform .2s;}
+.login-btn:hover{transform:translateY(-1px);}
+.login-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.login-err{color:#ef4444;font-size:12px;margin-top:8px;min-height:18px;text-align:center;}
+.login-err.shake{animation:shake .4s;}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden;}}
 
 /* メイン画面 */
 #mainScreen{display:none;}
@@ -130,14 +162,20 @@ body{font-family:'Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);col
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-icon">CS</div>
-      <span>CS<b>LINK</b></span>
+      <div class="nav-logo-icon">CS</div>
+      <div class="login-admin-label">ADMIN ACCESS</div>
     </div>
-    <p class="login-subtitle">運営管理画面 — facing株式会社専用</p>
-    <label class="login-label">管理パスワード</label>
-    <input type="password" class="login-input" id="pwInput" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">ログイン</button>
-    <p class="login-err" id="loginErr">パスワードが違います</p>
+    <h2 class="login-title">管理者ログイン</h2>
+    <div class="login-field">
+      <label class="login-label" for="emailInput">EMAIL</label>
+      <input type="email" class="login-input" id="emailInput" placeholder="admin@example.com" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-field">
+      <label class="login-label" for="pwInput">PASSWORD</label>
+      <input type="password" class="login-input" id="pwInput" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">ログイン</button>
+    <p class="login-err" id="loginErr"></p>
   </div>
 </div>
 
@@ -298,31 +336,135 @@ body{font-family:'Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);col
 // ===== Supabase設定 =====
 const SUPABASE_URL = 'https://xatjfhleqgubgrnqzxrs.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_TWPuwEddFu3sgGDGSlnFFA_HaLiP7Tw';
-const ADMIN_PASSWORD = 'facing0610';
 
 const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    storage: localStorage
+  }
+});
 
 // データキャッシュ
 let allCompanies = [];
 let allProfessionals = [];
 let allMatchings = [];
 
+// AbortController（ポーリング用）
+let currentLoadController = null;
+
+// ===== DOM構築ヘルパー =====
+function el(tag, opts = {}, children = []){
+  const node = document.createElement(tag);
+  if(opts.className) node.className = opts.className;
+  if(opts.text != null) node.textContent = opts.text;
+  if(opts.html != null) node.innerHTML = opts.html; // 信頼できる固定文字列のみ
+  if(opts.attrs){
+    for(const k in opts.attrs){
+      if(opts.attrs[k] != null) node.setAttribute(k, opts.attrs[k]);
+    }
+  }
+  if(opts.style) node.setAttribute('style', opts.style);
+  if(opts.onclick) node.addEventListener('click', opts.onclick);
+  if(opts.onchange) node.addEventListener('change', opts.onchange);
+  (Array.isArray(children)?children:[children]).forEach(c=>{
+    if(c==null || c===false) return;
+    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return node;
+}
+function clearNode(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+
 // ===== ログイン =====
-function doLogin(){
-  const pw = document.getElementById('pwInput').value;
-  if(pw === ADMIN_PASSWORD){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('mainScreen').style.display='block';
-    loadAll();
-  } else {
-    document.getElementById('loginErr').style.display='block';
+function showLoginError(msg){
+  const err = document.getElementById('loginErr');
+  err.textContent = msg;
+  err.classList.remove('shake');
+  // reflow でアニメーションを再トリガ
+  void err.offsetWidth;
+  err.classList.add('shake');
+}
+
+function clearLoginError(){
+  const err = document.getElementById('loginErr');
+  err.textContent = '';
+  err.classList.remove('shake');
+}
+
+function hideLoginOverlay(){
+  const overlay = document.getElementById('loginScreen');
+  overlay.style.animation = 'fadeOut .4s forwards';
+  // アニメーション後に完全非表示
+  setTimeout(()=>{
+    overlay.style.display = 'none';
+    // 再ログインのためリセット
+    overlay.style.animation = '';
+    overlay.style.opacity = '';
+    overlay.style.visibility = '';
+  }, 420);
+  document.getElementById('mainScreen').style.display='block';
+}
+
+function showLoginOverlay(){
+  const overlay = document.getElementById('loginScreen');
+  overlay.style.animation = '';
+  overlay.style.opacity = '';
+  overlay.style.visibility = '';
+  overlay.style.display = 'flex';
+  document.getElementById('mainScreen').style.display='none';
+  document.getElementById('pwInput').value = '';
+  document.getElementById('emailInput').value = '';
+  clearLoginError();
+}
+
+async function doLogin(){
+  const email = document.getElementById('emailInput').value.trim();
+  const password = document.getElementById('pwInput').value;
+  const btn = document.getElementById('loginBtn');
+
+  if(!email || !password){
+    showLoginError('メールアドレスとパスワードを入力してください');
+    return;
+  }
+
+  btn.disabled = true;
+  clearLoginError();
+
+  try {
+    const { data, error } = await db.auth.signInWithPassword({ email, password });
+    if(error){
+      showLoginError('メールアドレスまたはパスワードが正しくありません');
+      btn.disabled = false;
+      return;
+    }
+
+    // 管理者権限チェック
+    const { data: adminCheck } = await db
+      .from('admin_users')
+      .select('email')
+      .eq('email', data.user.email)
+      .maybeSingle();
+
+    if(!adminCheck){
+      await db.auth.signOut();
+      showLoginError('このアカウントには管理者権限がありません');
+      btn.disabled = false;
+      return;
+    }
+
+    hideLoginOverlay();
+    await loadAll();
+  } catch(e){
+    showLoginError('ログインに失敗しました。時間をおいて再試行してください');
+  } finally {
+    btn.disabled = false;
   }
 }
-function doLogout(){
-  document.getElementById('mainScreen').style.display='none';
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('pwInput').value='';
+
+async function doLogout(){
+  try { await db.auth.signOut(); } catch(e){}
+  showLoginOverlay();
 }
 
 // ===== タブ切り替え =====
@@ -337,43 +479,70 @@ function switchTab(name){
 
 // ===== データ読み込み =====
 async function loadAll(){
-  await Promise.all([loadCompanies(), loadProfessionals(), loadMatchings(), loadMessages()]);
-  updateSummary();
-  updateLastUpdated();
+  // 前回のリクエストをキャンセル
+  if(currentLoadController){
+    currentLoadController.abort();
+  }
+  currentLoadController = new AbortController();
+  const signal = currentLoadController.signal;
+
+  try {
+    await Promise.all([
+      loadCompanies(signal),
+      loadProfessionals(signal),
+      loadMatchings(signal),
+      loadMessages(signal)
+    ]);
+    if(signal.aborted) return;
+    updateSummary();
+    updateLastUpdated();
+  } catch(e){
+    if(e && e.name === 'AbortError') return;
+  }
 }
 
-async function loadCompanies(){
-  const {data,error} = await db.from('companies').select('*').order('created_at',{ascending:false});
-  if(error){console.error(error);return;}
+async function loadCompanies(signal){
+  const {data,error} = await db.from('companies').select('*').order('created_at',{ascending:false}).abortSignal(signal);
+  if(signal && signal.aborted) return;
+  if(error){return;}
   allCompanies = data || [];
   renderCompanies(allCompanies);
   document.getElementById('cnt-companies').textContent = allCompanies.length;
   // マッチング作成用セレクト更新
   const sel = document.getElementById('matchCompany');
-  sel.innerHTML = allCompanies.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  clearNode(sel);
+  allCompanies.forEach(c=>{
+    sel.appendChild(el('option', {attrs:{value:c.id}, text:c.name||''}));
+  });
 }
 
-async function loadProfessionals(){
-  const {data,error} = await db.from('professionals').select('*').order('created_at',{ascending:false});
-  if(error){console.error(error);return;}
+async function loadProfessionals(signal){
+  const {data,error} = await db.from('professionals').select('*').order('created_at',{ascending:false}).abortSignal(signal);
+  if(signal && signal.aborted) return;
+  if(error){return;}
   allProfessionals = data || [];
   renderProfessionals(allProfessionals);
   document.getElementById('cnt-professionals').textContent = allProfessionals.length;
   // マッチング作成用セレクト更新
   const sel = document.getElementById('matchPro');
-  sel.innerHTML = allProfessionals.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  clearNode(sel);
+  allProfessionals.forEach(p=>{
+    sel.appendChild(el('option', {attrs:{value:p.id}, text:p.name||''}));
+  });
 }
 
-async function loadMatchings(){
-  const {data,error} = await db.from('matchings').select('*').order('created_at',{ascending:false});
-  if(error){console.error(error);return;}
+async function loadMatchings(signal){
+  const {data,error} = await db.from('matchings').select('*').order('created_at',{ascending:false}).abortSignal(signal);
+  if(signal && signal.aborted) return;
+  if(error){return;}
   allMatchings = data || [];
   renderMatchings(allMatchings);
   document.getElementById('cnt-matchings').textContent = allMatchings.length;
 }
 
-async function loadMessages(){
-  const {data} = await db.from('messages').select('*');
+async function loadMessages(signal){
+  const {data} = await db.from('messages').select('*').abortSignal(signal);
+  if(signal && signal.aborted) return;
   const msgs = data || [];
   const unread = msgs.filter(m=>!m.is_read).length;
   document.getElementById('sum-messages').textContent = msgs.length;
@@ -402,13 +571,16 @@ function updateLastUpdated(){
 }
 
 // ===== ステータスバッジ =====
+const BADGE_MAP = {
+  pending:'未確認',reviewing:'確認中',approved:'承認済',matched:'マッチング済',
+  rejected:'拒否',closed:'終了',proposed:'提案中',accepted:'承諾',contracted:'成約'
+};
+function badgeNode(status){
+  return el('span', {className:'badge badge-'+status, text: BADGE_MAP[status]||status});
+}
 function badge(status){
-  const map={
-    pending:'未確認',reviewing:'確認中',approved:'承認済',matched:'マッチング済',
-    rejected:'否認',closed:'クローズ',proposed:'提案中',accepted:'承諾',
-    rejected:'拒否',contracted:'成約',closed:'終了'
-  };
-  return `<span class="badge badge-${status}">${map[status]||status}</span>`;
+  // 旧API: 文字列を返すが、DOMに差し込む箇所はbadgeNode推奨
+  return `<span class="badge badge-${String(status).replace(/[^a-z_-]/gi,'')}">${esc(BADGE_MAP[status]||status)}</span>`;
 }
 
 // ===== 日付フォーマット =====
@@ -418,74 +590,148 @@ function fmtDate(d){
   return `${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`;
 }
 
+// ===== セレクトボックス生成ヘルパー =====
+function buildStatusSelect(table, id, currentStatus, options){
+  const sel = el('select', {
+    className: 'status-select',
+    onchange: (e)=> updateStatus(table, id, e.target.value)
+  });
+  options.forEach(opt=>{
+    const o = el('option', {attrs:{value:opt.value}, text: opt.label});
+    if(currentStatus === opt.value) o.selected = true;
+    sel.appendChild(o);
+  });
+  return sel;
+}
+
+// ===== 空行ヘルパー =====
+function emptyRow(tbody, colspan, msg){
+  clearNode(tbody);
+  const tr = el('tr');
+  tr.appendChild(el('td', {className:'empty', attrs:{colspan}, text: msg}));
+  tbody.appendChild(tr);
+}
+
 // ===== 企業テーブル描画 =====
 function renderCompanies(data){
   const tbody = document.getElementById('companiesBody');
-  if(!data.length){tbody.innerHTML='<tr><td colspan="8" class="empty">登録企業はありません</td></tr>';return;}
-  tbody.innerHTML = data.map(c=>`
-    <tr>
-      <td><strong>${esc(c.name)}</strong></td>
-      <td>${esc(c.industry||'—')}</td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.challenges||c.detail||'—')}</td>
-      <td>${esc(c.contact_name||'—')}</td>
-      <td><a href="mailto:${esc(c.email)}" style="color:var(--teal)">${esc(c.email)}</a></td>
-      <td>
-        <select class="status-select" onchange="updateStatus('companies','${c.id}',this.value)">
-          ${['pending','reviewing','matched','closed'].map(s=>`<option value="${s}" ${c.status===s?'selected':''}>${{pending:'未確認',reviewing:'確認中',matched:'マッチング済',closed:'クローズ'}[s]}</option>`).join('')}
-        </select>
-      </td>
-      <td>${fmtDate(c.created_at)}</td>
-      <td><button class="btn-detail" onclick="showCompanyDetail('${c.id}')">詳細</button></td>
-    </tr>
-  `).join('');
+  if(!data.length){ emptyRow(tbody, 8, '登録企業はありません'); return; }
+  clearNode(tbody);
+  const COMPANY_STATUS = [
+    {value:'pending',label:'未確認'},
+    {value:'reviewing',label:'確認中'},
+    {value:'matched',label:'マッチング済'},
+    {value:'closed',label:'クローズ'}
+  ];
+  data.forEach(c=>{
+    const tr = el('tr');
+    const tdName = el('td');
+    tdName.appendChild(el('strong', {text: c.name||''}));
+    tr.appendChild(tdName);
+    tr.appendChild(el('td', {text: c.industry||'—'}));
+    tr.appendChild(el('td', {
+      style:'max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap',
+      text: c.challenges||c.detail||'—'
+    }));
+    tr.appendChild(el('td', {text: c.contact_name||'—'}));
+    const tdMail = el('td');
+    tdMail.appendChild(el('a', {
+      attrs:{href:'mailto:'+(c.email||'')},
+      style:'color:var(--teal)',
+      text: c.email||''
+    }));
+    tr.appendChild(tdMail);
+    const tdStatus = el('td');
+    tdStatus.appendChild(buildStatusSelect('companies', c.id, c.status, COMPANY_STATUS));
+    tr.appendChild(tdStatus);
+    tr.appendChild(el('td', {text: fmtDate(c.created_at)}));
+    const tdAction = el('td');
+    tdAction.appendChild(el('button', {
+      className:'btn-detail', text:'詳細',
+      onclick: ()=> showCompanyDetail(c.id)
+    }));
+    tr.appendChild(tdAction);
+    tbody.appendChild(tr);
+  });
 }
 
 // ===== CSプロテーブル描画 =====
 function renderProfessionals(data){
   const tbody = document.getElementById('professionalsBody');
-  if(!data.length){tbody.innerHTML='<tr><td colspan="9" class="empty">登録CSプロはありません</td></tr>';return;}
-  tbody.innerHTML = data.map(p=>`
-    <tr>
-      <td><strong>${esc(p.name)}</strong></td>
-      <td>${esc(p.activity||'—')}</td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.specialties||'—')}</td>
-      <td>${esc(p.experience||'—')}</td>
-      <td>${esc(p.rate||'—')}</td>
-      <td><a href="mailto:${esc(p.email)}" style="color:var(--teal)">${esc(p.email)}</a></td>
-      <td>
-        <select class="status-select" onchange="updateStatus('professionals','${p.id}',this.value)">
-          ${['pending','reviewing','approved','rejected'].map(s=>`<option value="${s}" ${p.status===s?'selected':''}>${{pending:'審査待ち',reviewing:'審査中',approved:'承認済',rejected:'否認'}[s]}</option>`).join('')}
-        </select>
-      </td>
-      <td>${fmtDate(p.created_at)}</td>
-      <td><button class="btn-detail" onclick="showProDetail('${p.id}')">詳細</button></td>
-    </tr>
-  `).join('');
+  if(!data.length){ emptyRow(tbody, 9, '登録CSプロはありません'); return; }
+  clearNode(tbody);
+  const PRO_STATUS = [
+    {value:'pending',label:'審査待ち'},
+    {value:'reviewing',label:'審査中'},
+    {value:'approved',label:'承認済'},
+    {value:'rejected',label:'否認'}
+  ];
+  data.forEach(p=>{
+    const tr = el('tr');
+    const tdName = el('td');
+    tdName.appendChild(el('strong', {text: p.name||''}));
+    tr.appendChild(tdName);
+    tr.appendChild(el('td', {text: p.activity||'—'}));
+    tr.appendChild(el('td', {
+      style:'max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap',
+      text: p.specialties||'—'
+    }));
+    tr.appendChild(el('td', {text: p.experience||'—'}));
+    tr.appendChild(el('td', {text: p.rate||'—'}));
+    const tdMail = el('td');
+    tdMail.appendChild(el('a', {
+      attrs:{href:'mailto:'+(p.email||'')},
+      style:'color:var(--teal)',
+      text: p.email||''
+    }));
+    tr.appendChild(tdMail);
+    const tdStatus = el('td');
+    tdStatus.appendChild(buildStatusSelect('professionals', p.id, p.status, PRO_STATUS));
+    tr.appendChild(tdStatus);
+    tr.appendChild(el('td', {text: fmtDate(p.created_at)}));
+    const tdAction = el('td');
+    tdAction.appendChild(el('button', {
+      className:'btn-detail', text:'詳細',
+      onclick: ()=> showProDetail(p.id)
+    }));
+    tr.appendChild(tdAction);
+    tbody.appendChild(tr);
+  });
 }
 
 // ===== マッチングテーブル描画 =====
 function renderMatchings(data){
   const tbody = document.getElementById('matchingsBody');
-  if(!data.length){tbody.innerHTML='<tr><td colspan="6" class="empty">マッチングはまだありません</td></tr>';return;}
-  tbody.innerHTML = data.map(m=>{
+  if(!data.length){ emptyRow(tbody, 6, 'マッチングはまだありません'); return; }
+  clearNode(tbody);
+  const MATCH_STATUS = [
+    {value:'proposed',label:'提案中'},
+    {value:'accepted',label:'承諾'},
+    {value:'rejected',label:'拒否'},
+    {value:'contracted',label:'成約'},
+    {value:'closed',label:'終了'}
+  ];
+  data.forEach(m=>{
     const company = allCompanies.find(c=>c.id===m.company_id);
     const pro = allProfessionals.find(p=>p.id===m.professional_id);
-    return `
-    <tr>
-      <td><strong>${esc(company?.name||'—')}</strong></td>
-      <td>${esc(pro?.name||'—')}</td>
-      <td>
-        <select class="status-select" onchange="updateStatus('matchings','${m.id}',this.value)">
-          ${['proposed','accepted','rejected','contracted','closed'].map(s=>`<option value="${s}" ${m.status===s?'selected':''}>${{proposed:'提案中',accepted:'承諾',rejected:'拒否',contracted:'成約',closed:'終了'}[s]}</option>`).join('')}
-        </select>
-      </td>
-      <td style="max-width:200px">${esc(m.admin_note||'—')}</td>
-      <td>${fmtDate(m.created_at)}</td>
-      <td>
-        <button class="btn-detail" onclick="showMatchingDetail('${m.id}')">詳細/メモ</button>
-      </td>
-    </tr>
-  `}).join('');
+    const tr = el('tr');
+    const tdCompany = el('td');
+    tdCompany.appendChild(el('strong', {text: company?.name || '—'}));
+    tr.appendChild(tdCompany);
+    tr.appendChild(el('td', {text: pro?.name || '—'}));
+    const tdStatus = el('td');
+    tdStatus.appendChild(buildStatusSelect('matchings', m.id, m.status, MATCH_STATUS));
+    tr.appendChild(tdStatus);
+    tr.appendChild(el('td', {style:'max-width:200px', text: m.admin_note || '—'}));
+    tr.appendChild(el('td', {text: fmtDate(m.created_at)}));
+    const tdAction = el('td');
+    tdAction.appendChild(el('button', {
+      className:'btn-detail', text:'詳細/メモ',
+      onclick: ()=> showMatchingDetail(m.id)
+    }));
+    tr.appendChild(tdAction);
+    tbody.appendChild(tr);
+  });
 }
 
 // ===== ステータス更新 =====
@@ -532,54 +778,74 @@ async function createMatching(){
 }
 
 // ===== 詳細モーダル =====
+function field(label, value, full){
+  const wrap = el('div', {className: 'modal-field'+(full?' full':'')});
+  wrap.appendChild(el('div', {className:'modal-field-label', text: label}));
+  const valNode = el('div', {className:'modal-field-value'});
+  if(value instanceof Node) valNode.appendChild(value);
+  else valNode.textContent = (value==null || value==='') ? '—' : String(value);
+  wrap.appendChild(valNode);
+  return wrap;
+}
+function urlLink(url){
+  if(!url) return document.createTextNode('—');
+  return el('a', {
+    attrs:{href:url, target:'_blank', rel:'noopener noreferrer'},
+    style:'color:var(--teal)',
+    text: url
+  });
+}
+
 function showCompanyDetail(id){
   const c = allCompanies.find(x=>x.id===id);
   if(!c)return;
-  document.getElementById('modalTitle').textContent = `企業詳細：${c.name}`;
-  document.getElementById('modalContent').innerHTML = `
-    <div class="modal-grid">
-      <div class="modal-field"><div class="modal-field-label">会社名</div><div class="modal-field-value">${esc(c.name)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">業種</div><div class="modal-field-value">${esc(c.industry||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">従業員数</div><div class="modal-field-value">${esc(c.size||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">月次売上</div><div class="modal-field-value">${esc(c.revenue||'—')}</div></div>
-      <div class="modal-field full"><div class="modal-field-label">プロダクト概要</div><div class="modal-field-value">${esc(c.product||'—')}</div></div>
-      <div class="modal-field full"><div class="modal-field-label">CS課題（チェック）</div><div class="modal-field-value">${esc(c.challenges||'—')}</div></div>
-      <div class="modal-field full"><div class="modal-field-label">課題詳細</div><div class="modal-field-value">${esc(c.detail||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">希望稼働形態</div><div class="modal-field-value">${esc(c.worktype||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">希望開始時期</div><div class="modal-field-value">${esc(c.starttime||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">予算</div><div class="modal-field-value">${esc(c.budget||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">担当者名</div><div class="modal-field-value">${esc(c.contact_name||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">メール</div><div class="modal-field-value">${esc(c.email)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">電話</div><div class="modal-field-value">${esc(c.tel||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">URL</div><div class="modal-field-value">${c.url?`<a href="${esc(c.url)}" target="_blank" style="color:var(--teal)">${esc(c.url)}</a>`:'—'}</div></div>
-      <div class="modal-field full"><div class="modal-field-label">備考</div><div class="modal-field-value">${esc(c.memo||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">ステータス</div><div class="modal-field-value">${badge(c.status)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">登録日</div><div class="modal-field-value">${fmtDate(c.created_at)}</div></div>
-    </div>`;
+  document.getElementById('modalTitle').textContent = `企業詳細：${c.name||''}`;
+  const content = document.getElementById('modalContent');
+  clearNode(content);
+  const grid = el('div', {className:'modal-grid'});
+  grid.appendChild(field('会社名', c.name));
+  grid.appendChild(field('業種', c.industry));
+  grid.appendChild(field('従業員数', c.size));
+  grid.appendChild(field('月次売上', c.revenue));
+  grid.appendChild(field('プロダクト概要', c.product, true));
+  grid.appendChild(field('CS課題（チェック）', c.challenges, true));
+  grid.appendChild(field('課題詳細', c.detail, true));
+  grid.appendChild(field('希望稼働形態', c.worktype));
+  grid.appendChild(field('希望開始時期', c.starttime));
+  grid.appendChild(field('予算', c.budget));
+  grid.appendChild(field('担当者名', c.contact_name));
+  grid.appendChild(field('メール', c.email));
+  grid.appendChild(field('電話', c.tel));
+  grid.appendChild(field('URL', urlLink(c.url)));
+  grid.appendChild(field('備考', c.memo, true));
+  grid.appendChild(field('ステータス', badgeNode(c.status)));
+  grid.appendChild(field('登録日', fmtDate(c.created_at)));
+  content.appendChild(grid);
   document.getElementById('modalOverlay').classList.add('show');
 }
 
 function showProDetail(id){
   const p = allProfessionals.find(x=>x.id===id);
   if(!p)return;
-  document.getElementById('modalTitle').textContent = `CSプロ詳細：${p.name}`;
-  document.getElementById('modalContent').innerHTML = `
-    <div class="modal-grid">
-      <div class="modal-field"><div class="modal-field-label">氏名</div><div class="modal-field-value">${esc(p.name)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">活動形態</div><div class="modal-field-value">${esc(p.activity||'—')}</div></div>
-      <div class="modal-field full"><div class="modal-field-label">専門領域</div><div class="modal-field-value">${esc(p.specialties||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">CS経験年数</div><div class="modal-field-value">${esc(p.experience||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">希望月額単価</div><div class="modal-field-value">${esc(p.rate||'—')}</div></div>
-      <div class="modal-field full"><div class="modal-field-label">支援実績</div><div class="modal-field-value">${esc(p.achievement||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">稼働可能形態</div><div class="modal-field-value">${esc(p.worktype||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">稼働可能時期</div><div class="modal-field-value">${esc(p.starttime||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">メール</div><div class="modal-field-value">${esc(p.email)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">電話</div><div class="modal-field-value">${esc(p.tel||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">LinkedIn/URL</div><div class="modal-field-value">${p.url?`<a href="${esc(p.url)}" target="_blank" style="color:var(--teal)">${esc(p.url)}</a>`:'—'}</div></div>
-      <div class="modal-field full"><div class="modal-field-label">自己PR</div><div class="modal-field-value">${esc(p.memo||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">ステータス</div><div class="modal-field-value">${badge(p.status)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">登録日</div><div class="modal-field-value">${fmtDate(p.created_at)}</div></div>
-    </div>`;
+  document.getElementById('modalTitle').textContent = `CSプロ詳細：${p.name||''}`;
+  const content = document.getElementById('modalContent');
+  clearNode(content);
+  const grid = el('div', {className:'modal-grid'});
+  grid.appendChild(field('氏名', p.name));
+  grid.appendChild(field('活動形態', p.activity));
+  grid.appendChild(field('専門領域', p.specialties, true));
+  grid.appendChild(field('CS経験年数', p.experience));
+  grid.appendChild(field('希望月額単価', p.rate));
+  grid.appendChild(field('支援実績', p.achievement, true));
+  grid.appendChild(field('稼働可能形態', p.worktype));
+  grid.appendChild(field('稼働可能時期', p.starttime));
+  grid.appendChild(field('メール', p.email));
+  grid.appendChild(field('電話', p.tel));
+  grid.appendChild(field('LinkedIn/URL', urlLink(p.url)));
+  grid.appendChild(field('自己PR', p.memo, true));
+  grid.appendChild(field('ステータス', badgeNode(p.status)));
+  grid.appendChild(field('登録日', fmtDate(p.created_at)));
+  content.appendChild(grid);
   document.getElementById('modalOverlay').classList.add('show');
 }
 
@@ -591,35 +857,75 @@ async function showMatchingDetail(id){
 
   // メッセージ取得
   const {data:msgs} = await db.from('messages').select('*').eq('matching_id',id).order('created_at');
+  const messages = msgs || [];
 
   document.getElementById('modalTitle').textContent = `マッチング詳細`;
-  document.getElementById('modalContent').innerHTML = `
-    <div class="modal-grid" style="margin-bottom:24px;">
-      <div class="modal-field"><div class="modal-field-label">企業</div><div class="modal-field-value">${esc(company?.name||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">CSプロ</div><div class="modal-field-value">${esc(pro?.name||'—')}</div></div>
-      <div class="modal-field"><div class="modal-field-label">ステータス</div><div class="modal-field-value">${badge(m.status)}</div></div>
-      <div class="modal-field"><div class="modal-field-label">作成日</div><div class="modal-field-value">${fmtDate(m.created_at)}</div></div>
-    </div>
-    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;">管理メモを更新</div>
-    <textarea id="adminNote" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:13px;min-height:80px;resize:vertical;margin-bottom:12px">${esc(m.admin_note||'')}</textarea>
-    <button onclick="saveNote('${id}')" style="padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:24px">メモを保存</button>
+  const content = document.getElementById('modalContent');
+  clearNode(content);
 
-    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;">メッセージ履歴 (${(msgs||[]).length}件)</div>
-    <div class="msg-area">
-      <div class="msg-list" id="msgList">
-        ${(msgs||[]).map(msg=>`
-          <div class="msg-item msg-${msg.sender_type}">
-            <span style="font-size:10px;color:var(--muted);font-weight:700;">${{admin:'運営',company:'企業',professional:'CSプロ'}[msg.sender_type]} · ${fmtDate(msg.created_at)}</span>
-            <div style="margin-top:4px">${esc(msg.content)}</div>
-          </div>
-        `).join('') || '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">メッセージはありません</div>'}
-      </div>
-      <div class="msg-input-row">
-        <input class="msg-input" id="msgInput" placeholder="運営としてメッセージを送る…">
-        <button class="msg-send" onclick="sendAdminMsg('${id}')">送信</button>
-      </div>
-    </div>
-  `;
+  // 基本情報グリッド
+  const grid = el('div', {className:'modal-grid', style:'margin-bottom:24px;'});
+  grid.appendChild(field('企業', company?.name || '—'));
+  grid.appendChild(field('CSプロ', pro?.name || '—'));
+  grid.appendChild(field('ステータス', badgeNode(m.status)));
+  grid.appendChild(field('作成日', fmtDate(m.created_at)));
+  content.appendChild(grid);
+
+  // 管理メモ
+  content.appendChild(el('div', {
+    style:'font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;',
+    text:'管理メモを更新'
+  }));
+  const textarea = el('textarea', {
+    attrs:{id:'adminNote'},
+    style:'width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:13px;min-height:80px;resize:vertical;margin-bottom:12px'
+  });
+  textarea.value = m.admin_note || '';
+  content.appendChild(textarea);
+  content.appendChild(el('button', {
+    style:'padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:24px',
+    text:'メモを保存',
+    onclick: ()=> saveNote(id)
+  }));
+
+  // メッセージ履歴
+  content.appendChild(el('div', {
+    style:'font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;',
+    text:`メッセージ履歴 (${messages.length}件)`
+  }));
+  const msgArea = el('div', {className:'msg-area'});
+  const msgList = el('div', {className:'msg-list', attrs:{id:'msgList'}});
+  if(!messages.length){
+    msgList.appendChild(el('div', {
+      style:'color:var(--muted);font-size:13px;text-align:center;padding:20px',
+      text:'メッセージはありません'
+    }));
+  } else {
+    const roleLabel = {admin:'運営', company:'企業', professional:'CSプロ'};
+    messages.forEach(msg=>{
+      const item = el('div', {className:'msg-item msg-'+msg.sender_type});
+      item.appendChild(el('span', {
+        style:'font-size:10px;color:var(--muted);font-weight:700;',
+        text: `${roleLabel[msg.sender_type]||msg.sender_type} · ${fmtDate(msg.created_at)}`
+      }));
+      item.appendChild(el('div', {style:'margin-top:4px', text: msg.content||''}));
+      msgList.appendChild(item);
+    });
+  }
+  msgArea.appendChild(msgList);
+
+  const inputRow = el('div', {className:'msg-input-row'});
+  inputRow.appendChild(el('input', {
+    className:'msg-input',
+    attrs:{id:'msgInput', placeholder:'運営としてメッセージを送る…'}
+  }));
+  inputRow.appendChild(el('button', {
+    className:'msg-send', text:'送信',
+    onclick: ()=> sendAdminMsg(id)
+  }));
+  msgArea.appendChild(inputRow);
+  content.appendChild(msgArea);
+
   document.getElementById('modalOverlay').classList.add('show');
 }
 
@@ -654,7 +960,29 @@ function esc(s){
 }
 
 // ===== 初期化 =====
-document.getElementById('pwInput').focus();
+document.addEventListener('DOMContentLoaded', async () => {
+  // セッション復元
+  try {
+    const { data: { session } } = await db.auth.getSession();
+    if(session){
+      const { data: adminCheck } = await db
+        .from('admin_users')
+        .select('email')
+        .eq('email', session.user.email)
+        .maybeSingle();
+      if(adminCheck){
+        hideLoginOverlay();
+        await loadAll();
+        return;
+      } else {
+        await db.auth.signOut();
+      }
+    }
+  } catch(e){}
+  // 未ログイン：フォーカス
+  const emailEl = document.getElementById('emailInput');
+  if(emailEl) emailEl.focus();
+});
 
 // 自動更新（5分ごと）
 setInterval(()=>{

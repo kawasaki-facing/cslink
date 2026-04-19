@@ -125,7 +125,12 @@ li{margin-bottom:6px;}
 
   <div class="section">
     <h2>お問い合わせ</h2>
-    <p>facing株式会社<br>個人情報の取り扱いに関するお問い合わせは、本サービス内のお問い合わせフォームよりご連絡ください。</p>
+    <p>
+      facing株式会社<br>
+      〒103-0004 東京都中央区東日本橋2-22-1 クロスシー東日本橋ビル2F<br>
+      Mail: <a href="mailto:cslink@facing.co.jp" style="color:var(--teal-d);text-decoration:none;">cslink@facing.co.jp</a><br>
+      個人情報の取り扱いに関するお問い合わせは、本サービス内のお問い合わせフォームからもご連絡いただけます。
+    </p>
   </div>
 </div>
 
@@ -133,10 +138,13 @@ li{margin-bottom:6px;}
   <div class="footer-links">
     <a href="index.html">トップ</a>
     <a href="terms.html">利用規約</a>
+    <a href="terms.html#tokushoho">特商法表記</a>
     <a href="privacy.html">プライバシーポリシー</a>
+    <a href="cslink_pricing.html">料金</a>
     <a href="company.html">会社概要</a>
   </div>
-  <p>© 2026 facing株式会社 All Rights Reserved.</p>
+  <p>© <span id="copyYear">2026</span> facing株式会社 All Rights Reserved.</p>
 </footer>
+<script>document.getElementById('copyYear').textContent=new Date().getFullYear();</script>
 </body>
 </html>
