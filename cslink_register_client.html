@@ -136,6 +136,12 @@ textarea{resize:vertical;min-height:88px;line-height:1.7;}
 .field-error{font-size:11px;color:var(--err);margin-top:5px;display:none;}
 .field.has-error .field-error{display:block;}
 .field.has-error input,.field.has-error select,.field.has-error textarea{border-color:var(--err);}
+/* リアルタイムバリデーション */
+@keyframes fadeup{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+.field-inline-error{display:block;color:#ef4444;font-size:11px;margin-top:4px;animation:fadeup .2s ease;word-break:break-word;}
+.field-ok-msg{display:block;color:var(--ok);font-size:11px;margin-top:4px;animation:fadeup .2s ease;}
+input.invalid,textarea.invalid,select.invalid{border-color:#ef4444!important;}
+input.valid,textarea.valid,select.valid{border-color:var(--teal)!important;}
 
 /* チェックボックス */
 .check-group{display:flex;flex-direction:column;gap:8px;}
@@ -656,6 +662,102 @@ document.querySelectorAll('input,select,textarea').forEach(el=>{
   el.addEventListener('input',()=>{
     el.closest('.field')?.classList.remove('has-error');
   });
+});
+
+/* ========== リアルタイムバリデーション ========== */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function getInlineErrorEl(field){
+  let el = field.querySelector('.field-inline-error');
+  if(!el){
+    el = document.createElement('span');
+    el.className = 'field-inline-error';
+    field.appendChild(el);
+  }
+  return el;
+}
+function clearInlineError(field){
+  const el = field.querySelector('.field-inline-error');
+  if(el) el.remove();
+}
+function markInvalid(input, field, msg){
+  input.classList.add('invalid');
+  input.classList.remove('valid');
+  getInlineErrorEl(field).textContent = msg;
+}
+function markValid(input, field){
+  input.classList.remove('invalid');
+  input.classList.add('valid');
+  clearInlineError(field);
+}
+function clearState(input, field){
+  input.classList.remove('invalid','valid');
+  clearInlineError(field);
+}
+
+// 個別ルール
+function validateRequiredText(input, field, emptyMsg){
+  const v = (input.value||'').trim();
+  if(!v){ markInvalid(input, field, emptyMsg||'入力してください'); return false; }
+  markValid(input, field); return true;
+}
+function validateRequiredSelect(input, field, emptyMsg){
+  const v = input.value;
+  if(!v){ markInvalid(input, field, emptyMsg||'選択してください'); return false; }
+  markValid(input, field); return true;
+}
+function validateEmail(input, field){
+  const v = (input.value||'').trim();
+  if(!v){ markInvalid(input, field, 'メールアドレスを入力してください'); return false; }
+  if(!EMAIL_RE.test(v)){ markInvalid(input, field, '有効なメールアドレス形式で入力してください'); return false; }
+  markValid(input, field); return true;
+}
+
+// リアルタイム検証対象の登録
+const RT_FIELDS = [
+  {id:'company', type:'req-text', msg:'会社名を入力してください'},
+  {id:'industry', type:'req-select', msg:'業種を選択してください'},
+  {id:'size', type:'req-select', msg:'従業員数を選択してください'},
+  {id:'detail', type:'req-text', msg:'課題の詳細を入力してください'},
+  {id:'lastname', type:'req-text', msg:'姓を入力してください'},
+  {id:'firstname', type:'req-text', msg:'名を入力してください'},
+  {id:'email', type:'email'}
+];
+
+function validateField(cfg, onBlurOrFocus){
+  const input = document.getElementById(cfg.id);
+  if(!input) return true;
+  const field = input.closest('.field');
+  if(!field) return true;
+  // focus 時は既存エラー状態のみリセットして何もしない
+  if(onBlurOrFocus === 'focus'){
+    // ユーザーが再入力しようとしているので inline error はクリア（赤枠は残す）
+    return !input.classList.contains('invalid');
+  }
+  // 空欄 & まだ触れていない（input イベントで値が空のみ）場合はクリア
+  const v = (input.value||'').trim();
+  if(cfg.type === 'email'){
+    if(!v && onBlurOrFocus === 'input'){ clearState(input, field); return false; }
+    return validateEmail(input, field);
+  }
+  if(cfg.type === 'req-text'){
+    if(!v && onBlurOrFocus === 'input'){ clearState(input, field); return false; }
+    return validateRequiredText(input, field, cfg.msg);
+  }
+  if(cfg.type === 'req-select'){
+    if(!v && onBlurOrFocus === 'input'){ clearState(input, field); return false; }
+    return validateRequiredSelect(input, field, cfg.msg);
+  }
+  return true;
+}
+
+RT_FIELDS.forEach(cfg=>{
+  const input = document.getElementById(cfg.id);
+  if(!input) return;
+  input.addEventListener('focus',()=>validateField(cfg,'focus'));
+  input.addEventListener('blur',()=>validateField(cfg,'blur'));
+  input.addEventListener('input',()=>validateField(cfg,'input'));
+  input.addEventListener('change',()=>validateField(cfg,'blur'));
 });
 </script>
 </body>

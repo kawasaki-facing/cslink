@@ -588,6 +588,9 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
         <input class="chat-input" id="chatInput" placeholder="CS課題を入力してください…" maxlength="200">
         <button class="chat-send" id="chatSend" aria-label="メッセージを送信"><svg viewBox="0 0 16 16"><path d="M1 1l14 7-14 7V9.5l10-1.5L1 6.5V1z"/></svg></button>
       </div>
+      <div style="display:flex;justify-content:flex-end;padding:6px 14px 10px;">
+        <button id="chatReset" type="button" style="font-size:11px;color:var(--muted);background:transparent;border:1px solid var(--border);padding:4px 10px;border-radius:100px;cursor:pointer;">↺ 最初から</button>
+      </div>
     </div>
   </div>
 </section>
@@ -814,17 +817,30 @@ setTimeout(() => {
 }, 500);
 
 // ── CHAT ──
-window.addEventListener('DOMContentLoaded', () => {
+// チャット会話履歴（ページリロードで消える）
+let chatHistory = [];
+const CHAT_WELCOME = 'こんにちは！CSLINKのAIアシスタントです。どのようなCS課題をお持ちですか？';
+
+function renderWelcome() {
   const body = document.getElementById('chatBody');
-  if(body) {
-    const m = document.createElement('div'); m.className = 'msg ai';
-    m.textContent = 'こんにちは！CSLINKのAIアシスタントです。どのようなCS課題をお持ちですか？';
-    body.appendChild(m);
-  }
+  if(!body) return;
+  const m = document.createElement('div'); m.className = 'msg ai';
+  m.textContent = CHAT_WELCOME;
+  body.appendChild(m);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderWelcome();
   const send = document.getElementById('chatSend');
   const inp = document.getElementById('chatInput');
+  const reset = document.getElementById('chatReset');
   if(send) send.addEventListener('click', sendChat);
   if(inp) inp.addEventListener('keydown', e => { if(e.key==='Enter') sendChat(); });
+  if(reset) reset.addEventListener('click', () => {
+    chatHistory = [];
+    const body = document.getElementById('chatBody');
+    if(body) { body.innerHTML = ''; renderWelcome(); }
+  });
 });
 
 async function sendChat() {
@@ -836,13 +852,20 @@ async function sendChat() {
   const um = document.createElement('div'); um.className='msg user'; um.textContent=text; body.appendChild(um);
   const am = document.createElement('div'); am.className='msg ai'; am.textContent='考え中…'; body.appendChild(am);
   body.scrollTop = body.scrollHeight;
+  chatHistory.push({ role: 'user', content: text });
+  if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
   try {
     const res = await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev/chat', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({messages:[{role:'user',content:text}]})
+      body: JSON.stringify({ messages: chatHistory })
     });
     const data = await res.json();
-    am.textContent = data.reply || 'エラーが発生しました';
+    const reply = data.reply || 'エラーが発生しました';
+    am.textContent = reply;
+    if (data.reply) {
+      chatHistory.push({ role: 'assistant', content: data.reply });
+      if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+    }
   } catch(e) { am.textContent = 'エラーが発生しました。'; }
   body.scrollTop = body.scrollHeight;
 }

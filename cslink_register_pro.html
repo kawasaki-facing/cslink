@@ -122,6 +122,12 @@ textarea{resize:vertical;min-height:100px;line-height:1.7;}
 .char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:5px;}
 .char-count.low{color:var(--warn);}
 .char-count.ok{color:var(--ok);}
+/* リアルタイムバリデーション */
+@keyframes fadeup{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+.field-inline-error{display:block;color:#ef4444;font-size:11px;margin-top:4px;animation:fadeup .2s ease;word-break:break-word;}
+.field-ok-msg{display:block;color:var(--ok);font-size:11px;margin-top:4px;animation:fadeup .2s ease;}
+input.invalid,textarea.invalid,select.invalid{border-color:#ef4444!important;}
+input.valid,textarea.valid,select.valid{border-color:var(--teal)!important;}
 
 .check-group{display:flex;flex-direction:column;gap:8px;}
 .check-item{display:flex;align-items:flex-start;gap:10px;}
@@ -845,6 +851,143 @@ document.querySelectorAll('input,select,textarea').forEach(el=>{
       if(errEl) errEl.style.display = 'none';
     }
   });
+});
+
+/* ========== リアルタイムバリデーション ========== */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TEL_RE = /^[0-9\-+()（）\s]{10,15}$/;
+
+function getInlineErrorEl(field){
+  let el = field.querySelector('.field-inline-error');
+  if(!el){
+    el = document.createElement('span');
+    el.className = 'field-inline-error';
+    // char-count がある場合はその前に挿入（レイアウト崩れ回避）
+    const cc = field.querySelector('.char-count');
+    if(cc) field.insertBefore(el, cc); else field.appendChild(el);
+  }
+  return el;
+}
+function getOkMsgEl(field){
+  let el = field.querySelector('.field-ok-msg');
+  if(!el){
+    el = document.createElement('span');
+    el.className = 'field-ok-msg';
+    const cc = field.querySelector('.char-count');
+    if(cc) field.insertBefore(el, cc); else field.appendChild(el);
+  }
+  return el;
+}
+function clearInlineError(field){
+  const el = field.querySelector('.field-inline-error');
+  if(el) el.remove();
+}
+function clearOkMsg(field){
+  const el = field.querySelector('.field-ok-msg');
+  if(el) el.remove();
+}
+function markInvalid(input, field, msg){
+  input.classList.add('invalid');
+  input.classList.remove('valid');
+  getInlineErrorEl(field).textContent = msg;
+  clearOkMsg(field);
+}
+function markValid(input, field, okMsg){
+  input.classList.remove('invalid');
+  input.classList.add('valid');
+  clearInlineError(field);
+  if(okMsg){ getOkMsgEl(field).textContent = okMsg; } else { clearOkMsg(field); }
+}
+function clearState(input, field){
+  input.classList.remove('invalid','valid');
+  clearInlineError(field);
+  clearOkMsg(field);
+}
+
+function validateRequiredText(input, field, emptyMsg){
+  const v = (input.value||'').trim();
+  if(!v){ markInvalid(input, field, emptyMsg||'入力してください'); return false; }
+  markValid(input, field); return true;
+}
+function validateRequiredSelect(input, field, emptyMsg){
+  const v = input.value;
+  if(!v){ markInvalid(input, field, emptyMsg||'選択してください'); return false; }
+  markValid(input, field); return true;
+}
+function validateEmail(input, field){
+  const v = (input.value||'').trim();
+  if(!v){ markInvalid(input, field, 'メールアドレスを入力してください'); return false; }
+  if(!EMAIL_RE.test(v)){ markInvalid(input, field, '有効なメールアドレス形式で入力してください'); return false; }
+  markValid(input, field); return true;
+}
+function validateTelOptional(input, field){
+  const v = (input.value||'').trim();
+  if(!v){ clearState(input, field); return true; } // 任意
+  if(!TEL_RE.test(v)){ markInvalid(input, field, '電話番号の形式が正しくありません'); return false; }
+  markValid(input, field); return true;
+}
+function validateLongText(input, field, emptyMsg, minChars, recommend){
+  const v = (input.value||'').trim();
+  if(!v){ markInvalid(input, field, emptyMsg||'入力してください'); return false; }
+  if(v.length < minChars){
+    markInvalid(input, field, `${minChars}文字以上入力してください（現在 ${v.length}文字）`);
+    return false;
+  }
+  if(recommend && v.length >= recommend){
+    markValid(input, field, '推奨文字数に達しました ✓');
+  } else {
+    markValid(input, field);
+  }
+  return true;
+}
+
+const RT_FIELDS = [
+  {id:'lastname', type:'req-text', msg:'姓を入力してください'},
+  {id:'firstname', type:'req-text', msg:'名を入力してください'},
+  {id:'email', type:'email'},
+  {id:'tel', type:'tel-optional'},
+  {id:'experience', type:'req-select', msg:'経験年数を選択してください'},
+  {id:'role', type:'req-select', msg:'役職を選択してください'},
+  {id:'achievement', type:'long-text', min:50, recommend:100, msg:'実績を入力してください'},
+  {id:'pr', type:'long-text', min:50, recommend:150, msg:'自己PRを入力してください'},
+  {id:'rate', type:'req-select', msg:'希望報酬を選択してください'},
+  {id:'availability', type:'req-select', msg:'稼働開始時期を選択してください'}
+];
+
+function validateField(cfg, phase){
+  const input = document.getElementById(cfg.id);
+  if(!input) return true;
+  const field = input.closest('.field');
+  if(!field) return true;
+  if(phase === 'focus'){
+    return !input.classList.contains('invalid');
+  }
+  const v = (input.value||'').trim();
+  if(cfg.type === 'tel-optional'){
+    return validateTelOptional(input, field);
+  }
+  // 入力中に空欄になった場合：ニュートラルへ戻す（blur/changeでは必須判定）
+  if(phase === 'input' && !v && cfg.type !== 'long-text'){
+    clearState(input, field); return false;
+  }
+  if(cfg.type === 'email') return validateEmail(input, field);
+  if(cfg.type === 'req-text') return validateRequiredText(input, field, cfg.msg);
+  if(cfg.type === 'req-select') return validateRequiredSelect(input, field, cfg.msg);
+  if(cfg.type === 'long-text'){
+    // input 中は常にライブで判定（文字数カウンタとの連動）
+    if(phase === 'input' && !v){ clearState(input, field); return false; }
+    return validateLongText(input, field, cfg.msg, cfg.min, cfg.recommend);
+  }
+  return true;
+}
+
+RT_FIELDS.forEach(cfg=>{
+  const input = document.getElementById(cfg.id);
+  if(!input) return;
+  input.addEventListener('focus',()=>validateField(cfg,'focus'));
+  input.addEventListener('blur',()=>validateField(cfg,'blur'));
+  input.addEventListener('input',()=>validateField(cfg,'input'));
+  input.addEventListener('change',()=>validateField(cfg,'blur'));
 });
 </script>
 </body>

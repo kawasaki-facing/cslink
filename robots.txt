@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /cslink_admin.html
+Disallow: /cslink_mypage_client.html
+Disallow: /cslink_mypage_pro.html
+Disallow: /.claude/
+
+Sitemap: https://cslink.link/sitemap.xml
