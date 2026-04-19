@@ -62,6 +62,17 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 .nav-cta{font-size:13px;padding:9px 20px;border-radius:8px;background:var(--teal);color:#fff;text-decoration:none;font-weight:700;box-shadow:0 4px 14px rgba(6,182,212,0.35);transition:all .2s;}
 .nav-cta:hover{background:var(--teal-d);}
 
+/* SAMPLE NOTICE BANNER */
+.sample-banner{background:linear-gradient(90deg,#fef3c7 0%,#fde68a 100%);border-bottom:1px solid #fbbf24;padding:12px 56px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;font-weight:700;color:#78350f;position:relative;}
+.sample-banner .sample-icon{font-size:16px;}
+.sample-banner strong{color:#713f12;letter-spacing:0.5px;}
+.sample-banner-sub{font-weight:500;color:#92400e;font-size:12px;}
+@media (max-width:640px){.sample-banner{flex-direction:column;gap:4px;padding:10px 16px;text-align:center;}.sample-banner-sub{font-size:11px;}}
+
+/* SAMPLE BADGE on photo */
+.sample-photo-badge{position:absolute;top:16px;right:16px;background:#f59e0b;color:#fff;padding:8px 14px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;box-shadow:0 4px 14px rgba(245,158,11,0.45);z-index:2;display:inline-flex;align-items:center;gap:6px;text-transform:uppercase;}
+.sample-photo-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.5s infinite;}
+
 /* BREADCRUMB */
 .breadcrumb{padding:16px 56px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);}
 .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s;}
@@ -218,6 +229,25 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 .fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
 .fade-in.visible{opacity:1;transform:translateY(0);}
 
+/* SCROLL FADE-UP（company.html と同一） */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(0.4,0,0.2,1),transform .8s cubic-bezier(0.4,0,0.2,1);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.fade-up.delay-1{transition-delay:0.1s;}
+.fade-up.delay-2{transition-delay:0.2s;}
+.fade-up.delay-3{transition-delay:0.3s;}
+
+/* Hero写真 hover 強化 */
+.profile-img-wrap img{transition:transform .9s cubic-bezier(0.4,0,0.2,1);}
+.profile-img-wrap:hover img{transform:scale(1.05);}
+
+/* section-block hover 強化 */
+.section-block{transition:box-shadow .35s ease,border-color .35s ease,transform .35s ease;}
+.section-block:hover{box-shadow:0 14px 36px rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.28);}
+
+/* career-item hover 強化 */
+.career-item{transition:background .3s ease;border-radius:10px;padding-left:10px;padding-right:10px;margin-left:-10px;margin-right:-10px;}
+.career-item:hover{background:rgba(6,182,212,0.035);}
+
 @media(max-width:1024px){
   .detail-hero-inner,.detail-body{grid-template-columns:1fr;padding:32px 28px;}
   .detail-body{grid-template-columns:1fr;}
@@ -253,6 +283,13 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   </div>
 </nav>
 
+<!-- SAMPLE NOTICE BANNER -->
+<div class="sample-banner">
+  <span class="sample-icon">⚠️</span>
+  <strong>SAMPLE PROFILE</strong>
+  <span class="sample-banner-sub">このページはデザイン表示用のサンプルです。実在の人物ではありません。</span>
+</div>
+
 <!-- BREADCRUMB -->
 <div class="breadcrumb">
   <a href="index.html">CSLINK</a>
@@ -267,9 +304,10 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   <div class="detail-hero-inner">
 
     <!-- 左：プロフィール写真 -->
-    <div class="profile-col fade-in">
+    <div class="profile-col fade-in fade-up delay-3">
       <div class="profile-img-wrap">
-        <img src="https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_1_640_N.webp?method=shortest" alt="田中 美咲" loading="lazy">
+        <div class="sample-photo-badge">SAMPLE</div>
+        <img src="https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_1_640_N.webp?method=shortest" alt="田中 美咲（サンプルプロフィール）" loading="lazy">
       </div>
       <div class="profile-badges">
         <span class="p-badge p-badge-verified">✓ facing審査済</span>
@@ -294,10 +332,10 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 
     <!-- 右：詳細情報 -->
     <div class="detail-col fade-in">
-      <div class="detail-eyebrow">CS PROFESSIONAL</div>
-      <div class="detail-name">田中 美咲</div>
-      <div class="detail-sub">CS戦略コンサルタント / フリーランス</div>
-      <div class="detail-tags">
+      <div class="detail-eyebrow fade-up">CS PROFESSIONAL</div>
+      <div class="detail-name fade-up delay-1">田中 美咲</div>
+      <div class="detail-sub fade-up delay-2">CS戦略コンサルタント / フリーランス</div>
+      <div class="detail-tags fade-up delay-2">
         <span class="d-tag d-tag-main">LTV改善</span>
         <span class="d-tag d-tag-main">ヘルススコア設計</span>
         <span class="d-tag d-tag-main">解約防止</span>
@@ -307,21 +345,21 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
       </div>
 
       <!-- スコア -->
-      <div class="detail-score-bar">
+      <div class="detail-score-bar fade-up delay-3">
         <div class="score-item">
-          <div class="score-num"><em>94</em>%</div>
+          <div class="score-num"><em><span class="stat-count" data-target="94">0</span></em>%</div>
           <div class="score-label">AIマッチング適合度</div>
         </div>
         <div class="score-item">
-          <div class="score-num"><em>7</em>年</div>
+          <div class="score-num"><em><span class="stat-count" data-target="7">0</span></em>年</div>
           <div class="score-label">CS経験年数</div>
         </div>
         <div class="score-item">
-          <div class="score-num"><em>30</em>社+</div>
+          <div class="score-num"><em><span class="stat-count" data-target="30">0</span></em>社+</div>
           <div class="score-label">支援実績</div>
         </div>
         <div class="score-item">
-          <div class="score-num"><em>98</em>%</div>
+          <div class="score-num"><em><span class="stat-count" data-target="98">0</span></em>%</div>
           <div class="score-label">契約継続率</div>
         </div>
       </div>
@@ -349,7 +387,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   <div class="content-col">
 
     <!-- 支援実績 -->
-    <div class="section-block fade-in">
+    <div class="section-block fade-in fade-up">
       <div class="section-block-title">支援実績（抜粋）</div>
       <div class="career-list">
         <div class="career-item">
@@ -388,7 +426,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
     </div>
 
     <!-- スキル・ツール -->
-    <div class="section-block fade-in">
+    <div class="section-block fade-in fade-up delay-1">
       <div class="section-block-title">スキル・使用ツール</div>
       <div class="skill-tags-wrap">
         <span class="skill-tag-item">Gainsight</span>
@@ -410,7 +448,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
     </div>
 
     <!-- 稼働条件 -->
-    <div class="section-block fade-in">
+    <div class="section-block fade-in fade-up delay-2">
       <div class="section-block-title">稼働条件・希望</div>
       <div class="condition-table">
         <div class="cond-row"><span class="cond-label">稼働形態</span><span class="cond-val">週3〜フルタイム（応相談）</span></div>
@@ -429,7 +467,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   <div class="sidebar-col">
 
     <!-- 無料マッチングCTA -->
-    <div class="sidebar-cta fade-in">
+    <div class="sidebar-cta fade-in fade-up">
       <div class="sidebar-cta-inner">
         <div class="sidebar-cta-label">MATCHING</div>
         <div class="sidebar-cta-title">田中さんと<br><em>無料で相談</em>する</div>
@@ -440,7 +478,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
     </div>
 
     <!-- 類似プロ -->
-    <div class="sidebar-card fade-in">
+    <div class="sidebar-card fade-in fade-up delay-1">
       <div class="sidebar-card-title">類似のCS専門家</div>
       <div class="similar-list">
         <a href="cslink_list_v2.html" class="similar-item">
@@ -472,7 +510,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
     </div>
 
     <!-- facing保証 -->
-    <div class="sidebar-card fade-in">
+    <div class="sidebar-card fade-in fade-up delay-2">
       <div class="sidebar-card-title">facing品質保証</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div style="display:flex;align-items:flex-start;gap:10px;">
@@ -589,6 +627,38 @@ const io = new IntersectionObserver(entries=>{
   });
 },{threshold:0.1});
 document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+
+// fade-up scroll animation（company.html と共通）
+const fadeEls=document.querySelectorAll('.fade-up');
+const fadeObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add('visible');fadeObserver.unobserve(entry.target);}
+  });
+},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+fadeEls.forEach(el=>fadeObserver.observe(el));
+
+// カウントアップ（company.html と同一方式）
+const counters=document.querySelectorAll('.stat-count');
+const counterObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const el=entry.target;
+      const target=parseInt(el.dataset.target,10);
+      const duration=1600;
+      const start=performance.now();
+      const tick=(now)=>{
+        const elapsed=now-start;
+        const progress=Math.min(elapsed/duration,1);
+        const eased=1-Math.pow(1-progress,3);
+        el.textContent=Math.round(eased*target);
+        if(progress<1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      counterObserver.unobserve(el);
+    }
+  });
+},{threshold:0.4});
+counters.forEach(c=>counterObserver.observe(c));
 </script>
 </body>
 </html>
