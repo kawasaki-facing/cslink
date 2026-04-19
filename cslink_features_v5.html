@@ -1014,6 +1014,25 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
   .compare-table th,.compare-table td{padding:10px 12px;}
 }
 
+
+/* ═══ facing TEAM（実写） ═══ */
+.facing-team-section{padding:88px 56px;background:#fff;border-bottom:1px solid var(--border);}
+.facing-team-inner{max-width:1160px;margin:0 auto;}
+.facing-team-header{text-align:center;margin-bottom:48px;}
+.facing-team-ey{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal-d);margin-bottom:14px;display:inline-flex;align-items:center;gap:10px;}
+.facing-team-ey::before{content:'';width:24px;height:2px;background:var(--teal);border-radius:2px;}
+.facing-team-h{font-size:clamp(28px,3vw,40px);font-weight:900;color:var(--navy);letter-spacing:-1.5px;line-height:1.2;margin-bottom:14px;}
+.facing-team-h em{font-style:normal;color:var(--teal);}
+.facing-team-desc{font-size:14px;color:var(--muted);line-height:1.85;max-width:620px;margin:0 auto;}
+.facing-team-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-template-rows:240px 240px;gap:16px;}
+.facing-team-cell{border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(15,35,66,0.08);position:relative;transition:transform .3s ease;}
+.facing-team-cell:hover{transform:translateY(-3px);}
+.facing-team-cell img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+.facing-team-cell:hover img{transform:scale(1.04);}
+.facing-team-cell.big{grid-row:span 2;}
+.facing-team-label{position:absolute;left:16px;bottom:16px;background:rgba(255,255,255,0.94);backdrop-filter:blur(10px);padding:6px 12px;border-radius:100px;font-size:11px;font-weight:700;color:var(--navy);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+@media (max-width:900px){.facing-team-grid{grid-template-columns:1fr 1fr;grid-template-rows:200px 200px 200px;}.facing-team-cell.big{grid-row:span 1;grid-column:span 2;}}
+@media (max-width:520px){.facing-team-grid{grid-template-columns:1fr;grid-template-rows:repeat(4,200px);}.facing-team-cell.big{grid-column:span 1;}}
 </style>
 </head>
 <body>
@@ -1243,6 +1262,35 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
             <div class="feed-score">82<span>%</span></div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ facing TEAM ═══ -->
+<section class="facing-team-section" id="facing-team">
+  <div class="facing-team-inner">
+    <div class="facing-team-header sr">
+      <div class="facing-team-ey">facing team</div>
+      <h2 class="facing-team-h">CSのプロが、<em>本気で運営</em>するプラットフォーム</h2>
+      <p class="facing-team-desc">CSLINKはfacing株式会社が自ら運営。累計10億円以上のCS支援実績を持つチームが、マッチングから稼働まで一貫してサポートします。</p>
+    </div>
+    <div class="facing-team-grid sr">
+      <div class="facing-team-cell big">
+        <img src="images/facing/staff-team.jpg" alt="facing CS運営チーム" loading="lazy">
+        <div class="facing-team-label">👥 運営チーム</div>
+      </div>
+      <div class="facing-team-cell">
+        <img src="images/facing/cs-operation.jpg" alt="CSサポート業務の様子" loading="lazy">
+        <div class="facing-team-label">🎧 CS支援業務</div>
+      </div>
+      <div class="facing-team-cell">
+        <img src="images/facing/meeting-scene.jpg" alt="打ち合わせの様子" loading="lazy">
+        <div class="facing-team-label">💻 戦略ミーティング</div>
+      </div>
+      <div class="facing-team-cell" style="grid-column:span 2;">
+        <img src="images/facing/smile-portrait.jpg" alt="クライアントと向き合う様子" loading="lazy">
+        <div class="facing-team-label">🤝 クライアントと向き合う</div>
       </div>
     </div>
   </div>

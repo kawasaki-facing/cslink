@@ -46,6 +46,30 @@ td{padding:18px 24px;font-size:14px;line-height:1.8;color:var(--text);}
 .mission{background:linear-gradient(135deg,rgba(6,182,212,0.06),rgba(37,99,255,0.04));border:1px solid rgba(6,182,212,0.18);border-radius:16px;padding:32px 36px;margin-bottom:48px;}
 .mission-label{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--teal);margin-bottom:12px;}
 .mission-text{font-size:18px;font-weight:700;color:var(--navy);line-height:1.7;}
+
+/* 代表メッセージ */
+.rep-section{display:grid;grid-template-columns:220px 1fr;gap:32px;align-items:center;margin-bottom:48px;padding:32px;background:#fff;border:1px solid var(--border);border-radius:16px;}
+.rep-photo{width:220px;aspect-ratio:3/4;border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(15,35,66,0.12);}
+.rep-photo img{width:100%;height:100%;object-fit:cover;object-position:65% 25%;display:block;}
+.rep-body{}
+.rep-label{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--teal-d);margin-bottom:10px;text-transform:uppercase;}
+.rep-name{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:8px;letter-spacing:-0.5px;}
+.rep-name em{font-style:normal;font-size:12px;color:var(--muted);font-weight:600;margin-right:10px;}
+.rep-msg{font-size:14px;line-height:2;color:var(--text);}
+@media (max-width:640px){.rep-section{grid-template-columns:1fr;padding:24px;}.rep-photo{width:160px;margin:0 auto;}}
+
+/* メンバー紹介（フルワイド背景バナー） */
+.member-hero-full{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);aspect-ratio:21/9;overflow:hidden;margin-bottom:48px;}
+.member-hero-full img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block;transition:transform .8s ease;}
+.member-hero-full:hover img{transform:scale(1.03);}
+.member-hero-full::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,35,66,0.18) 0%,rgba(15,35,66,0.55) 85%);pointer-events:none;}
+.member-hero-text{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);z-index:2;text-align:center;max-width:720px;padding:0 32px;color:#fff;}
+.member-hero-label{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:3.5px;color:var(--teal);margin-bottom:14px;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;}
+.member-hero-label::before,.member-hero-label::after{content:'';width:24px;height:2px;background:var(--teal);border-radius:2px;}
+.member-hero-title{font-size:clamp(22px,2.4vw,32px);font-weight:900;letter-spacing:-0.8px;line-height:1.3;margin-bottom:14px;}
+.member-hero-cap{font-size:clamp(13px,1.2vw,15px);line-height:1.85;color:rgba(255,255,255,0.88);font-weight:500;}
+@media (max-width:768px){.member-hero-full{aspect-ratio:4/5;}.member-hero-text{bottom:28px;padding:0 24px;}}
+
 .footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;}
 .footer-links{display:flex;gap:20px;justify-content:center;margin-bottom:12px;}
 .footer-links a{color:var(--muted);text-decoration:none;font-size:12px;}
@@ -68,6 +92,23 @@ td{padding:18px 24px;font-size:14px;line-height:1.8;color:var(--text);}
   <div class="mission">
     <div class="mission-label">MISSION</div>
     <div class="mission-text">CSの力で、すべての企業に<br>顧客と長く続く関係を。</div>
+  </div>
+
+  <!-- 代表メッセージ -->
+  <div class="rep-section">
+    <div class="rep-photo">
+      <img src="images/facing/kawasaki-portrait.jpg" alt="代表取締役 川﨑 勇樹" loading="lazy">
+    </div>
+    <div class="rep-body">
+      <div class="rep-label">Message from CEO</div>
+      <div class="rep-name"><em>代表取締役</em>川﨑 勇樹</div>
+      <p class="rep-msg">
+        CSの現場を、本気で変えたい。<br>
+        2021年にfacing株式会社を創業し、CS支援の最前線で数多くの企業と向き合ってきました。<br>
+        そして2026年春、その蓄積を形にした「CSLINK」を正式リリース。<br>
+        解約率に悩む企業と、実力あるCS人材をAIでつなぎ、「もっと早く出会えていたら」をなくしていきます。
+      </p>
+    </div>
   </div>
 
   <div class="table-wrap">
@@ -117,6 +158,18 @@ td{padding:18px 24px;font-size:14px;line-height:1.8;color:var(--text);}
         <td>本サービス内のフォームからもご連絡いただけます</td>
       </tr>
     </table>
+  </div>
+
+
+</div>
+
+<!-- メンバー紹介（フルワイド背景バナー） -->
+<div class="member-hero-full">
+  <img src="images/facing/team-duo.jpg" alt="facing メンバー" loading="lazy">
+  <div class="member-hero-text">
+    <div class="member-hero-label">Our Team</div>
+    <h2 class="member-hero-title">CSのプロと、テクノロジーの力を<br>掛け合わせて。</h2>
+    <p class="member-hero-cap">facingはCS支援のあらゆる場面に寄り添います。</p>
   </div>
 </div>
 
