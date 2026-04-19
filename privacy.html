@@ -47,9 +47,49 @@ li{margin-bottom:6px;}
 .footer-links{display:flex;gap:20px;justify-content:center;margin-bottom:12px;}
 .footer-links a{color:var(--muted);text-decoration:none;font-size:12px;}
 .footer-links a:hover{color:var(--navy);}
+
+/* SCROLL FADE-UP（company.html と同一） */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(0.4,0,0.2,1),transform .8s cubic-bezier(0.4,0,0.2,1);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.fade-up.delay-1{transition-delay:0.1s;}
+.fade-up.delay-2{transition-delay:0.2s;}
+.fade-up.delay-3{transition-delay:0.3s;}
+
+/* section hover 軽強化（法務ページ、内容は変えない） */
+.section{transition:transform .35s ease;}
+.section:hover h2{color:var(--teal-d);}
+h2{transition:color .25s ease;}
+
+.scroll-progress{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--teal),#2563ff);z-index:9999;transition:width .1s ease;pointer-events:none;}
+.back-to-top{position:fixed;right:28px;bottom:28px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(6,182,212,0.35);opacity:0;visibility:hidden;transform:translateY(10px);transition:all .3s cubic-bezier(0.4,0,0.2,1);z-index:500;}
+.back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0);}
+.back-to-top:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(6,182,212,0.5);}
+.back-to-top svg{width:18px;height:18px;}
+@media(max-width:640px){.back-to-top{right:18px;bottom:18px;width:42px;height:42px;}}
+.newsletter-form{display:inline-flex;gap:8px;margin-bottom:16px;max-width:360px;width:100%;}
+.newsletter-form input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;transition:border .2s;}
+.newsletter-form input:focus{border-color:var(--teal);}
+.newsletter-form button{padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:background .2s;}
+.newsletter-form button:hover{background:var(--teal-d);}
 </style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"facing株式会社",
+  "alternateName":"CSLINK",
+  "url":"https://cslink.link",
+  "logo":"https://cslink.link/ogp.png",
+  "foundingDate":"2021-06-10",
+  "founder":{"@type":"Person","name":"川﨑 勇樹"},
+  "address":{"@type":"PostalAddress","streetAddress":"東日本橋2-22-1 クロスシー東日本橋ビル2F","addressLocality":"中央区","addressRegion":"東京都","postalCode":"103-0004","addressCountry":"JP"},
+  "contactPoint":{"@type":"ContactPoint","telephone":"+81-3-6667-0655","email":"cslink@facing.co.jp","contactType":"customer service","availableLanguage":["Japanese"]},
+  "description":"CS（カスタマーサクセス）特化AIマッチングプラットフォーム。企業とCS専門家をAIで最短28秒でつなぐ。"
+}
+</script>
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress"></div>
 <nav>
   <a href="index.html" class="nav-logo">
     <div class="nav-logo-icon">CS</div>
@@ -59,16 +99,16 @@ li{margin-bottom:6px;}
 </nav>
 
 <div class="wrap">
-  <div class="page-label">Legal</div>
-  <h1>プライバシーポリシー</h1>
-  <p class="updated">最終更新日：2026年4月1日</p>
+  <div class="page-label fade-up">Legal</div>
+  <h1 class="fade-up delay-1">プライバシーポリシー</h1>
+  <p class="updated fade-up delay-2">最終更新日：2026年4月1日</p>
 
-  <div class="section">
+  <div class="section fade-up">
     <h2>1. 基本方針</h2>
     <p>facing株式会社（以下「当社」）は、CSLINK（以下「本サービス」）において取得するお客様の個人情報を適切に管理し、プライバシーの保護に努めます。本ポリシーは、当社が収集する情報の種類・利用目的・管理方法について定めるものです。</p>
   </div>
 
-  <div class="section">
+  <div class="section fade-up delay-1">
     <h2>2. 収集する情報</h2>
     <p>当社は以下の情報を収集することがあります。</p>
     <ul>
@@ -80,7 +120,7 @@ li{margin-bottom:6px;}
     </ul>
   </div>
 
-  <div class="section">
+  <div class="section fade-up delay-2">
     <h2>3. 利用目的</h2>
     <p>収集した情報は以下の目的で利用します。</p>
     <ul>
@@ -92,7 +132,7 @@ li{margin-bottom:6px;}
     </ul>
   </div>
 
-  <div class="section">
+  <div class="section fade-up delay-3">
     <h2>4. 第三者への提供</h2>
     <p>当社は、以下の場合を除き、お客様の個人情報を第三者に提供しません。</p>
     <ul>
@@ -103,27 +143,27 @@ li{margin-bottom:6px;}
     </ul>
   </div>
 
-  <div class="section">
+  <div class="section fade-up">
     <h2>5. Cookieの利用</h2>
     <p>本サービスではCookieを使用しています。Cookieはブラウザの設定により無効化できますが、一部の機能が正常に動作しない場合があります。</p>
   </div>
 
-  <div class="section">
+  <div class="section fade-up delay-1">
     <h2>6. 個人情報の管理・保護</h2>
     <p>当社は個人情報の漏洩・紛失・改ざん等を防ぐため、適切なセキュリティ対策を実施します。個人情報は利用目的の達成に必要な期間を超えて保管しません。</p>
   </div>
 
-  <div class="section">
+  <div class="section fade-up delay-2">
     <h2>7. 開示・訂正・削除</h2>
     <p>お客様は、当社が保有するご自身の個人情報の開示・訂正・削除を請求できます。ご希望の場合は、本サービス内のお問い合わせフォームよりご連絡ください。ご本人確認の上、対応いたします。</p>
   </div>
 
-  <div class="section">
+  <div class="section fade-up delay-3">
     <h2>8. ポリシーの変更</h2>
     <p>本ポリシーは必要に応じて改定することがあります。重要な変更がある場合はサービス上でお知らせします。</p>
   </div>
 
-  <div class="section">
+  <div class="section fade-up">
     <h2>お問い合わせ</h2>
     <p>
       facing株式会社<br>
@@ -143,8 +183,43 @@ li{margin-bottom:6px;}
     <a href="cslink_pricing.html">料金</a>
     <a href="company.html">会社概要</a>
   </div>
+  <form class="newsletter-form" onsubmit="event.preventDefault();this.querySelector('input').value='';this.nextElementSibling.style.display='block';setTimeout(()=>{this.nextElementSibling.style.display='none';},3000);">
+    <input type="email" placeholder="メールアドレス" required>
+    <button type="submit">購読する</button>
+  </form>
+  <div class="newsletter-msg" style="display:none;color:var(--teal-d);font-size:12px;margin-top:8px;">ご登録ありがとうございます（準備中です）</div>
   <p>© <span id="copyYear">2026</span> facing株式会社 All Rights Reserved.</p>
 </footer>
-<script>document.getElementById('copyYear').textContent=new Date().getFullYear();</script>
+<button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+<script>
+document.getElementById('copyYear').textContent=new Date().getFullYear();
+
+// スクロール進捗バー
+window.addEventListener('scroll',()=>{
+  const el=document.getElementById('scrollProgress');if(!el)return;
+  const h=document.documentElement;
+  const p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  el.style.width=p+'%';
+});
+// Back to top
+const btt=document.getElementById('backToTop');
+if(btt){
+  window.addEventListener('scroll',()=>{
+    btt.classList.toggle('visible',window.scrollY>400);
+  });
+  btt.addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});});
+}
+
+// fade-up scroll animation（company.html と共通）
+const fadeEls=document.querySelectorAll('.fade-up');
+const fadeObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add('visible');fadeObserver.unobserve(entry.target);}
+  });
+},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+fadeEls.forEach(el=>fadeObserver.observe(el));
+</script>
 </body>
 </html>

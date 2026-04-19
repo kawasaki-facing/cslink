@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja" style="scroll-behavior:smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解約率を30%改善したCS組織の作り方 | CSLINK Blog</title>
+<meta name="description" content="SaaS企業が抱える解約率の課題。その多くは個別の施策ではなく組織設計に起因する。再現性のある組織フレームを解説します。">
+<link rel="canonical" href="https://cslink.link/blog/post-1.html">
+<meta property="og:title" content="解約率を30%改善したCS組織の作り方 | CSLINK Blog">
+<meta property="og:description" content="SaaS企業が抱える解約率の課題。その多くは個別の施策ではなく組織設計に起因する。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cslink.link/blog/post-1.html">
+<meta property="og:image" content="https://cslink.link/ogp.png">
+<meta property="og:site_name" content="CSLINK">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="shortcut icon" href="../favicon.ico">
+<meta name="theme-color" content="#06b6d4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f;--text:#1a2744;--muted:#64748b;--bg:#f8fafc;--bg2:#f0f7fa;--border:rgba(6,182,212,0.15);--blue:#2563ff;}
+html,body{min-height:100vh;background:#fff;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;overflow-x:hidden;}
+a{color:inherit;}
+
+/* SCROLL ANIMATION */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(0.4,0,0.2,1),transform .8s cubic-bezier(0.4,0,0.2,1);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.fade-up.delay-1{transition-delay:0.1s;}
+.fade-up.delay-2{transition-delay:0.2s;}
+.fade-up.delay-3{transition-delay:0.3s;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--navy);}
+.nav-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--navy);}
+.nav-actions{display:flex;align-items:center;gap:16px;}
+.nav-login{font-size:13px;color:var(--muted);text-decoration:none;font-weight:500;transition:color .2s;}
+.nav-login:hover{color:var(--navy);}
+.nav-cta{font-size:13px;padding:9px 20px;border-radius:8px;background:var(--teal);color:#fff;text-decoration:none;font-weight:700;box-shadow:0 4px 14px rgba(6,182,212,0.35);transition:all .2s;}
+.nav-cta:hover{background:var(--teal-d);transform:translateY(-1px);}
+@media (max-width:900px){.nav-links{display:none;}nav{padding:0 20px;}.nav-login{display:none;}}
+
+/* BREADCRUMB */
+.breadcrumb{max-width:780px;margin:0 auto;padding:32px 32px 0;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.5px;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s;}
+.breadcrumb a:hover{color:var(--teal-d);}
+.breadcrumb span.sep{opacity:0.4;}
+.breadcrumb span.current{color:var(--navy);font-weight:700;}
+
+/* ARTICLE HEADER */
+.article-header{max-width:780px;margin:0 auto;padding:32px 32px 48px;}
+.post-cat{display:inline-flex;align-items:center;gap:6px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--teal-d);background:rgba(6,182,212,0.08);padding:7px 14px;border-radius:100px;text-transform:uppercase;margin-bottom:24px;}
+.post-cat::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal);}
+.article-h1{font-size:clamp(30px,4.4vw,48px);font-weight:900;color:var(--navy);letter-spacing:-1.5px;line-height:1.25;margin-bottom:32px;}
+.author-box{display:flex;align-items:center;gap:16px;padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.author-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:18px;flex-shrink:0;}
+.author-info{display:flex;flex-direction:column;gap:4px;}
+.author-name{font-size:15px;font-weight:800;color:var(--navy);letter-spacing:-0.2px;}
+.author-role{font-size:12px;color:var(--muted);font-weight:500;}
+.article-meta{margin-left:auto;font-family:'Space Grotesk',sans-serif;font-size:12px;color:var(--muted);font-weight:600;display:flex;gap:12px;align-items:center;letter-spacing:0.5px;}
+.article-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);opacity:0.5;}
+
+/* HERO VISUAL */
+.article-hero{max-width:920px;margin:0 auto 56px;padding:0 32px;}
+.article-hero-frame{aspect-ratio:16/9;border-radius:24px;background:linear-gradient(135deg,#e0f7fa,#e8f0ff);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 24px 56px rgba(6,182,212,0.18);}
+.article-hero-frame::before{content:'';position:absolute;top:-30%;right:-10%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,0.3) 0%,transparent 65%);}
+.article-hero-frame::after{content:'';position:absolute;bottom:-30%;left:-10%;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,255,0.2) 0%,transparent 65%);}
+.article-hero-label{position:relative;z-index:1;font-family:'Space Grotesk',sans-serif;font-size:clamp(48px,7vw,96px);font-weight:800;letter-spacing:-3px;background:linear-gradient(120deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0.7;}
+
+/* ARTICLE BODY */
+.article-body{max-width:720px;margin:0 auto;padding:0 32px 96px;font-size:16px;line-height:2.05;color:var(--text);letter-spacing:0.2px;}
+.article-body p{margin-bottom:28px;}
+.article-body p strong{color:var(--navy);font-weight:700;background:linear-gradient(180deg,transparent 60%,rgba(6,182,212,0.18) 60%);padding:0 2px;}
+.article-body h2{font-size:clamp(22px,2.6vw,30px);font-weight:900;color:var(--navy);letter-spacing:-1px;line-height:1.35;margin:64px 0 24px;padding-left:18px;border-left:5px solid var(--teal);}
+.article-body h3{font-size:clamp(18px,2vw,22px);font-weight:800;color:var(--navy);letter-spacing:-0.5px;line-height:1.4;margin:44px 0 16px;display:flex;align-items:center;gap:10px;}
+.article-body h3::before{content:'';width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,var(--teal),var(--blue));flex-shrink:0;}
+.article-body ul{margin:0 0 28px 0;padding-left:4px;list-style:none;}
+.article-body ul li{position:relative;padding-left:28px;margin-bottom:12px;line-height:1.9;}
+.article-body ul li::before{content:'';position:absolute;left:8px;top:14px;width:8px;height:2px;background:var(--teal);}
+.article-body blockquote{margin:40px 0;padding:32px 36px;background:linear-gradient(135deg,#f0f9ff,#ecfeff);border-left:4px solid var(--teal);border-radius:0 16px 16px 0;font-size:17px;line-height:1.9;color:var(--navy);font-weight:700;letter-spacing:0.1px;position:relative;}
+.article-body blockquote::before{content:'"';position:absolute;top:-4px;right:24px;font-family:'Space Grotesk',sans-serif;font-size:96px;color:var(--teal);opacity:0.18;line-height:1;font-weight:800;}
+
+/* SHARE */
+.share-box{max-width:720px;margin:0 auto;padding:32px 32px 0;display:flex;align-items:center;gap:18px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:40px;}
+.share-label{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.share-btns{display:flex;gap:10px;}
+.share-btn{width:42px;height:42px;border-radius:50%;background:#fff;border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;transition:all .25s ease;}
+.share-btn:hover{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border-color:transparent;transform:translateY(-3px);box-shadow:0 8px 20px rgba(6,182,212,0.3);}
+
+/* RELATED */
+.related-section{padding:80px 48px;background:var(--bg2);}
+.related-inner{max-width:1160px;margin:0 auto;}
+.related-header{text-align:center;margin-bottom:44px;}
+.related-title{font-size:clamp(22px,2.6vw,32px);font-weight:900;color:var(--navy);letter-spacing:-1px;}
+.related-title em{font-style:normal;background:linear-gradient(120deg,var(--teal),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ey{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--teal-d);display:inline-flex;align-items:center;gap:12px;margin-bottom:22px;}
+.ey.center::before,.ey.center::after{content:'';width:32px;height:2px;background:var(--teal);border-radius:2px;}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.related-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:24px 22px;text-decoration:none;display:flex;flex-direction:column;gap:12px;transition:all .3s ease;}
+.related-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(6,182,212,0.16);border-color:rgba(6,182,212,0.35);}
+.related-cat{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--teal-d);text-transform:uppercase;}
+.related-card-title{font-size:15px;font-weight:800;color:var(--navy);line-height:1.55;letter-spacing:-0.3px;}
+.related-meta{font-family:'Space Grotesk',sans-serif;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:auto;padding-top:12px;border-top:1px solid var(--border);}
+@media (max-width:900px){.related-grid{grid-template-columns:1fr;}}
+
+/* CTA */
+.cta-bottom{padding:110px 48px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-m) 100%);color:#fff;position:relative;overflow:hidden;text-align:center;}
+.cta-bottom::before{content:'';position:absolute;top:-300px;left:50%;transform:translateX(-50%);width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,0.15) 0%,transparent 60%);pointer-events:none;}
+.cta-bottom::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(6,182,212,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.cta-inner{max-width:820px;margin:0 auto;position:relative;z-index:1;}
+.cta-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-bottom:22px;display:inline-flex;align-items:center;gap:12px;}
+.cta-eyebrow::before,.cta-eyebrow::after{content:'';width:30px;height:2px;background:var(--teal);border-radius:2px;}
+.cta-title{font-size:clamp(28px,4vw,46px);font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.2;margin-bottom:20px;}
+.cta-title em{font-style:normal;color:var(--teal);}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.7);line-height:1.9;margin-bottom:40px;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.cta-btn-p{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;padding:16px 36px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 14px 40px rgba(6,182,212,0.45);transition:all .3s ease;}
+.cta-btn-p:hover{transform:translateY(-3px);box-shadow:0 20px 48px rgba(6,182,212,0.55);}
+.cta-btn-s{display:inline-flex;align-items:center;gap:10px;background:transparent;color:#fff;padding:16px 28px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;border:1.5px solid rgba(255,255,255,0.18);transition:all .25s ease;}
+.cta-btn-s:hover{border-color:var(--teal);background:rgba(6,182,212,0.08);}
+
+/* FOOTER */
+.site-footer{background:#0a1628;color:rgba(255,255,255,0.7);padding:72px 48px 36px;}
+.site-footer-inner{max-width:1200px;margin:0 auto;}
+.site-footer-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.footer-logo{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;}
+.footer-logo-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.footer-tagline{font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:0.5px;}
+.site-footer-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;padding:40px 0;}
+.footer-col-title{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;color:var(--teal);text-transform:uppercase;margin-bottom:18px;}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,0.6);text-decoration:none;margin-bottom:12px;transition:color .2s;}
+.footer-col a:hover{color:#fff;}
+.site-footer-bottom{padding-top:28px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;font-size:12px;}
+.site-footer-bottom p{color:rgba(255,255,255,0.4);}
+.footer-badges{display:flex;gap:14px;flex-wrap:wrap;}
+.footer-badge{font-size:11px;color:rgba(255,255,255,0.55);padding:5px 11px;border-radius:100px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);}
+@media (max-width:768px){.site-footer{padding:56px 24px 32px;}.site-footer-nav{grid-template-columns:1fr 1fr;gap:32px;}.site-footer-top{flex-direction:column;align-items:flex-start;}.site-footer-bottom{flex-direction:column;align-items:flex-start;}}
+
+@media (max-width:600px){
+  .article-header,.article-body,.article-hero,.share-box{padding-left:24px;padding-right:24px;}
+  .breadcrumb{padding-left:24px;padding-right:24px;}
+  .related-section,.cta-bottom{padding-left:24px;padding-right:24px;}
+  .author-box{flex-wrap:wrap;}
+  .article-meta{margin-left:0;width:100%;padding-top:8px;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-icon">CS</div>
+    CS<b style="color:var(--teal)">LINK</b>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../cslink_features_v5.html">機能</a></li>
+    <li><a href="../cslink_howto_fixed.html">使い方・事例</a></li>
+    <li><a href="../cslink_pricing.html">料金</a></li>
+    <li><a href="../cslink_register_client.html">企業向け</a></li>
+    <li><a href="../cslink_register_pro.html">CS人材向け</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="../cslink_list_v2.html" class="nav-login">CS会社を見る</a>
+    <a href="../cslink_register_client.html" class="nav-cta">無料で始める</a>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb fade-up" aria-label="breadcrumb" style="position:static;height:auto;display:flex;background:none;border:none;backdrop-filter:none;">
+  <a href="../index.html">トップ</a>
+  <span class="sep">/</span>
+  <a href="index.html">Blog</a>
+  <span class="sep">/</span>
+  <span class="current">解約率を30%改善したCS組織の作り方</span>
+</nav>
+
+<!-- ARTICLE HEADER -->
+<header class="article-header">
+  <div class="fade-up">
+    <span class="post-cat">CS戦略</span>
+  </div>
+  <h1 class="article-h1 fade-up delay-1">解約率を30%改善したCS組織の作り方</h1>
+  <div class="author-box fade-up delay-2">
+    <div class="author-avatar">YK</div>
+    <div class="author-info">
+      <span class="author-name">川﨑 勇樹</span>
+      <span class="author-role">facing株式会社 CEO</span>
+    </div>
+    <div class="article-meta">
+      <span>2026.04.15</span>
+      <span class="article-meta-dot"></span>
+      <span>8分で読めます</span>
+    </div>
+  </div>
+</header>
+
+<!-- HERO VISUAL -->
+<div class="article-hero fade-up delay-2">
+  <div class="article-hero-frame">
+    <div class="article-hero-label">CS.01</div>
+  </div>
+</div>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+  <p class="fade-up">「解約率を下げたい」。SaaS経営者の99%が口にする課題です。しかしその多くは、<strong>個別のリテンション施策</strong>ばかりに時間が費やされ、肝心の「なぜ顧客が離れるのか」の構造が放置されたままになっています。</p>
+
+  <p class="fade-up">本記事では、私たちが実際に支援したSaaS企業で、3か月で月次解約率を30%改善した際の「組織設計」の考え方を共有します。機能追加でも、派手な値引きでもありません。<strong>CSチームの役割定義を書き換えただけ</strong>で、数字は動き始めました。</p>
+
+  <h2 class="fade-up">CSの仕事は「サポート」ではない</h2>
+
+  <p class="fade-up">多くの企業でCSは「問い合わせ対応部隊」として運用されています。しかしこの定義のままでは、解約率は構造的に下がりません。なぜなら、問い合わせが来る時点で、顧客の多くはすでに離反の意思決定を終えているからです。</p>
+
+  <p class="fade-up">私たちはCSの役割を、次のように再定義しました。</p>
+
+  <ul class="fade-up">
+    <li>問い合わせを捌く部隊 → <strong>契約期間中のROIを最大化する責任者</strong></li>
+    <li>受動的なレスポンス → 能動的なヘルススコア監視とアラート運用</li>
+    <li>満足度のKPI → 継続利用・アップセル・NRRまで含めた経営KPI</li>
+  </ul>
+
+  <blockquote class="fade-up">
+    CSは「問い合わせ対応」ではなく、「契約後の成功体験を設計する経営機能」である。この1行の定義変更が、半年後の数字を決める。
+  </blockquote>
+
+  <h2 class="fade-up">具体的に変えた3つのこと</h2>
+
+  <h3 class="fade-up">1. ヘルススコアを「30日以内の行動」に圧縮した</h3>
+
+  <p class="fade-up">従来のヘルススコアは、ログイン頻度・機能利用・NPSなど複数指標の合成でした。しかしこれでは、<strong>「危険な兆候」が出てから介入するまでに2〜3週間のラグ</strong>が発生します。</p>
+
+  <p class="fade-up">そこで、直近30日の「主要機能の初回成功体験の有無」を単一スコアに集約しました。早期に落ちた顧客に対し、その場で能動コンタクトする運用に切り替えています。</p>
+
+  <h3 class="fade-up">2. 担当顧客数を半分に減らした</h3>
+
+  <p class="fade-up">一人のCSMが担当する顧客数を、従来の40社から20社に減らしました。売上の観点では逆行する決定に見えますが、実際は「深く関わる」ことの価値のほうが圧倒的に大きかった。結果、担当顧客のNRRは112%から143%に上昇しています。</p>
+
+  <h3 class="fade-up">3. 営業とCSの会議体を統合した</h3>
+
+  <p class="fade-up">契約獲得時の約束と、契約後に提供する体験にズレがあるほど解約は起きやすい。営業とCSが毎週同じテーブルで数字を見る会議体を作っただけで、期待値ズレによる解約は激減しました。</p>
+
+  <h2 class="fade-up">組織設計こそが最大の「施策」</h2>
+
+  <p class="fade-up">個別の施策を10本打つよりも、<strong>組織の役割と権限を1つ書き換える</strong>ほうが、遥かに大きな効果を生みます。解約率の改善は、マーケティングでも機能追加でもなく、ほぼ組織設計の問題です。</p>
+
+  <p class="fade-up">もし自社のCS組織について相談したいテーマがあれば、CSLINKのAIマッチングでは「解約改善に実績のあるCSプロ」を最短28秒で提案できます。最初の壁打ち相手を、ぜひ気軽に見つけてみてください。</p>
+</article>
+
+<!-- SHARE -->
+<section class="share-box fade-up">
+  <span class="share-label">Share this article</span>
+  <div class="share-btns">
+    <a href="https://twitter.com/intent/tweet?text=%E8%A7%A3%E7%B4%84%E7%8E%87%E3%82%92%EF%BC%93%EF%BC%90%EF%BC%85%E6%94%B9%E5%96%84%E3%81%97%E3%81%9FCS%E7%B5%84%E7%B9%94%E3%81%AE%E4%BD%9C%E3%82%8A%E6%96%B9&url=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="Twitter / Xでシェア">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="Facebookでシェア">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.197 21.5v-8.5h-2.5v-3h2.5v-2.25c0-2.485 1.515-3.75 3.758-3.75.821 0 1.626.054 1.87.077v2.494h-1.478c-1.16 0-1.38.554-1.38 1.361V10h2.76l-.36 3h-2.4v8.5z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="LinkedInでシェア">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section class="related-section">
+  <div class="related-inner">
+    <div class="related-header fade-up">
+      <div class="ey center">You may also like</div>
+      <h2 class="related-title">こちらも<em>おすすめ</em></h2>
+    </div>
+    <div class="related-grid">
+      <a href="post-1.html" class="related-card fade-up delay-1">
+        <span class="related-cat">LTV改善</span>
+        <h3 class="related-card-title">オンボーディング設計で見落としがちな3つのポイント</h3>
+        <div class="related-meta">2026.04.10 · 6分</div>
+      </a>
+      <a href="post-1.html" class="related-card fade-up delay-2">
+        <span class="related-cat">ケーススタディ</span>
+        <h3 class="related-card-title">SaaS企業A社、解約率を半減させた実例</h3>
+        <div class="related-meta">2026.03.28 · 10分</div>
+      </a>
+      <a href="post-1.html" class="related-card fade-up delay-3">
+        <span class="related-cat">チーム運営</span>
+        <h3 class="related-card-title">少数精鋭のCSチームで売上3倍にした話</h3>
+        <div class="related-meta">2026.03.20 · 7分</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-bottom">
+  <div class="cta-inner">
+    <div class="cta-eyebrow fade-up">Let's talk</div>
+    <h2 class="cta-title fade-up delay-1">CSの課題、<br><em>まずは28秒</em>で相談を。</h2>
+    <p class="cta-sub fade-up delay-2">企業側は登録から成約まで完全無料。AIが最適なCSプロフェッショナルを即座に提案します。</p>
+    <div class="cta-btns fade-up delay-2">
+      <a href="../cslink_register_client.html" class="cta-btn-p">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" stroke-opacity=".5" stroke-width="1.5"/><path d="M6 5l5 3-5 3V5z" fill="white"/></svg>
+        CSの課題を相談する
+      </a>
+      <a href="index.html" class="cta-btn-s">← ブログ一覧に戻る</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-top">
+      <a href="../index.html" class="footer-logo">
+        <div class="footer-logo-icon">CS</div>
+        CS<b style="color:var(--teal)">LINK</b>
+      </a>
+      <p class="footer-tagline">AIが最適なCSプロを、28秒でつなぐ。</p>
+    </div>
+    <div class="site-footer-nav">
+      <div class="footer-col">
+        <div class="footer-col-title">サービス</div>
+        <a href="../cslink_features_v5.html">機能・特徴</a>
+        <a href="../cslink_howto_fixed.html">使い方・事例</a>
+        <a href="../cslink_pricing.html">料金</a>
+        <a href="../cslink_list_v2.html">CSプロ一覧</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">登録</div>
+        <a href="../cslink_register_client.html">企業として登録（無料）</a>
+        <a href="../cslink_register_pro.html">CS人材として登録</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">会社情報</div>
+        <a href="../company.html">会社概要</a>
+        <a href="index.html">ブログ</a>
+        <a href="../terms.html">利用規約</a>
+        <a href="../privacy.html">プライバシーポリシー</a>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <p>© <span id="copyYear">2026</span> facing株式会社 All Rights Reserved.</p>
+      <div class="footer-badges">
+        <span class="footer-badge">🛡️ facing監修</span>
+        <span class="footer-badge">🤖 AI powered</span>
+        <span class="footer-badge">🆓 企業側完全無料</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('copyYear').textContent = new Date().getFullYear();
+
+const fadeEls = document.querySelectorAll('.fade-up');
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+fadeEls.forEach(el => fadeObserver.observe(el));
+</script>
+</body>
+</html>

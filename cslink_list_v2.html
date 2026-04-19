@@ -146,6 +146,22 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 .fade-in{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
 .fade-in.visible{opacity:1;transform:translateY(0);}
 
+/* SCROLL FADE-UP（company.html と同一） */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(0.4,0,0.2,1),transform .8s cubic-bezier(0.4,0,0.2,1);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.fade-up.delay-1{transition-delay:0.1s;}
+.fade-up.delay-2{transition-delay:0.2s;}
+.fade-up.delay-3{transition-delay:0.3s;}
+
+/* Hero em を teal→blue グラデ */
+.list-hero h1 em{background:linear-gradient(120deg,var(--teal) 0%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:var(--teal);}
+
+/* プロカード hover 強化 */
+.profile-editorial{transition:box-shadow .45s cubic-bezier(0.4,0,0.2,1),transform .45s cubic-bezier(0.4,0,0.2,1),border-color .3s ease;}
+.profile-editorial:hover{box-shadow:0 24px 64px rgba(6,182,212,0.18);transform:translateY(-6px);border-color:rgba(6,182,212,0.28);}
+.profile-editorial .pe-img img{transition:transform .9s cubic-bezier(0.4,0,0.2,1);}
+.profile-editorial:hover .pe-img img{transform:scale(1.08);}
+
 @media(max-width:1024px){
   .profile-editorial,.profile-editorial.reverse{grid-template-columns:1fr;}
   .list-hero-inner{grid-template-columns:1fr;}
@@ -156,9 +172,37 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   .nav-links{display:none;}
   footer{flex-direction:column;gap:14px;text-align:center;}
 }
+
+.scroll-progress{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--teal),var(--blue));z-index:9999;transition:width .1s ease;pointer-events:none;}
+.back-to-top{position:fixed;right:28px;bottom:28px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(6,182,212,0.35);opacity:0;visibility:hidden;transform:translateY(10px);transition:all .3s cubic-bezier(0.4,0,0.2,1);z-index:500;}
+.back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0);}
+.back-to-top:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(6,182,212,0.5);}
+.back-to-top svg{width:18px;height:18px;}
+@media(max-width:640px){.back-to-top{right:18px;bottom:18px;width:42px;height:42px;}}
+.newsletter-form{display:inline-flex;gap:8px;margin-bottom:16px;max-width:360px;width:100%;}
+.newsletter-form input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;transition:border .2s;}
+.newsletter-form input:focus{border-color:var(--teal);}
+.newsletter-form button{padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:background .2s;}
+.newsletter-form button:hover{background:var(--teal-d);}
 </style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"facing株式会社",
+  "alternateName":"CSLINK",
+  "url":"https://cslink.link",
+  "logo":"https://cslink.link/ogp.png",
+  "foundingDate":"2021-06-10",
+  "founder":{"@type":"Person","name":"川﨑 勇樹"},
+  "address":{"@type":"PostalAddress","streetAddress":"東日本橋2-22-1 クロスシー東日本橋ビル2F","addressLocality":"中央区","addressRegion":"東京都","postalCode":"103-0004","addressCountry":"JP"},
+  "contactPoint":{"@type":"ContactPoint","telephone":"+81-3-6667-0655","email":"cslink@facing.co.jp","contactType":"customer service","availableLanguage":["Japanese"]},
+  "description":"CS（カスタマーサクセス）特化AIマッチングプラットフォーム。企業とCS専門家をAIで最短28秒でつなぐ。"
+}
+</script>
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- TICKER -->
 <div class="ai-ticker">
@@ -185,17 +229,17 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 <!-- HERO -->
 <div class="list-hero">
   <div class="list-hero-inner">
-    <div class="fade-in">
-      <div class="list-eyebrow">CS PROFESSIONALS</div>
-      <h1>facing監修の<br><em>CS専門家</em>一覧</h1>
-      <p class="list-hero-desc">全プロフェッショナルがfacing株式会社の審査を通過済み。マッチングしない場合はfacingが直接支援するので、CS課題は必ず解決されます。</p>
-      <div class="list-hero-stats">
+    <div class="fade-in fade-up">
+      <div class="list-eyebrow fade-up">CS PROFESSIONALS</div>
+      <h1 class="fade-up delay-1">facing監修の<br><em>CS専門家</em>一覧</h1>
+      <p class="list-hero-desc fade-up delay-2">全プロフェッショナルがfacing株式会社の審査を通過済み。マッチングしない場合はfacingが直接支援するので、CS課題は必ず解決されます。</p>
+      <div class="list-hero-stats fade-up delay-3">
         <div><div class="hero-stat-num"><em>審査</em>制</div><div class="hero-stat-label">facing監修</div></div>
         <div><div class="hero-stat-num"><em>28</em><span style="font-size:16px">秒</span></div><div class="hero-stat-label">平均マッチング</div></div>
         <div><div class="hero-stat-num"><em>100</em>%</div><div class="hero-stat-label">課題解決保証</div></div>
       </div>
     </div>
-    <div class="fade-in" style="border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(15,35,66,0.12);">
+    <div class="fade-in fade-up delay-2" style="border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(15,35,66,0.12);">
       <img src="https://cdn.midjourney.com/7f98ceba-c0c0-46f6-97a4-61182d1dcdab/0_0_640_N.webp?method=shortest" alt="CSプロフェッショナルチーム" style="width:100%;display:block;"/>
     </div>
   </div>
@@ -235,7 +279,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   <div class="featured-section-label">FEATURED PROFESSIONALS</div>
 
   <!-- プロフィール1 -->
-  <div class="profile-editorial fade-in" data-spec="churn ltv">
+  <div class="profile-editorial fade-in fade-up delay-1" data-spec="churn ltv">
     <div class="pe-img">
       <img src="https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_1_640_N.webp?method=shortest" alt="田中美咲"/>
       <div class="pe-img-overlay"></div>
@@ -270,7 +314,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   </div>
 
   <!-- プロフィール2 -->
-  <div class="profile-editorial reverse fade-in" data-spec="churn saas">
+  <div class="profile-editorial reverse fade-in fade-up delay-2" data-spec="churn saas">
     <div class="pe-img">
       <img src="https://cdn.midjourney.com/7f98ceba-c0c0-46f6-97a4-61182d1dcdab/0_1_640_N.webp?method=shortest" alt="リテンションラボ株式会社" loading="lazy"/>
       <div class="pe-img-overlay"></div>
@@ -440,10 +484,33 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 
 <footer>
   <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div>
+  <form class="newsletter-form" onsubmit="event.preventDefault();this.querySelector('input').value='';this.nextElementSibling.style.display='block';setTimeout(()=>{this.nextElementSibling.style.display='none';},3000);">
+    <input type="email" placeholder="メールアドレス" required>
+    <button type="submit">購読する</button>
+  </form>
+  <div class="newsletter-msg" style="display:none;color:var(--teal-d);font-size:12px;margin-top:8px;">ご登録ありがとうございます（準備中です）</div>
   <div class="footer-copy">© <span id="copyYear">2026</span> facing株式会社. All rights reserved.</div>
   <div class="footer-links"><a href="index.html">トップ</a><a href="terms.html">利用規約</a><a href="terms.html#tokushoho">特商法表記</a><a href="privacy.html">プライバシーポリシー</a><a href="company.html">会社概要</a></div>
 </footer>
-<script>document.getElementById('copyYear').textContent=new Date().getFullYear();</script>
+<button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+<script>
+document.getElementById('copyYear').textContent=new Date().getFullYear();
+window.addEventListener('scroll',()=>{
+  const el=document.getElementById('scrollProgress');if(!el)return;
+  const h=document.documentElement;
+  const p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  el.style.width=p+'%';
+});
+const btt=document.getElementById('backToTop');
+if(btt){
+  window.addEventListener('scroll',()=>{
+    btt.classList.toggle('visible',window.scrollY>400);
+  });
+  btt.addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});});
+}
+</script>
 
 <script>
 // TICKER
@@ -474,6 +541,15 @@ const io=new IntersectionObserver(entries=>{
   });
 },{threshold:0.1});
 document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+
+// fade-up scroll animation（company.html と共通）
+const fadeEls=document.querySelectorAll('.fade-up');
+const fadeObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add('visible');fadeObserver.unobserve(entry.target);}
+  });
+},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+fadeEls.forEach(el=>fadeObserver.observe(el));
 </script>
 </body>
 </html>
