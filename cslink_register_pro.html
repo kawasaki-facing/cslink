@@ -10,7 +10,7 @@
 <meta property="og:description" content="CS経験を活かして活躍したい人材向けの登録フォーム。AIスクリーニング付き。登録無料。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cslink.link/cslink_register_pro.html">
-<meta property="og:image" content="https://cslink.link/ogp.png">
+<meta property="og:image" content="https://cdn.midjourney.com/3af985da-ab14-490d-8470-6cd3a54f2ac3/0_3_1728_N.webp?method=shortest">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="CSLINK">
@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CS人材登録 | CSLINK">
 <meta name="twitter:description" content="CS経験を活かして活躍したい人材向けの登録フォーム。AIスクリーニング付き。登録無料。">
-<meta name="twitter:image" content="https://cslink.link/ogp.png">
+<meta name="twitter:image" content="https://cdn.midjourney.com/3af985da-ab14-490d-8470-6cd3a54f2ac3/0_3_1728_N.webp?method=shortest">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -271,6 +271,15 @@ footer{background:#fff;border-top:1px solid var(--border);padding:32px 56px;disp
   "description":"CS（カスタマーサクセス）特化AIマッチングプラットフォーム。企業とCS専門家をAIで最短28秒でつなぐ。"
 }
 </script>
+<!-- ▼ Google Analytics 4（測定IDを取得したら G-XXXXXXXXXX を置換） -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
+<!-- <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
+</script> -->
+<!-- ▲ GA4（コメント解除するだけで有効化） -->
 </head>
 <body>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -640,11 +649,21 @@ footer{background:#fff;border-top:1px solid var(--border);padding:32px 56px;disp
     <a href="blog/" style="font-size:12px;color:var(--muted);text-decoration:none;">ブログ</a>
     <a href="cases/" style="font-size:12px;color:var(--muted);text-decoration:none;">事例</a>
   </div>
-  <form class="newsletter-form" onsubmit="event.preventDefault();this.querySelector('input').value='';this.nextElementSibling.style.display='block';setTimeout(()=>{this.nextElementSibling.style.display='none';},3000);">
-    <input type="email" placeholder="メールアドレス" required>
+  <!-- ▼ MAILCHIMP INTEGRATION（Mailchimpでlist作成後、action URLとUS-regionを置き換え） -->
+  <form class="newsletter-form"
+        action="https://facing.us1.list-manage.com/subscribe/post?u=PLACEHOLDER_USER_ID&id=PLACEHOLDER_LIST_ID"
+        method="post"
+        target="_blank"
+        novalidate>
+    <input type="email" name="EMAIL" placeholder="メールアドレス" required>
+    <!-- Mailchimp の bot protection 隠しフィールド（実ID入力後に有効化） -->
+    <div style="position:absolute;left:-5000px;" aria-hidden="true">
+      <input type="text" name="b_PLACEHOLDER_USER_ID_PLACEHOLDER_LIST_ID" tabindex="-1" value="">
+    </div>
     <button type="submit">購読する</button>
   </form>
-  <div class="newsletter-msg" style="display:none;color:var(--teal-d);font-size:12px;margin-top:8px;">ご登録ありがとうございます（準備中です）</div>
+  <div class="newsletter-note" style="font-size:10px;color:var(--muted);margin-top:6px;">※Mailchimp未連携（action URLに実IDを設定してください）</div>
+  <!-- ▲ MAILCHIMP INTEGRATION -->
   <div class="footer-copy">© <span id="copyYear">2026</span> facing株式会社. All rights reserved.</div>
 </footer>
 <button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">

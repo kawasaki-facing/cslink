@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>解約率を30%改善したCS組織の作り方 | CSLINK Blog</title>
-<meta name="description" content="SaaS企業が抱える解約率の課題。その多くは個別の施策ではなく組織設計に起因する。再現性のある組織フレームを解説します。">
-<link rel="canonical" href="https://cslink.link/blog/post-1.html">
-<meta property="og:title" content="解約率を30%改善したCS組織の作り方 | CSLINK Blog">
-<meta property="og:description" content="SaaS企業が抱える解約率の課題。その多くは個別の施策ではなく組織設計に起因する。">
+<title>CS人材探しの時間を28秒にした裏側 | CSLINK Blog</title>
+<meta name="description" content="従来数週間かかっていたCS人材の採用を、なぜCSLINKは28秒でマッチングできるのか。4軸スコアリングとfacing監修の仕組みを解説します。">
+<link rel="canonical" href="https://cslink.link/blog/post-3.html">
+<meta property="og:title" content="CS人材探しの時間を28秒にした裏側 | CSLINK Blog">
+<meta property="og:description" content="数週間かかっていたCS人材採用を28秒に。CSLINKの4軸スコアリングとfacing監修の仕組みを公開します。">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://cslink.link/blog/post-1.html">
+<meta property="og:url" content="https://cslink.link/blog/post-3.html">
 <meta property="og:image" content="https://cdn.midjourney.com/cabb8b06-a204-44dd-9418-74490b9fe5ad/0_3_1728_N.webp?method=shortest">
 <meta property="og:site_name" content="CSLINK">
 <meta property="og:locale" content="ja_JP">
@@ -25,10 +25,10 @@
 {
   "@context":"https://schema.org",
   "@type":"Article",
-  "headline":"解約率を30%改善したCS組織の作り方",
+  "headline":"CS人材探しの時間を28秒にした裏側",
   "author":{"@type":"Person","name":"川﨑 勇樹","jobTitle":"代表取締役","worksFor":{"@type":"Organization","name":"facing株式会社"}},
   "publisher":{"@type":"Organization","name":"facing株式会社","logo":{"@type":"ImageObject","url":"https://cslink.link/ogp.png"}},
-  "datePublished":"2026-04-15",
+  "datePublished":"2026-04-05",
   "image":"https://cslink.link/ogp.png"
 }
 </script>
@@ -211,15 +211,15 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
   <span class="sep">/</span>
   <a href="index.html">Blog</a>
   <span class="sep">/</span>
-  <span class="current">解約率を30%改善したCS組織の作り方</span>
+  <span class="current">CS人材探しの時間を28秒にした裏側</span>
 </nav>
 
 <!-- ARTICLE HEADER -->
 <header class="article-header">
   <div class="fade-up">
-    <span class="post-cat">CS戦略</span>
+    <span class="post-cat">AIマッチング</span>
   </div>
-  <h1 class="article-h1 fade-up delay-1">解約率を30%改善したCS組織の作り方</h1>
+  <h1 class="article-h1 fade-up delay-1">CS人材探しの時間を28秒にした裏側</h1>
   <div class="author-box fade-up delay-2">
     <div class="author-avatar">YK</div>
     <div class="author-info">
@@ -227,9 +227,9 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
       <span class="author-role">facing株式会社 CEO</span>
     </div>
     <div class="article-meta">
-      <span>2026.04.15</span>
+      <span>2026.04.05</span>
       <span class="article-meta-dot"></span>
-      <span>8分で読めます</span>
+      <span>5分で読めます</span>
     </div>
   </div>
 </header>
@@ -237,66 +237,76 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 <!-- HERO VISUAL -->
 <div class="article-hero fade-up delay-2">
   <div class="article-hero-frame">
-    <div class="article-hero-label">CS.01</div>
+    <div class="article-hero-label">CS.03</div>
   </div>
 </div>
 
 <!-- ARTICLE BODY -->
 <article class="article-body">
-  <p class="fade-up">「解約率を下げたい」。SaaS経営者の99%が口にする課題です。しかしその多くは、<strong>個別のリテンション施策</strong>ばかりに時間が費やされ、肝心の「なぜ顧客が離れるのか」の構造が放置されたままになっています。</p>
+  <p class="fade-up">「CS人材を採用したい」。このニーズに対して、従来のエージェント経由では<strong>平均45日、初期面談までだけでも2週間</strong>かかっていました。しかも、ようやく会えた候補者がSaaSのCS経験はあっても自社のフェーズに合わない、といったミスマッチが頻発します。</p>
 
-  <p class="fade-up">本記事では、私たちが実際に支援したSaaS企業で、3か月で月次解約率を30%改善した際の「組織設計」の考え方を共有します。機能追加でも、派手な値引きでもありません。<strong>CSチームの役割定義を書き換えただけ</strong>で、数字は動き始めました。</p>
+  <p class="fade-up">CSLINKでは、この時間を28秒まで短縮しました。なぜそんなことが可能になったのか、今日はその裏側のアルゴリズム設計を公開します。</p>
 
-  <h2 class="fade-up">CSの仕事は「サポート」ではない</h2>
+  <h2 class="fade-up">なぜAIマッチングが効くのか</h2>
 
-  <p class="fade-up">多くの企業でCSは「問い合わせ対応部隊」として運用されています。しかしこの定義のままでは、解約率は構造的に下がりません。なぜなら、問い合わせが来る時点で、顧客の多くはすでに離反の意思決定を終えているからです。</p>
+  <p class="fade-up">そもそもCS人材のマッチングは、エンジニア採用以上に「見えない属性」が多い領域です。スキルセットだけでなく、顧客折衝のスタイル、対応できる事業フェーズ、業界への理解度、稼働時間の柔軟性──これらを履歴書の文字列マッチングで捌こうとすると、どうしても精度が頭打ちになります。</p>
 
-  <p class="fade-up">私たちはCSの役割を、次のように再定義しました。</p>
+  <p class="fade-up">AIマッチングが効くのは、<strong>定量化できない属性も含めてスコア化</strong>できる点にあります。文章、過去の担当案件、自己申告のスタイル傾向といった情報を統合し、企業側の課題との適合度を瞬時に計算することで、人間の採用担当者では届かない精度とスピードを両立しています。</p>
 
-  <ul class="fade-up">
-    <li>問い合わせを捌く部隊 → <strong>契約期間中のROIを最大化する責任者</strong></li>
-    <li>受動的なレスポンス → 能動的なヘルススコア監視とアラート運用</li>
-    <li>満足度のKPI → 継続利用・アップセル・NRRまで含めた経営KPI</li>
-  </ul>
+  <h2 class="fade-up">28秒のアルゴリズム構造</h2>
+
+  <p class="fade-up">CSLINKのマッチングは、大きく分けて<strong>4つの軸のスコアリング</strong>で構成されています。それぞれの軸は独立して重み付けされ、最終的に合算されたスコア上位の人材が提案される仕組みです。</p>
+
+  <h3 class="fade-up">軸1：課題適合度</h3>
+
+  <p class="fade-up">企業側が抱える課題（例：解約率の改善、オンボーディング設計、カスタマーマーケティング立ち上げ）に対して、CSプロフェッショナル側の過去実績がどの程度マッチするかを測定します。単に「CS経験あり」ではなく、「解約率を具体的に下げた経験の有無」「そのときの事業規模」などをベクトル化して比較します。</p>
+
+  <h3 class="fade-up">軸2：フェーズ一致</h3>
+
+  <p class="fade-up">事業フェーズには、アーリー（シード〜シリーズA）、グロース（シリーズB〜C）、エンタープライズ拡張期といった段階があり、それぞれで必要なCSスキルは全く違います。CSLINKでは、過去に支援した事業フェーズを時系列で記録し、<strong>いま募集中のフェーズと最も相性の良い人材</strong>を優先的に提案します。</p>
+
+  <h3 class="fade-up">軸3：スキルセット</h3>
+
+  <p class="fade-up">ヘルススコア設計、プレイブック化、ハイタッチ／ロータッチ運用、カスタマーマーケティング、コミュニティ運営など、CSの下位スキルを粒度細かく分解して保持。企業が求めるスキル組み合わせと候補者のスキル構成の類似度を計算します。</p>
+
+  <h3 class="fade-up">軸4：稼働条件</h3>
+
+  <p class="fade-up">最後は泥臭いようでいて最重要な軸です。稼働可能時間（週3日／フルタイムなど）、リモート可否、契約形態（業務委託／準委任）、最低単価など、現実的な条件が合わなければ成約しません。事前にここをスコアに組み込むことで、<strong>提案後のミスマッチによる離脱</strong>を最小化しています。</p>
 
   <blockquote class="fade-up">
-    CSは「問い合わせ対応」ではなく、「契約後の成功体験を設計する経営機能」である。この1行の定義変更が、半年後の数字を決める。
+    マッチングの精度を決めるのは、アルゴリズムの洗練度より「何をスコア軸にするか」の定義力だ。CS領域は、この定義こそが競争優位になる。
   </blockquote>
 
-  <h2 class="fade-up">具体的に変えた3つのこと</h2>
+  <h2 class="fade-up">facing監修との組み合わせ</h2>
 
-  <h3 class="fade-up">1. ヘルススコアを「30日以内の行動」に圧縮した</h3>
+  <p class="fade-up">AIのスコアリングが高くても、本当に成果に直結する人材とは限りません。そこでCSLINKは、<strong>facing監修</strong>という人間側の品質担保レイヤーを組み合わせています。</p>
 
-  <p class="fade-up">従来のヘルススコアは、ログイン頻度・機能利用・NPSなど複数指標の合成でした。しかしこれでは、<strong>「危険な兆候」が出てから介入するまでに2〜3週間のラグ</strong>が発生します。</p>
+  <ul class="fade-up">
+    <li>登録CSプロは、facingが定めた品質基準を満たしたうえでスコアリング対象に入る</li>
+    <li>マッチング結果に対し、facing側が必要に応じてコメントや補足情報を添える</li>
+    <li>成約後も定期的なモニタリングを行い、スコアを実績ベースで再学習させる</li>
+  </ul>
 
-  <p class="fade-up">そこで、直近30日の「主要機能の初回成功体験の有無」を単一スコアに集約しました。早期に落ちた顧客に対し、その場で能動コンタクトする運用に切り替えています。</p>
+  <p class="fade-up">AIの速度と人間の質感の両方が組み合わさることで、初めて「28秒で、かつ外さない」マッチングが成立します。このハイブリッドこそが、他の汎用マッチングサービスとの一番大きな違いです。</p>
 
-  <h3 class="fade-up">2. 担当顧客数を半分に減らした</h3>
+  <h2 class="fade-up">CSLINKの提案</h2>
 
-  <p class="fade-up">一人のCSMが担当する顧客数を、従来の40社から20社に減らしました。売上の観点では逆行する決定に見えますが、実際は「深く関わる」ことの価値のほうが圧倒的に大きかった。結果、担当顧客のNRRは112%から143%に上昇しています。</p>
+  <p class="fade-up">CS人材を探すフェーズで、エージェントに依頼するか、リファラルを待つか、自社で求人を出すか──こうした選択肢の外側に、「AIで28秒」という新しい選択肢があります。</p>
 
-  <h3 class="fade-up">3. 営業とCSの会議体を統合した</h3>
-
-  <p class="fade-up">契約獲得時の約束と、契約後に提供する体験にズレがあるほど解約は起きやすい。営業とCSが毎週同じテーブルで数字を見る会議体を作っただけで、期待値ズレによる解約は激減しました。</p>
-
-  <h2 class="fade-up">組織設計こそが最大の「施策」</h2>
-
-  <p class="fade-up">個別の施策を10本打つよりも、<strong>組織の役割と権限を1つ書き換える</strong>ほうが、遥かに大きな効果を生みます。解約率の改善は、マーケティングでも機能追加でもなく、ほぼ組織設計の問題です。</p>
-
-  <p class="fade-up">もし自社のCS組織について相談したいテーマがあれば、CSLINKのAIマッチングでは「解約改善に実績のあるCSプロ」を最短28秒で提案できます。最初の壁打ち相手を、ぜひ気軽に見つけてみてください。</p>
+  <p class="fade-up">企業側は登録から成約まで完全無料で、まずは壁打ちから始められます。自社のフェーズや課題をフォームに入力するだけで、すぐに複数のCSプロが提案されますので、相性の良さをご自身で確かめてみてください。</p>
 </article>
 
 <!-- SHARE -->
 <section class="share-box fade-up">
   <span class="share-label">Share this article</span>
   <div class="share-btns">
-    <a href="https://twitter.com/intent/tweet?text=%E8%A7%A3%E7%B4%84%E7%8E%87%E3%82%92%EF%BC%93%EF%BC%90%EF%BC%85%E6%94%B9%E5%96%84%E3%81%97%E3%81%9FCS%E7%B5%84%E7%B9%94%E3%81%AE%E4%BD%9C%E3%82%8A%E6%96%B9&url=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="Twitter / Xでシェア">
+    <a href="https://twitter.com/intent/tweet?text=CS%E4%BA%BA%E6%9D%90%E6%8E%A2%E3%81%97%E3%81%AE%E6%99%82%E9%96%93%E3%82%9228%E7%A7%92%E3%81%AB%E3%81%97%E3%81%9F%E8%A3%8F%E5%81%B4&url=https://cslink.link/blog/post-3.html" target="_blank" rel="noopener" class="share-btn" aria-label="Twitter / Xでシェア">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
     </a>
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="Facebookでシェア">
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://cslink.link/blog/post-3.html" target="_blank" rel="noopener" class="share-btn" aria-label="Facebookでシェア">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.197 21.5v-8.5h-2.5v-3h2.5v-2.25c0-2.485 1.515-3.75 3.758-3.75.821 0 1.626.054 1.87.077v2.494h-1.478c-1.16 0-1.38.554-1.38 1.361V10h2.76l-.36 3h-2.4v8.5z"/></svg>
     </a>
-    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="LinkedInでシェア">
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://cslink.link/blog/post-3.html" target="_blank" rel="noopener" class="share-btn" aria-label="LinkedInでシェア">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
     </a>
   </div>
@@ -311,19 +321,19 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
     </div>
     <div class="related-grid">
       <a href="post-1.html" class="related-card fade-up delay-1">
+        <span class="related-cat">CS戦略</span>
+        <h3 class="related-card-title">解約率を30%改善したCS組織の作り方</h3>
+        <div class="related-meta">2026.04.15 · 8分</div>
+      </a>
+      <a href="post-2.html" class="related-card fade-up delay-2">
         <span class="related-cat">LTV改善</span>
         <h3 class="related-card-title">オンボーディング設計で見落としがちな3つのポイント</h3>
         <div class="related-meta">2026.04.10 · 6分</div>
       </a>
-      <a href="post-1.html" class="related-card fade-up delay-2">
+      <a href="post-4.html" class="related-card fade-up delay-3">
         <span class="related-cat">ケーススタディ</span>
         <h3 class="related-card-title">SaaS企業A社、解約率を半減させた実例</h3>
         <div class="related-meta">2026.03.28 · 10分</div>
-      </a>
-      <a href="post-1.html" class="related-card fade-up delay-3">
-        <span class="related-cat">チーム運営</span>
-        <h3 class="related-card-title">少数精鋭のCSチームで売上3倍にした話</h3>
-        <div class="related-meta">2026.03.20 · 7分</div>
       </a>
     </div>
   </div>

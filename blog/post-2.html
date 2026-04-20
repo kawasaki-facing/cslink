@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>解約率を30%改善したCS組織の作り方 | CSLINK Blog</title>
-<meta name="description" content="SaaS企業が抱える解約率の課題。その多くは個別の施策ではなく組織設計に起因する。再現性のある組織フレームを解説します。">
-<link rel="canonical" href="https://cslink.link/blog/post-1.html">
-<meta property="og:title" content="解約率を30%改善したCS組織の作り方 | CSLINK Blog">
-<meta property="og:description" content="SaaS企業が抱える解約率の課題。その多くは個別の施策ではなく組織設計に起因する。">
+<title>オンボーディング設計で見落としがちな3つのポイント | CSLINK Blog</title>
+<meta name="description" content="オンボーディングはCS成否を分ける最重要フェーズ。現場で見落とされがちな『最初の1時間』『ヘルススコア』『プレイブック化』の3点を解説します。">
+<link rel="canonical" href="https://cslink.link/blog/post-2.html">
+<meta property="og:title" content="オンボーディング設計で見落としがちな3つのポイント | CSLINK Blog">
+<meta property="og:description" content="オンボーディングはCS成否を分ける。現場で見落とされがちな3つのポイントを経営者目線で解説します。">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://cslink.link/blog/post-1.html">
+<meta property="og:url" content="https://cslink.link/blog/post-2.html">
 <meta property="og:image" content="https://cdn.midjourney.com/cabb8b06-a204-44dd-9418-74490b9fe5ad/0_3_1728_N.webp?method=shortest">
 <meta property="og:site_name" content="CSLINK">
 <meta property="og:locale" content="ja_JP">
@@ -25,10 +25,10 @@
 {
   "@context":"https://schema.org",
   "@type":"Article",
-  "headline":"解約率を30%改善したCS組織の作り方",
+  "headline":"オンボーディング設計で見落としがちな3つのポイント",
   "author":{"@type":"Person","name":"川﨑 勇樹","jobTitle":"代表取締役","worksFor":{"@type":"Organization","name":"facing株式会社"}},
   "publisher":{"@type":"Organization","name":"facing株式会社","logo":{"@type":"ImageObject","url":"https://cslink.link/ogp.png"}},
-  "datePublished":"2026-04-15",
+  "datePublished":"2026-04-10",
   "image":"https://cslink.link/ogp.png"
 }
 </script>
@@ -211,15 +211,15 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
   <span class="sep">/</span>
   <a href="index.html">Blog</a>
   <span class="sep">/</span>
-  <span class="current">解約率を30%改善したCS組織の作り方</span>
+  <span class="current">オンボーディング設計で見落としがちな3つのポイント</span>
 </nav>
 
 <!-- ARTICLE HEADER -->
 <header class="article-header">
   <div class="fade-up">
-    <span class="post-cat">CS戦略</span>
+    <span class="post-cat">LTV改善</span>
   </div>
-  <h1 class="article-h1 fade-up delay-1">解約率を30%改善したCS組織の作り方</h1>
+  <h1 class="article-h1 fade-up delay-1">オンボーディング設計で見落としがちな3つのポイント</h1>
   <div class="author-box fade-up delay-2">
     <div class="author-avatar">YK</div>
     <div class="author-info">
@@ -227,9 +227,9 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
       <span class="author-role">facing株式会社 CEO</span>
     </div>
     <div class="article-meta">
-      <span>2026.04.15</span>
+      <span>2026.04.10</span>
       <span class="article-meta-dot"></span>
-      <span>8分で読めます</span>
+      <span>6分で読めます</span>
     </div>
   </div>
 </header>
@@ -237,66 +237,89 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 <!-- HERO VISUAL -->
 <div class="article-hero fade-up delay-2">
   <div class="article-hero-frame">
-    <div class="article-hero-label">CS.01</div>
+    <div class="article-hero-label">CS.02</div>
   </div>
 </div>
 
 <!-- ARTICLE BODY -->
 <article class="article-body">
-  <p class="fade-up">「解約率を下げたい」。SaaS経営者の99%が口にする課題です。しかしその多くは、<strong>個別のリテンション施策</strong>ばかりに時間が費やされ、肝心の「なぜ顧客が離れるのか」の構造が放置されたままになっています。</p>
+  <p class="fade-up">「解約の7割は、契約初月で決まっている」。これはCSの現場で長く言われてきた経験則ですが、データで検証すると概ね正しい数字です。つまり<strong>オンボーディングの設計こそがCSの成否を分ける</strong>と言っても過言ではありません。</p>
 
-  <p class="fade-up">本記事では、私たちが実際に支援したSaaS企業で、3か月で月次解約率を30%改善した際の「組織設計」の考え方を共有します。機能追加でも、派手な値引きでもありません。<strong>CSチームの役割定義を書き換えただけ</strong>で、数字は動き始めました。</p>
+  <p class="fade-up">それにも関わらず、オンボーディングは「とりあえずキックオフ資料を作って、操作説明会を開く」という形式化された儀式で終わっているケースが本当に多い。今回は、経営者目線で見たときに特に見落とされがちな3つのポイントを共有します。</p>
 
-  <h2 class="fade-up">CSの仕事は「サポート」ではない</h2>
+  <h2 class="fade-up">ポイント①：「最初の1時間」の体験設計</h2>
 
-  <p class="fade-up">多くの企業でCSは「問い合わせ対応部隊」として運用されています。しかしこの定義のままでは、解約率は構造的に下がりません。なぜなら、問い合わせが来る時点で、顧客の多くはすでに離反の意思決定を終えているからです。</p>
+  <p class="fade-up">オンボーディングと聞くと、多くの方は「最初の30日」や「90日計画」を思い浮かべるはずです。しかし実際には、<strong>顧客がログインして最初の1時間で何を体験したか</strong>が、その後の継続率をほぼ決定づけます。</p>
 
-  <p class="fade-up">私たちはCSの役割を、次のように再定義しました。</p>
+  <p class="fade-up">とあるBtoB SaaS企業のケースでは、導入後30日の継続率を分析したところ、最初のログインから60分以内に「主要機能で1つ以上の成果物を作れた」ユーザーは87%が翌月も利用継続していました。一方で、60分以内に何も作れなかったユーザーは41%しか残っていませんでした。</p>
+
+  <h3 class="fade-up">チェックすべき観点</h3>
 
   <ul class="fade-up">
-    <li>問い合わせを捌く部隊 → <strong>契約期間中のROIを最大化する責任者</strong></li>
-    <li>受動的なレスポンス → 能動的なヘルススコア監視とアラート運用</li>
-    <li>満足度のKPI → 継続利用・アップセル・NRRまで含めた経営KPI</li>
+    <li>最初のログインから「最初の成功体験」までの最短経路を定義できているか</li>
+    <li>その経路の途中で離脱を生む「迷い」や「入力項目の多さ」はないか</li>
+    <li>初回1時間でCSが能動的にフォローするトリガーは設計されているか</li>
   </ul>
 
+  <p class="fade-up">キックオフミーティングの前に、顧客は黙って触ってから判断している。この前提を忘れると、どれだけ立派な90日計画を作っても効果は限定的です。</p>
+
+  <h2 class="fade-up">ポイント②：ヘルススコアの早期計測</h2>
+
+  <p class="fade-up">ヘルススコアというと、契約3か月目以降の継続判断指標として使われがちです。ところが、オンボーディング期間中こそヘルススコアを細かく可視化するべきなのです。</p>
+
+  <p class="fade-up">CSの現場で特に有効なのは、<strong>「オンボーディング専用のヘルススコア」</strong>を通常運用と切り分けて設計することです。観点は3つに絞ります。</p>
+
+  <ul class="fade-up">
+    <li>初期設定の完了率（IDや権限、連携など必須項目がセットアップされているか）</li>
+    <li>主要機能の初回利用タイミング（想定より遅れていないか）</li>
+    <li>社内展開の広がり（発行したアカウント数に対して実際にログインしている比率）</li>
+  </ul>
+
+  <h3 class="fade-up">ケーススタディ：B社の改善例</h3>
+
+  <p class="fade-up">あるコラボレーションツールを提供するB社では、オンボーディング期間中に「発行アカウントのうちログイン済みが30%未満の顧客」をアラート対象に設定しました。該当する顧客に対してはCSから直接、社内展開の伴走支援を申し出る運用に切り替えたところ、6か月継続率が18ポイント改善したそうです。</p>
+
   <blockquote class="fade-up">
-    CSは「問い合わせ対応」ではなく、「契約後の成功体験を設計する経営機能」である。この1行の定義変更が、半年後の数字を決める。
+    解約は「突然」起きるのではない。初月の行動ログに、ほぼすべての兆候が記録されている。読み取れていないだけだ。
   </blockquote>
 
-  <h2 class="fade-up">具体的に変えた3つのこと</h2>
+  <h2 class="fade-up">ポイント③：サクセスプレイブック化</h2>
 
-  <h3 class="fade-up">1. ヘルススコアを「30日以内の行動」に圧縮した</h3>
+  <p class="fade-up">3つ目の見落としポイントは、オンボーディングの<strong>属人化</strong>です。優秀なCSMが担当すれば成功し、新人が担当すると失敗する。この状態のままでは、チーム全体のパフォーマンスは安定しません。</p>
 
-  <p class="fade-up">従来のヘルススコアは、ログイン頻度・機能利用・NPSなど複数指標の合成でした。しかしこれでは、<strong>「危険な兆候」が出てから介入するまでに2〜3週間のラグ</strong>が発生します。</p>
+  <p class="fade-up">解決策はシンプルで、成功したオンボーディングの手順を「プレイブック」として明文化することです。ただし、ただのマニュアルにしてはいけません。</p>
 
-  <p class="fade-up">そこで、直近30日の「主要機能の初回成功体験の有無」を単一スコアに集約しました。早期に落ちた顧客に対し、その場で能動コンタクトする運用に切り替えています。</p>
+  <h3 class="fade-up">プレイブックに最低限含める要素</h3>
 
-  <h3 class="fade-up">2. 担当顧客数を半分に減らした</h3>
+  <ul class="fade-up">
+    <li><strong>業種別・規模別の典型的な導入パターン</strong>（中小ECと大手製造業では進め方が全く違う）</li>
+    <li>週次で確認すべきヘルススコアの閾値と、しきい値を下回ったときのアクション</li>
+    <li>よくあるつまずきポイントと、その具体的な解消トーク</li>
+    <li>契約後30/60/90日のマイルストーン定義と、達成できなかった場合のリカバリー手順</li>
+  </ul>
 
-  <p class="fade-up">一人のCSMが担当する顧客数を、従来の40社から20社に減らしました。売上の観点では逆行する決定に見えますが、実際は「深く関わる」ことの価値のほうが圧倒的に大きかった。結果、担当顧客のNRRは112%から143%に上昇しています。</p>
+  <p class="fade-up">CSの現場で、プレイブックを作らずに「センスで回す」段階が続いているチームは、組織としてはまだスタート地点にいると考えたほうが良いでしょう。プレイブック化されて初めて、採用・育成・KPI運用がセットで機能し始めます。</p>
 
-  <h3 class="fade-up">3. 営業とCSの会議体を統合した</h3>
+  <h2 class="fade-up">CSLINKで解決できること</h2>
 
-  <p class="fade-up">契約獲得時の約束と、契約後に提供する体験にズレがあるほど解約は起きやすい。営業とCSが毎週同じテーブルで数字を見る会議体を作っただけで、期待値ズレによる解約は激減しました。</p>
+  <p class="fade-up">オンボーディング設計は、知識よりも「実際に複数のSaaSで回した経験」がものを言う領域です。CSLINKでは、<strong>オンボーディング設計の経験が豊富なCSプロフェッショナル</strong>を、課題や事業フェーズに応じて最短28秒でマッチングします。</p>
 
-  <h2 class="fade-up">組織設計こそが最大の「施策」</h2>
+  <p class="fade-up">自社のCSチームだけでプレイブックを作れる自信がない、あるいは「最初の1時間」の体験設計から見直したい、といった段階であれば、壁打ち相手として外部CSプロを招き入れるのは非常に費用対効果の高い選択になります。</p>
 
-  <p class="fade-up">個別の施策を10本打つよりも、<strong>組織の役割と権限を1つ書き換える</strong>ほうが、遥かに大きな効果を生みます。解約率の改善は、マーケティングでも機能追加でもなく、ほぼ組織設計の問題です。</p>
-
-  <p class="fade-up">もし自社のCS組織について相談したいテーマがあれば、CSLINKのAIマッチングでは「解約改善に実績のあるCSプロ」を最短28秒で提案できます。最初の壁打ち相手を、ぜひ気軽に見つけてみてください。</p>
+  <p class="fade-up">まずは課題を整理するところから、気軽にご相談ください。</p>
 </article>
 
 <!-- SHARE -->
 <section class="share-box fade-up">
   <span class="share-label">Share this article</span>
   <div class="share-btns">
-    <a href="https://twitter.com/intent/tweet?text=%E8%A7%A3%E7%B4%84%E7%8E%87%E3%82%92%EF%BC%93%EF%BC%90%EF%BC%85%E6%94%B9%E5%96%84%E3%81%97%E3%81%9FCS%E7%B5%84%E7%B9%94%E3%81%AE%E4%BD%9C%E3%82%8A%E6%96%B9&url=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="Twitter / Xでシェア">
+    <a href="https://twitter.com/intent/tweet?text=%E3%82%AA%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E8%A8%AD%E8%A8%88%E3%81%A7%E8%A6%8B%E8%90%BD%E3%81%A8%E3%81%97%E3%81%8C%E3%81%A1%E3%81%AA3%E3%81%A4%E3%81%AE%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88&url=https://cslink.link/blog/post-2.html" target="_blank" rel="noopener" class="share-btn" aria-label="Twitter / Xでシェア">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
     </a>
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="Facebookでシェア">
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://cslink.link/blog/post-2.html" target="_blank" rel="noopener" class="share-btn" aria-label="Facebookでシェア">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.197 21.5v-8.5h-2.5v-3h2.5v-2.25c0-2.485 1.515-3.75 3.758-3.75.821 0 1.626.054 1.87.077v2.494h-1.478c-1.16 0-1.38.554-1.38 1.361V10h2.76l-.36 3h-2.4v8.5z"/></svg>
     </a>
-    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://cslink.link/blog/post-1.html" target="_blank" rel="noopener" class="share-btn" aria-label="LinkedInでシェア">
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://cslink.link/blog/post-2.html" target="_blank" rel="noopener" class="share-btn" aria-label="LinkedInでシェア">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
     </a>
   </div>
@@ -311,19 +334,19 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
     </div>
     <div class="related-grid">
       <a href="post-1.html" class="related-card fade-up delay-1">
-        <span class="related-cat">LTV改善</span>
-        <h3 class="related-card-title">オンボーディング設計で見落としがちな3つのポイント</h3>
-        <div class="related-meta">2026.04.10 · 6分</div>
+        <span class="related-cat">CS戦略</span>
+        <h3 class="related-card-title">解約率を30%改善したCS組織の作り方</h3>
+        <div class="related-meta">2026.04.15 · 8分</div>
       </a>
-      <a href="post-1.html" class="related-card fade-up delay-2">
+      <a href="post-3.html" class="related-card fade-up delay-2">
+        <span class="related-cat">AIマッチング</span>
+        <h3 class="related-card-title">CS人材探しの時間を28秒にした裏側</h3>
+        <div class="related-meta">2026.04.05 · 5分</div>
+      </a>
+      <a href="post-4.html" class="related-card fade-up delay-3">
         <span class="related-cat">ケーススタディ</span>
         <h3 class="related-card-title">SaaS企業A社、解約率を半減させた実例</h3>
         <div class="related-meta">2026.03.28 · 10分</div>
-      </a>
-      <a href="post-1.html" class="related-card fade-up delay-3">
-        <span class="related-cat">チーム運営</span>
-        <h3 class="related-card-title">少数精鋭のCSチームで売上3倍にした話</h3>
-        <div class="related-meta">2026.03.20 · 7分</div>
       </a>
     </div>
   </div>

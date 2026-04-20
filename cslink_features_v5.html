@@ -10,7 +10,7 @@
 <meta property="og:description" content="AIが課題を分析し、最適なCS企業・人材を自動マッチング。企業側は完全無料。解約率改善・LTV向上・CS組織構築など、CS課題をたった28秒で解決します。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cslink.link/cslink_features_v5.html">
-<meta property="og:image" content="https://cslink.link/ogp.png">
+<meta property="og:image" content="https://cdn.midjourney.com/37f7f0ad-49ed-4fa3-839a-0bf25d8dd727/0_1_1728_N.webp?method=shortest">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="CSLINK">
@@ -18,12 +18,21 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="機能 | CSLINK — CS特化AIマッチング">
 <meta name="twitter:description" content="AIが課題を分析し、最適なCS企業・人材を自動マッチング。企業側は完全無料。解約率改善・LTV向上・CS組織構築など、CS課題をたった28秒で解決します。">
-<meta name="twitter:image" content="https://cslink.link/ogp.png">
+<meta name="twitter:image" content="https://cdn.midjourney.com/37f7f0ad-49ed-4fa3-839a-0bf25d8dd727/0_1_1728_N.webp?method=shortest">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="shortcut icon" href="/favicon.ico">
 <meta name="theme-color" content="#06b6d4">
+<script>
+(function(){
+  try{
+    var saved=localStorage.getItem('cslink-theme');
+    if(saved==='dark')document.documentElement.setAttribute('data-theme','dark');
+    else if(saved==='light')document.documentElement.setAttribute('data-theme','light');
+  }catch(e){}
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -35,6 +44,24 @@
   --text:#1a2744;--muted:#64748b;--bg2:#f0f7ff;--border:rgba(6,182,212,0.14);
   --blue:#2563ff;--blue-l:rgba(37,99,255,0.08);
 }
+[data-theme="dark"]{--text:#f1f5f9;--muted:#94a3b8;--navy:#f8fafc;--navy-m:#e2e8f0;--bg2:#1e293b;--border:rgba(6,182,212,0.25);}
+[data-theme="dark"] html,[data-theme="dark"] body{background:#0f172a;color:#f1f5f9;}
+[data-theme="dark"] nav{background:rgba(15,23,42,0.96)!important;border-bottom-color:rgba(6,182,212,0.2);}
+[data-theme="dark"] .nav-logo{color:#f1f5f9;}
+[data-theme="dark"] .nav-links a{color:#94a3b8;}
+[data-theme="dark"] .nav-links a:hover{color:#f1f5f9;}
+[data-theme="dark"] .nav-login{color:#94a3b8;}
+[data-theme="dark"] .feat-hero::after{background:linear-gradient(105deg,rgba(15,23,42,.92) 0%,rgba(15,23,42,.82) 42%,rgba(15,23,42,.60) 100%)!important;}
+[data-theme="dark"] .bento-section,[data-theme="dark"] .ai-section,[data-theme="dark"] .two-pane-b,[data-theme="dark"] .compare-section,[data-theme="dark"] .cases-section,[data-theme="dark"] .facing-team-section{background:#0f172a!important;}
+[data-theme="dark"] .nums-bar{background:#0f172a!important;border-color:rgba(6,182,212,0.2);}
+[data-theme="dark"] .sim-right,[data-theme="dark"] .sim-result-header,[data-theme="dark"] .sim-result-card,[data-theme="dark"] .sim-chip,[data-theme="dark"] .match-card-detail,[data-theme="dark"] .match-typing,[data-theme="dark"] .match-expand-hint,[data-theme="dark"] .case-card-body,[data-theme="dark"] .pf-step{background:#1e293b!important;color:#f1f5f9;}
+[data-theme="dark"] footer{background:#0a1226;}
+.theme-toggle{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;}
+.theme-toggle:hover{color:var(--teal-d);border-color:var(--teal);}
+.theme-icon-moon{display:none;}
+[data-theme="dark"] .theme-icon-sun{display:none;}
+[data-theme="dark"] .theme-icon-moon{display:inline-block;}
+[data-theme="dark"] .theme-toggle{color:#f1f5f9;border-color:rgba(6,182,212,0.3);}
 html,body{width:100%;min-height:100vh;background:#fff;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;overflow-x:hidden;}
 
 /* CURSOR */
@@ -1086,6 +1113,15 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
   "description":"CS（カスタマーサクセス）特化AIマッチングプラットフォーム。企業とCS専門家をAIで最短28秒でつなぐ。"
 }
 </script>
+<!-- ▼ Google Analytics 4（測定IDを取得したら G-XXXXXXXXXX を置換） -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
+<!-- <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
+</script> -->
+<!-- ▲ GA4（コメント解除するだけで有効化） -->
 </head>
 <body>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -1131,6 +1167,10 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
     <li><a href="cslink_register_pro.html">CS人材向け</a></li>
   </ul>
   <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替" title="ダークモード切替">
+      <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
     <a href="cslink_list_v2.html" class="nav-login">CS会社を見る</a>
     <a href="cslink_register_client.html" class="nav-cta">無料で始める</a>
   </div>
@@ -1828,11 +1868,21 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);paddin
     <a href="blog/">ブログ</a>
     <a href="cases/">事例</a>
   </div>
-  <form class="newsletter-form" onsubmit="event.preventDefault();this.querySelector('input').value='';this.nextElementSibling.style.display='block';setTimeout(()=>{this.nextElementSibling.style.display='none';},3000);">
-    <input type="email" placeholder="メールアドレス" required>
+  <!-- ▼ MAILCHIMP INTEGRATION（Mailchimpでlist作成後、action URLとUS-regionを置き換え） -->
+  <form class="newsletter-form"
+        action="https://facing.us1.list-manage.com/subscribe/post?u=PLACEHOLDER_USER_ID&id=PLACEHOLDER_LIST_ID"
+        method="post"
+        target="_blank"
+        novalidate>
+    <input type="email" name="EMAIL" placeholder="メールアドレス" required>
+    <!-- Mailchimp の bot protection 隠しフィールド（実ID入力後に有効化） -->
+    <div style="position:absolute;left:-5000px;" aria-hidden="true">
+      <input type="text" name="b_PLACEHOLDER_USER_ID_PLACEHOLDER_LIST_ID" tabindex="-1" value="">
+    </div>
     <button type="submit">購読する</button>
   </form>
-  <div class="newsletter-msg" style="display:none;color:var(--teal-d);font-size:12px;margin-top:8px;">ご登録ありがとうございます（準備中です）</div>
+  <div class="newsletter-note" style="font-size:10px;color:var(--muted);margin-top:6px;">※Mailchimp未連携（action URLに実IDを設定してください）</div>
+  <!-- ▲ MAILCHIMP INTEGRATION -->
   <div class="footer-copy">© <span id="copyYear">2026</span> facing株式会社</div>
 </footer>
 <button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">
@@ -2160,6 +2210,16 @@ statCounters.forEach(c=>statCounterObserver.observe(c));
   send.addEventListener('click', sendMessage);
   input.addEventListener('keydown', e => { if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } });
 })();
+
+const themeBtn=document.getElementById('themeToggle');
+if(themeBtn){
+  themeBtn.addEventListener('click',()=>{
+    const current=document.documentElement.getAttribute('data-theme');
+    const next=current==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('cslink-theme',next);}catch(e){}
+  });
+}
 </script>
 </body>
 </html>
