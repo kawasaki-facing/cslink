@@ -21,11 +21,38 @@
 <meta name="theme-color" content="#06b6d4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"解約率を30%改善したCS組織の作り方",
+  "author":{"@type":"Person","name":"川﨑 勇樹","jobTitle":"代表取締役","worksFor":{"@type":"Organization","name":"facing株式会社"}},
+  "publisher":{"@type":"Organization","name":"facing株式会社","logo":{"@type":"ImageObject","url":"https://cslink.link/ogp.png"}},
+  "datePublished":"2026-04-15",
+  "image":"https://cslink.link/ogp.png"
+}
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{--teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f;--text:#1a2744;--muted:#64748b;--bg:#f8fafc;--bg2:#f0f7fa;--border:rgba(6,182,212,0.15);--blue:#2563ff;}
 html,body{min-height:100vh;background:#fff;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;overflow-x:hidden;}
 a{color:inherit;}
+
+/* SAMPLE NOTICE */
+.sample-notice{background:linear-gradient(90deg,#fef3c7 0%,#fde68a 100%);border-bottom:1px solid #fbbf24;padding:12px 56px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;font-weight:700;color:#78350f;}
+.sample-notice strong{color:#713f12;letter-spacing:0.5px;}
+.sample-notice-sub{font-weight:500;color:#92400e;font-size:12px;}
+.sample-notice-icon{font-size:16px;}
+@media (max-width:640px){.sample-notice{flex-direction:column;gap:4px;padding:10px 16px;text-align:center;}.sample-notice-sub{font-size:11px;}}
+
+/* SCROLL PROGRESS */
+.scroll-progress{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--teal),var(--blue,#2563ff));z-index:9999;transition:width .1s ease;pointer-events:none;}
+
+/* BACK TO TOP */
+.back-to-top{position:fixed;right:28px;bottom:28px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(6,182,212,0.35);opacity:0;visibility:hidden;transform:translateY(10px);transition:all .3s cubic-bezier(0.4,0,0.2,1);z-index:500;}
+.back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0);}
+.back-to-top:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(6,182,212,0.5);}
+@media(max-width:640px){.back-to-top{right:18px;bottom:18px;width:42px;height:42px;}}
 
 /* SCROLL ANIMATION */
 .fade-up{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(0.4,0,0.2,1),transform .8s cubic-bezier(0.4,0,0.2,1);}
@@ -154,6 +181,12 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 </style>
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="sample-notice">
+  <span class="sample-notice-icon">⚠️</span>
+  <strong>SAMPLE CONTENT</strong>
+  <span class="sample-notice-sub">これはサイトデザイン表示用のサンプル記事です。実際のコンテンツではありません。</span>
+</div>
 <nav>
   <a href="../index.html" class="nav-logo">
     <div class="nav-logo-icon">CS</div>
@@ -354,6 +387,9 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
   </div>
 </footer>
 
+<button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
 <script>
 document.getElementById('copyYear').textContent = new Date().getFullYear();
 
@@ -367,6 +403,18 @@ const fadeObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 fadeEls.forEach(el => fadeObserver.observe(el));
+
+window.addEventListener('scroll',()=>{
+  const el=document.getElementById('scrollProgress');if(!el)return;
+  const h=document.documentElement;
+  el.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%';
+});
+
+const btt=document.getElementById('backToTop');
+if(btt){
+  window.addEventListener('scroll',()=>{btt.classList.toggle('visible',window.scrollY>400);});
+  btt.addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});});
+}
 </script>
 </body>
 </html>

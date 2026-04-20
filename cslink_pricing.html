@@ -27,7 +27,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-@media (pointer:fine){*,*::before,*::after{cursor:none!important;}}
+@media (hover: hover) and (pointer: fine){*,*::before,*::after{cursor:none!important;}}
+@media (hover:none),(pointer:coarse){#cursor,#cursor-ring{display:none!important;}}
 :root{--teal:#06b6d4;--teal-d:#0891b2;--navy:#0f2342;--navy-m:#1e3a5f;--text:#1a2744;--muted:#64748b;--bg2:#f0f7ff;--border:rgba(6,182,212,0.14);--blue:#2563ff;}
 html,body{width:100%;min-height:100vh;background:#fff;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;overflow-x:hidden;}
 #cursor{position:fixed;width:8px;height:8px;background:var(--teal);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}

@@ -298,13 +298,14 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
     <div class="newsletter-eyebrow fade-up">Newsletter</div>
     <h2 class="newsletter-title fade-up delay-1">最新記事を、<em>メールで受け取る</em>。</h2>
     <p class="newsletter-sub fade-up delay-2">月2本、CSの現場で使えるインサイトを厳選してお届け。いつでも解除できます。</p>
-    <form class="newsletter-form fade-up delay-2" onsubmit="event.preventDefault();alert('ご登録ありがとうございます。');">
+    <form class="newsletter-form fade-up delay-2" onsubmit="event.preventDefault();this.querySelector('input').value='';this.nextElementSibling.style.display='block';setTimeout(()=>{this.nextElementSibling.style.display='none';},3000);">
       <input type="email" required placeholder="your@email.com" class="newsletter-input">
       <button type="submit" class="newsletter-btn">
         登録する
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </form>
+    <div class="newsletter-msg" style="display:none;color:var(--teal);font-size:13px;margin-top:14px;font-weight:600;">ご登録ありがとうございます（準備中です）</div>
     <p class="newsletter-note fade-up delay-3">※ 個人情報はプライバシーポリシーに基づき適切に管理します。</p>
   </div>
 </section>

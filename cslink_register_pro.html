@@ -340,8 +340,8 @@ footer{background:#fff;border-top:1px solid var(--border);padding:32px 56px;disp
   <div class="right-panel">
 
     <div class="form-header">
-      <div class="form-step-bar">
-        <div class="step-item active" id="step1-dot"><div class="step-circle">1</div><div class="step-label">基本情報</div></div>
+      <div class="form-step-bar" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" aria-label="登録ステップ">
+        <div class="step-item active" id="step1-dot" aria-current="step"><div class="step-circle">1</div><div class="step-label">基本情報</div></div>
         <div class="step-item" id="step2-dot"><div class="step-circle">2</div><div class="step-label">経歴・専門性</div></div>
         <div class="step-item" id="step3-dot"><div class="step-circle">3</div><div class="step-label">稼働条件</div></div>
         <div class="step-item" id="step4-dot"><div class="step-circle">✓</div><div class="step-label">AI判定</div></div>
@@ -682,9 +682,12 @@ function setStep(n){
   [1,2,3,4].forEach(i=>{
     const dot = document.getElementById('step'+i+'-dot');
     dot.classList.remove('active','done');
-    if(i===n) dot.classList.add('active');
+    dot.removeAttribute('aria-current');
+    if(i===n){ dot.classList.add('active'); dot.setAttribute('aria-current','step'); }
     if(i<n) dot.classList.add('done');
   });
+  const bar = document.querySelector('.form-step-bar');
+  if(bar) bar.setAttribute('aria-valuenow', String(n));
   const titles = ['基本情報を入力','経歴・専門性を入力','稼働条件を入力','AI分析結果'];
   const subs = [
     'まずは連絡先をお聞かせください',
@@ -941,7 +944,9 @@ function getInlineErrorEl(field){
   if(!el){
     el = document.createElement('span');
     el.className = 'field-inline-error';
-    // char-count がある場合はその前に挿入（レイアウト崩れ回避）
+    el.setAttribute('aria-live','polite');
+    el.setAttribute('aria-atomic','true');
+    // char-count がある場合はその前に挿入（レイアウト崩れ/ちらつき防止）
     const cc = field.querySelector('.char-count');
     if(cc) field.insertBefore(el, cc); else field.appendChild(el);
   }
@@ -952,6 +957,8 @@ function getOkMsgEl(field){
   if(!el){
     el = document.createElement('span');
     el.className = 'field-ok-msg';
+    el.setAttribute('aria-live','polite');
+    el.setAttribute('aria-atomic','true');
     const cc = field.querySelector('.char-count');
     if(cc) field.insertBefore(el, cc); else field.appendChild(el);
   }
