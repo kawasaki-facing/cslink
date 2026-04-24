@@ -283,15 +283,9 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   "description":"CS（カスタマーサクセス）特化AIマッチングプラットフォーム。企業とCS専門家をAIで最短28秒でつなぐ。"
 }
 </script>
-<!-- ▼ Google Analytics 4（測定IDを取得したら G-XXXXXXXXXX を置換） -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
-<!-- <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
-</script> -->
-<!-- ▲ GA4（コメント解除するだけで有効化） -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
 </head>
 <body>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -333,7 +327,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   <span class="breadcrumb-sep">›</span>
   <a href="cslink_list_v2.html">CSプロ一覧</a>
   <span class="breadcrumb-sep">›</span>
-  <span>田中 美咲</span>
+  <span id="bcName">読み込み中…</span>
 </div>
 
 <!-- HERO -->
@@ -342,20 +336,19 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 
     <!-- 左：プロフィール写真 -->
     <div class="profile-col fade-in fade-up delay-3">
-      <div class="profile-img-wrap">
-        <div class="sample-photo-badge">SAMPLE</div>
-        <img src="https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_1_640_N.webp?method=shortest" alt="田中 美咲（サンプルプロフィール）" loading="lazy">
+      <div class="profile-img-wrap" id="photoWrap">
+        <div id="photoInitial" style="width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#06b6d4,#0891b2);font-family:'Space Grotesk',sans-serif;font-size:128px;font-weight:800;color:#fff;letter-spacing:-4px;">CS</div>
       </div>
       <div class="profile-badges">
         <span class="p-badge p-badge-verified">✓ facing審査済</span>
-        <span class="p-badge p-badge-type">👤 個人</span>
-        <span class="p-badge p-badge-avail">● 受付中</span>
+        <span class="p-badge p-badge-type" id="typeBadge">👤 個人</span>
+        <span class="p-badge p-badge-avail" id="availBadge">● 受付中</span>
       </div>
       <div class="profile-meta">
-        <div class="meta-row"><span class="meta-label">稼働</span><span class="meta-val">週3〜フルタイム</span></div>
-        <div class="meta-row"><span class="meta-label">開始</span><span class="meta-val">最短1週間〜</span></div>
+        <div class="meta-row"><span class="meta-label">稼働</span><span class="meta-val" id="metaWorktype">—</span></div>
+        <div class="meta-row"><span class="meta-label">開始</span><span class="meta-val" id="metaStart">—</span></div>
         <div class="meta-row"><span class="meta-label">勤務地</span><span class="meta-val">フルリモート可</span></div>
-        <div class="meta-row"><span class="meta-label">費用</span><span class="meta-price">月60万〜</span></div>
+        <div class="meta-row"><span class="meta-label">費用</span><span class="meta-price" id="metaRate">—</span></div>
       </div>
       <div class="profile-cta">
         <a href="cslink_register_client.html" class="cta-main">このプロに無料でマッチング →</a>
@@ -370,49 +363,16 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
     <!-- 右：詳細情報 -->
     <div class="detail-col fade-in">
       <div class="detail-eyebrow fade-up">CS PROFESSIONAL</div>
-      <div class="detail-name fade-up delay-1">田中 美咲</div>
-      <div class="detail-sub fade-up delay-2">CS戦略コンサルタント / フリーランス</div>
-      <div class="detail-tags fade-up delay-2">
-        <span class="d-tag d-tag-main">LTV改善</span>
-        <span class="d-tag d-tag-main">ヘルススコア設計</span>
-        <span class="d-tag d-tag-main">解約防止</span>
-        <span class="d-tag d-tag-sub">フリーランス</span>
-        <span class="d-tag d-tag-sub">BtoB SaaS</span>
-        <span class="d-tag d-tag-sub">週3〜</span>
-      </div>
+      <div class="detail-name fade-up delay-1" id="heroName">読み込み中…</div>
+      <div class="detail-sub fade-up delay-2" id="heroSub">—</div>
+      <div class="detail-tags fade-up delay-2" id="heroTags"></div>
 
-      <!-- スコア -->
-      <div class="detail-score-bar fade-up delay-3">
-        <div class="score-item">
-          <div class="score-num"><em><span class="stat-count" data-target="94">0</span></em>%</div>
-          <div class="score-label">AIマッチング適合度</div>
-        </div>
-        <div class="score-item">
-          <div class="score-num"><em><span class="stat-count" data-target="7">0</span></em>年</div>
-          <div class="score-label">CS経験年数</div>
-        </div>
-        <div class="score-item">
-          <div class="score-num"><em><span class="stat-count" data-target="30">0</span></em>社+</div>
-          <div class="score-label">支援実績</div>
-        </div>
-        <div class="score-item">
-          <div class="score-num"><em><span class="stat-count" data-target="98">0</span></em>%</div>
-          <div class="score-label">契約継続率</div>
-        </div>
-      </div>
+      <!-- 強み・専門性タグ（動的） -->
+      <div class="strengths-title">SPECIALTIES</div>
+      <div class="strengths-list" id="strengthsList"></div>
 
-      <!-- 専門特性 -->
-      <div class="strengths-title">EXPERTISE SCORE</div>
-      <div class="strengths-list">
-        <div class="strength-item"><span class="strength-label">LTV改善</span><div class="strength-bar"><div class="strength-fill" data-w="95"></div></div><span class="strength-val">95</span></div>
-        <div class="strength-item"><span class="strength-label">解約防止</span><div class="strength-bar"><div class="strength-fill" data-w="88"></div></div><span class="strength-val">88</span></div>
-        <div class="strength-item"><span class="strength-label">ヘルススコア</span><div class="strength-bar"><div class="strength-fill" data-w="92"></div></div><span class="strength-val">92</span></div>
-        <div class="strength-item"><span class="strength-label">CS組織設計</span><div class="strength-bar"><div class="strength-fill" data-w="75"></div></div><span class="strength-val">75</span></div>
-        <div class="strength-item"><span class="strength-label">データ分析</span><div class="strength-bar"><div class="strength-fill" data-w="82"></div></div><span class="strength-val">82</span></div>
-      </div>
-
-      <!-- 自己紹介 -->
-      <p class="detail-desc">大手SaaS企業でCS部門立ち上げから責任者まで7年間従事。LTV改善・ヘルススコア設計に特化し、延べ30社以上のBtoB SaaSスタートアップを支援。チャーンレートを平均35%削減した実績を持つ。現在はフリーランスとして週3〜フルタイムまで柔軟に対応。facing審査を通過した信頼性の高いCSスペシャリスト。</p>
+      <!-- 自己紹介・実績 -->
+      <p class="detail-desc" id="heroDesc">プロフィールを読み込んでいます…</p>
     </div>
   </div>
 </div>
@@ -423,78 +383,28 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   <!-- 左：詳細コンテンツ -->
   <div class="content-col">
 
-    <!-- 支援実績 -->
+    <!-- 実績・自己PR（Supabase achievement/pr） -->
     <div class="section-block fade-in fade-up">
-      <div class="section-block-title">支援実績（抜粋）</div>
-      <div class="career-list">
-        <div class="career-item">
-          <div class="career-icon">🚀</div>
-          <div class="career-body">
-            <div class="career-title">BtoB SaaS（HR Tech） / CS戦略立案〜実行</div>
-            <div class="career-desc">導入3ヶ月以内の解約が問題となっていた企業のオンボーディングフローを全面再設計。ヘルススコアを導入しアーリーアラートの仕組みを構築。</div>
-            <div class="career-result">✓ 解約率 48% 改善 / LTV 1.6倍</div>
-          </div>
-        </div>
-        <div class="career-item">
-          <div class="career-icon">📊</div>
-          <div class="career-body">
-            <div class="career-title">SaaS（マーケティング）/ ヘルススコア設計</div>
-            <div class="career-desc">製品利用データ・サポート接触頻度・NPS等を組み合わせた独自ヘルススコアを設計。CSチームがリスク顧客を早期発見できる体制を整備。</div>
-            <div class="career-result">✓ ハイリスク顧客の早期検知率 3.2倍</div>
-          </div>
-        </div>
-        <div class="career-item">
-          <div class="career-icon">🏢</div>
-          <div class="career-body">
-            <div class="career-title">Fintech SaaS / CS部門立ち上げ支援</div>
-            <div class="career-desc">0からCS部門を構築。採用要件の定義・KPI設計・オンボーディング資料作成・CSMトレーニングまで一気通貫で対応。</div>
-            <div class="career-result">✓ 導入6ヶ月で解約率 2.1% → 0.8%</div>
-          </div>
-        </div>
-        <div class="career-item">
-          <div class="career-icon">📈</div>
-          <div class="career-body">
-            <div class="career-title">SaaS（会計）/ LTV改善・アップセル設計</div>
-            <div class="career-desc">既存顧客のセグメント分析からアップセル・クロスセルの機会を特定。タイミングベースのフォロー施策を設計・実行。</div>
-            <div class="career-result">✓ 既存顧客MRR 22% 増加</div>
-          </div>
-        </div>
-      </div>
+      <div class="section-block-title">実績・自己PR</div>
+      <div id="achievementBody" style="font-size:14px;color:var(--text);line-height:2;white-space:pre-wrap;">—</div>
     </div>
 
-    <!-- スキル・ツール -->
+    <!-- スキル・専門領域（specialties の分割表示） -->
     <div class="section-block fade-in fade-up delay-1">
-      <div class="section-block-title">スキル・使用ツール</div>
-      <div class="skill-tags-wrap">
-        <span class="skill-tag-item">Gainsight</span>
-        <span class="skill-tag-item">Salesforce</span>
-        <span class="skill-tag-item">HubSpot</span>
-        <span class="skill-tag-item">Looker</span>
-        <span class="skill-tag-item">BigQuery</span>
-        <span class="skill-tag-item">Tableau</span>
-        <span class="skill-tag-item">Intercom</span>
-        <span class="skill-tag-item">Notion</span>
-        <span class="skill-tag-item">Slack</span>
-        <span class="skill-tag-item">ヘルススコア設計</span>
-        <span class="skill-tag-item">チャーン分析</span>
-        <span class="skill-tag-item">NPS設計</span>
-        <span class="skill-tag-item">QBR設計</span>
-        <span class="skill-tag-item">CS組織構築</span>
-        <span class="skill-tag-item">プロダクト活用分析</span>
-      </div>
+      <div class="section-block-title">得意領域</div>
+      <div class="skill-tags-wrap" id="skillsWrap"></div>
     </div>
 
     <!-- 稼働条件 -->
     <div class="section-block fade-in fade-up delay-2">
       <div class="section-block-title">稼働条件・希望</div>
       <div class="condition-table">
-        <div class="cond-row"><span class="cond-label">稼働形態</span><span class="cond-val">週3〜フルタイム（応相談）</span></div>
+        <div class="cond-row"><span class="cond-label">稼働形態</span><span class="cond-val" id="condWorktype">—</span></div>
         <div class="cond-row"><span class="cond-label">勤務地</span><span class="cond-val">フルリモート可 / 首都圏なら一部出社対応</span></div>
-        <div class="cond-row"><span class="cond-label">開始時期</span><span class="cond-val">最短1週間〜</span></div>
-        <div class="cond-row"><span class="cond-label">希望報酬</span><span class="cond-val"><strong>月60万円〜</strong>（稼働日数・業務内容により応相談）</span></div>
-        <div class="cond-row"><span class="cond-label">得意業種</span><span class="cond-val">BtoB SaaS / HRTech / Fintech / 業種問わず対応可</span></div>
-        <div class="cond-row"><span class="cond-label">対応規模</span><span class="cond-val">スタートアップ〜中堅企業（Series A〜C推奨）</span></div>
-        <div class="cond-row"><span class="cond-label">言語</span><span class="cond-val">日本語（英語での業務対応も可）</span></div>
+        <div class="cond-row"><span class="cond-label">開始時期</span><span class="cond-val" id="condStart">—</span></div>
+        <div class="cond-row"><span class="cond-label">希望報酬</span><span class="cond-val"><strong id="condRate">—</strong></span></div>
+        <div class="cond-row"><span class="cond-label">経験</span><span class="cond-val" id="condExp">—</span></div>
+        <div class="cond-row"><span class="cond-label">活動形態</span><span class="cond-val" id="condActivity">—</span></div>
       </div>
     </div>
 
@@ -507,7 +417,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
     <div class="sidebar-cta fade-in fade-up">
       <div class="sidebar-cta-inner">
         <div class="sidebar-cta-label">MATCHING</div>
-        <div class="sidebar-cta-title">田中さんと<br><em>無料で相談</em>する</div>
+        <div class="sidebar-cta-title"><span id="ctaName">このプロ</span>と<br><em>無料で相談</em>する</div>
         <div class="sidebar-cta-desc">課題を入力するだけでAIが28秒でマッチング。企業側は登録から成約まで完全無料。</div>
         <a href="cslink_register_client.html" class="sidebar-cta-btn">無料でマッチングを始める →</a>
         <div class="sidebar-cta-note">登録無料 ✓ 成約まで完全無料 ✓</div>
@@ -516,32 +426,9 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 
     <!-- 類似プロ -->
     <div class="sidebar-card fade-in fade-up delay-1">
-      <div class="sidebar-card-title">類似のCS専門家</div>
-      <div class="similar-list">
-        <a href="cslink_list_v2.html" class="similar-item">
-          <div class="sim-av" style="background:linear-gradient(135deg,#0891b2,#7c3aed)">N</div>
-          <div class="sim-info">
-            <div class="sim-name">中村 あかり</div>
-            <div class="sim-tag">SaaS特化・ヘルススコア</div>
-          </div>
-          <div class="sim-score">87%</div>
-        </a>
-        <a href="cslink_list_v2.html" class="similar-item">
-          <div class="sim-av" style="background:linear-gradient(135deg,#ea580c,#f59e0b)">S</div>
-          <div class="sim-info">
-            <div class="sim-name">鈴木 健太</div>
-            <div class="sim-tag">LTV改善・オンボーディング</div>
-          </div>
-          <div class="sim-score">89%</div>
-        </a>
-        <a href="cslink_list_v2.html" class="similar-item">
-          <div class="sim-av" style="background:linear-gradient(135deg,#059669,#2563ff)">K</div>
-          <div class="sim-info">
-            <div class="sim-name">株式会社CS Partners</div>
-            <div class="sim-tag">顧客成功・CS組織構築</div>
-          </div>
-          <div class="sim-score">91%</div>
-        </a>
+      <div class="sidebar-card-title">他のCS専門家</div>
+      <div class="similar-list" id="similarList">
+        <div style="font-size:12px;color:var(--muted);padding:12px;">読み込み中…</div>
       </div>
       <a href="cslink_list_v2.html" style="display:block;text-align:center;font-size:12px;color:var(--teal-d);font-weight:700;margin-top:16px;text-decoration:none;">すべてのCSプロを見る →</a>
     </div>
@@ -581,12 +468,12 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 <!-- スティッキーCTA -->
 <div class="sticky-cta" id="stickyCta">
   <div class="sticky-cta-info">
-    <div class="sticky-cta-av">
-      <img src="https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_1_640_N.webp?method=shortest" alt="田中美咲">
+    <div class="sticky-cta-av" id="stickyAvWrap" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:18px;">
+      <span id="stickyInitial">CS</span>
     </div>
     <div>
-      <div class="sticky-cta-name">田中 美咲</div>
-      <div class="sticky-cta-sub">CS戦略コンサルタント · 月60万〜</div>
+      <div class="sticky-cta-name" id="stickyName">—</div>
+      <div class="sticky-cta-sub" id="stickySub">—</div>
     </div>
   </div>
   <div class="sticky-cta-actions">
@@ -597,21 +484,6 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 
 <footer>
   <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div>
-  <!-- ▼ MAILCHIMP INTEGRATION（Mailchimpでlist作成後、action URLとUS-regionを置き換え） -->
-  <form class="newsletter-form"
-        action="https://facing.us1.list-manage.com/subscribe/post?u=PLACEHOLDER_USER_ID&id=PLACEHOLDER_LIST_ID"
-        method="post"
-        target="_blank"
-        novalidate>
-    <input type="email" name="EMAIL" placeholder="メールアドレス" required>
-    <!-- Mailchimp の bot protection 隠しフィールド（実ID入力後に有効化） -->
-    <div style="position:absolute;left:-5000px;" aria-hidden="true">
-      <input type="text" name="b_PLACEHOLDER_USER_ID_PLACEHOLDER_LIST_ID" tabindex="-1" value="">
-    </div>
-    <button type="submit">購読する</button>
-  </form>
-  <div class="newsletter-note" style="font-size:10px;color:var(--muted);margin-top:6px;">※Mailchimp未連携（action URLに実IDを設定してください）</div>
-  <!-- ▲ MAILCHIMP INTEGRATION -->
   <div class="footer-copy">© <span id="copyYear">2026</span> facing株式会社. All rights reserved.</div>
   <div class="footer-links">
     <a href="index.html">トップ</a>
@@ -641,6 +513,159 @@ if(btt){
   });
   btt.addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});});
 }
+</script>
+
+<script>
+/* ========== Supabase ハイドレーション ========== */
+function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function initial(name){
+  const s = String(name||'CS').trim();
+  return Array.from(s)[0] ? Array.from(s)[0].toUpperCase() : 'C';
+}
+function hashColor(str){
+  const palette = ['#2563ff','#7c3aed','#06b6d4','#0891b2','#db2777','#f59e0b','#10b981','#6366f1'];
+  let h=0; for(const c of String(str||'')){ h=(h*31+c.charCodeAt(0))&0xffffffff; }
+  return palette[Math.abs(h)%palette.length];
+}
+function splitItems(s){
+  return String(s||'').split(/[、,／\/\s]+/).map(x=>x.trim()).filter(Boolean);
+}
+
+function renderNotFound(){
+  const heroName = document.getElementById('heroName');
+  if(heroName) heroName.textContent = 'プロフィールが見つかりません';
+  const heroSub = document.getElementById('heroSub');
+  if(heroSub) heroSub.textContent = 'URLが正しくないか、該当するプロフィールは公開されていません';
+  const bc = document.getElementById('bcName'); if(bc) bc.textContent = '見つかりません';
+  const tags = document.getElementById('heroTags'); if(tags) tags.innerHTML = '';
+  const desc = document.getElementById('heroDesc');
+  if(desc){
+    desc.innerHTML = 'このページを開くにはCSプロ一覧から対象のプロフィールを選択してください。<br><a href="cslink_list_v2.html" style="color:var(--teal-d);font-weight:700;">CSプロ一覧へ戻る →</a>';
+  }
+}
+
+function hydrate(row){
+  const name = row.name || 'CS専門家';
+  const color = hashColor(name);
+
+  // Breadcrumb / Title
+  const bc = document.getElementById('bcName'); if(bc) bc.textContent = name;
+  document.title = name + ' | CSプロ詳細 | CSLINK';
+
+  // Photo (initial)
+  const photo = document.getElementById('photoInitial');
+  if(photo){
+    photo.textContent = initial(name);
+    photo.style.background = 'linear-gradient(135deg,' + color + ',' + color + 'cc)';
+  }
+  const stickyInit = document.getElementById('stickyInitial');
+  if(stickyInit) stickyInit.textContent = initial(name);
+  const stickyAvWrap = document.getElementById('stickyAvWrap');
+  if(stickyAvWrap) stickyAvWrap.style.background = 'linear-gradient(135deg,' + color + ',' + color + 'cc)';
+
+  // Hero
+  const heroName = document.getElementById('heroName'); if(heroName) heroName.textContent = name;
+  const ctaName = document.getElementById('ctaName'); if(ctaName) ctaName.textContent = name;
+  const sub = [row.activity, row.experience ? '経験: ' + row.experience : null].filter(Boolean).join(' / ');
+  const heroSub = document.getElementById('heroSub'); if(heroSub) heroSub.textContent = sub || 'CSプロフェッショナル';
+
+  const typeBadge = document.getElementById('typeBadge');
+  if(typeBadge){
+    const isCorp = /企業|法人|株式会社|会社/i.test(row.activity||'');
+    typeBadge.textContent = isCorp ? '🏢 企業' : '👤 個人';
+  }
+  const availBadge = document.getElementById('availBadge');
+  if(availBadge){
+    if(row.status === 'approved') availBadge.textContent = '● 受付中';
+    else availBadge.style.display = 'none';
+  }
+
+  const specialties = splitItems(row.specialties);
+  const tagsEl = document.getElementById('heroTags');
+  if(tagsEl){
+    tagsEl.innerHTML = specialties.map((t,i)=>`<span class="d-tag ${i<3?'d-tag-main':'d-tag-sub'}">${esc(t)}</span>`).join('');
+  }
+  const strengthsList = document.getElementById('strengthsList');
+  if(strengthsList){
+    strengthsList.innerHTML = specialties.length
+      ? specialties.map(t=>`<div class="strength-item"><span class="strength-label">${esc(t)}</span><div class="strength-bar"><div class="strength-fill" data-w="85" style="width:85%"></div></div><span class="strength-val">—</span></div>`).join('')
+      : '<div style="font-size:12px;color:var(--muted);">登録データがありません</div>';
+  }
+  const skillsWrap = document.getElementById('skillsWrap');
+  if(skillsWrap){
+    skillsWrap.innerHTML = specialties.length
+      ? specialties.map(t=>`<span class="skill-tag-item">${esc(t)}</span>`).join('')
+      : '<span style="font-size:12px;color:var(--muted);">—</span>';
+  }
+
+  const desc = document.getElementById('heroDesc');
+  if(desc){
+    const achievement = row.achievement ? String(row.achievement).split('\n')[0].slice(0,260) : '';
+    desc.textContent = achievement || 'facing審査を通過したCSプロフェッショナルです。詳細は下記をご覧ください。';
+  }
+  const achBody = document.getElementById('achievementBody');
+  if(achBody) achBody.textContent = row.achievement || '—';
+
+  // Profile meta
+  document.getElementById('metaWorktype').textContent = row.worktype || '応相談';
+  document.getElementById('metaStart').textContent    = row.starttime || '応相談';
+  document.getElementById('metaRate').textContent     = row.rate || '応相談';
+
+  document.getElementById('condWorktype').textContent = row.worktype || '応相談';
+  document.getElementById('condStart').textContent    = row.starttime || '応相談';
+  document.getElementById('condRate').textContent     = row.rate || '応相談';
+  document.getElementById('condExp').textContent      = row.experience || '—';
+  document.getElementById('condActivity').textContent = row.activity || '—';
+
+  // Sticky CTA
+  document.getElementById('stickyName').textContent = name;
+  document.getElementById('stickySub').textContent  = [row.activity, row.rate].filter(Boolean).join(' · ') || 'CSプロフェッショナル';
+}
+
+async function renderSimilar(currentId){
+  const wrap = document.getElementById('similarList');
+  if(!wrap) return;
+  try {
+    const rows = await window.CSLINK.professional.listApproved({ limit: 6 });
+    const others = (rows||[]).filter(r => r.id !== currentId).slice(0, 3);
+    if(others.length === 0){
+      wrap.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:12px;">他の審査済みCS専門家は準備中です</div>';
+      return;
+    }
+    wrap.innerHTML = others.map(r => {
+      const color1 = hashColor(r.name);
+      const color2 = hashColor(r.name + 'x');
+      const tag = (r.specialties||'').split(/[、,]/)[0] || 'CS';
+      return `<a href="cslink_pro_detail.html?id=${encodeURIComponent(r.id)}" class="similar-item">
+        <div class="sim-av" style="background:linear-gradient(135deg,${color1},${color2})">${esc(initial(r.name))}</div>
+        <div class="sim-info">
+          <div class="sim-name">${esc(r.name||'CS専門家')}</div>
+          <div class="sim-tag">${esc(tag)}</div>
+        </div>
+        <div class="sim-score">●</div>
+      </a>`;
+    }).join('');
+  } catch(e){
+    wrap.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:12px;">読み込みに失敗しました</div>';
+  }
+}
+
+async function loadProDetail(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  if(!id){ renderNotFound(); return; }
+  try {
+    if(!(window.CSLINK && window.CSLINK.professional)) throw new Error('CSLINK client unavailable');
+    const row = await window.CSLINK.professional.getPublic(id);
+    if(!row){ renderNotFound(); return; }
+    hydrate(row);
+    renderSimilar(id);
+  } catch(e){
+    console.error('[pro_detail] load failed:', e);
+    renderNotFound();
+  }
+}
+loadProDetail();
 </script>
 
 <script>
@@ -680,8 +705,10 @@ function toggleFav(){
 
 // シェア
 function shareProfile(){
+  const title = (document.getElementById('heroName')?.textContent || 'CSプロ') + ' | CSLINK';
+  const text  = document.getElementById('heroSub')?.textContent || 'CS専門家のプロフィール';
   if(navigator.share){
-    navigator.share({title:'田中 美咲 | CSLINK',text:'CS戦略コンサルタント・田中美咲のプロフィール',url:location.href});
+    navigator.share({title, text, url:location.href});
   } else {
     navigator.clipboard.writeText(location.href).then(()=>alert('URLをコピーしました！'));
   }

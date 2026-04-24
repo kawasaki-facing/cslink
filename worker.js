@@ -2,17 +2,24 @@
  * CSLINK AI Proxy Worker
  * エンドポイント:
  *   POST /chat     - チャットボット（Anthropic APIプロキシ）
- *   POST /register - 企業登録フォーム（GAS経由でシート保存）
- *   POST /screen   - プロ登録＋AIスクリーニング（NEW）
+ *   POST /screen   - プロ登録用AIスクリーニング
+ *   POST /register - 企業登録通知（後方互換・Supabase移行後は任意）
  *
  * 必須の環境変数（Cloudflare Workers Secrets / Vars）:
  *   ANTHROPIC_API_KEY  (Secret) - Anthropic APIキー
- *   GAS_URL            (Var)    - 企業登録用GAS Web Apps URL（既存）
- *   GAS_PRO_URL        (Var)    - プロ登録用GAS Web Apps URL（NEW・任意）
- *                                  未設定時は GAS_URL にフォールバック
+ *   NOTIFY_WEBHOOK_URL (Var・任意) - 企業登録時に通知するWebhook/GAS URL
+ *                                   未設定なら /register は204を返すだけ
+ *
+ * データ永続化は全てSupabase側で行う（クライアントから直接INSERT）
+ * 本WorkerはAI処理のプロキシと任意通知のみ扱う
  */
 
-const ALLOWED_ORIGINS = ['https://cslink.link', 'https://www.cslink.link'];
+const ALLOWED_ORIGINS = [
+  'https://cslink.link',
+  'https://www.cslink.link',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500'
+];
 
 function buildCorsHeaders(request) {
   const origin = request.headers.get('Origin');
@@ -156,25 +163,19 @@ async function handleChat(request, env, jsonHeaders) {
 }
 
 /* =========================================================================
- * /register ― 企業登録フォーム（既存機能・GASへ転送）
+ * /register ― 企業登録時の任意通知（Supabase移行により後方互換のみ）
+ * NOTIFY_WEBHOOK_URL が設定されていれば POST 転送、なければ即 200 を返す
  * ========================================================================= */
 async function handleRegister(request, env, ctx, jsonHeaders) {
-  const data = await request.json();
+  let data = {};
+  try { data = await request.json(); } catch (e) {}
 
-  // GAS URL のバリデーション
-  if (!env.GAS_URL) {
-    console.warn('GAS_URL not configured');
-    return new Response(
-      JSON.stringify({ error: 'GAS_URL not configured on server' }),
-      { status: 503, headers: jsonHeaders }
-    );
+  if (env.NOTIFY_WEBHOOK_URL) {
+    ctx.waitUntil(sendToWebhook(env.NOTIFY_WEBHOOK_URL, data));
   }
 
-  // 非同期でGASに書き込み（応答を待たない）
-  ctx.waitUntil(sendToGAS(env.GAS_URL, data));
-
   return new Response(
-    JSON.stringify({ ok: true, message: '登録を受け付けました' }),
+    JSON.stringify({ ok: true, message: '通知を受け付けました' }),
     { headers: jsonHeaders }
   );
 }
@@ -199,21 +200,18 @@ async function handleScreen(request, env, ctx, jsonHeaders) {
   // AIスクリーニング実行
   const screening = await runAIScreening(data, env);
 
-  // GASにデータ保存（AI結果も含める・非同期）
-  const saveData = {
-    ...data,
-    ai_score: screening.score,
-    ai_status: screening.status,
-    ai_comment: screening.comment,
-  };
-  const gasUrl = env.GAS_PRO_URL ?? env.GAS_URL;
-  if (!gasUrl) {
-    console.warn('Neither GAS_PRO_URL nor GAS_URL is configured; skipping save');
-  } else {
-    ctx.waitUntil(sendToGAS(gasUrl, saveData));
+  // 任意通知: NOTIFY_WEBHOOK_URL が設定されていればAI判定結果も含めて転送
+  if (env.NOTIFY_WEBHOOK_URL) {
+    ctx.waitUntil(sendToWebhook(env.NOTIFY_WEBHOOK_URL, {
+      type: 'pro_registration',
+      ...data,
+      ai_score: screening.score,
+      ai_status: screening.status,
+      ai_comment: screening.comment,
+    }));
   }
 
-  // フロントに結果を返却
+  // フロントに結果を返却（データ保存はクライアント側でSupabaseに直接INSERT）
   return new Response(JSON.stringify(screening), { headers: jsonHeaders });
 }
 
@@ -456,30 +454,28 @@ function fallbackScreening(data) {
 }
 
 /* =========================================================================
- * GAS（Google Apps Script）への書き込み
- * - GASはPOSTリクエストをリダイレクトするため redirect: 'follow'
- * - Content-Typeは 'text/plain' にしないとGASが弾く
+ * 任意Webhook（Slack/GAS/Zapier等）への通知
+ * - GAS の場合は 'text/plain' にしてリダイレクト許可が必要
+ * - URLに "script.google.com" が含まれていればGASモードで送信
  * ========================================================================= */
-async function sendToGAS(gasUrl, data) {
-  if (!gasUrl) {
-    console.warn('[GAS] URL not configured, skipping save. Data keys:', Object.keys(data).join(','));
-    return { ok: false, reason: 'not_configured' };
-  }
+async function sendToWebhook(url, data) {
+  if (!url) return { ok: false, reason: 'not_configured' };
+  const isGAS = url.includes('script.google.com');
   try {
-    const res = await fetch(gasUrl, {
+    const res = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
+      headers: { 'Content-Type': isGAS ? 'text/plain' : 'application/json' },
       body: JSON.stringify(data),
       redirect: 'follow',
     });
     if (!res.ok) {
       const body = await res.text().catch(() => '(body read failed)');
-      console.error('[GAS] Error response:', res.status, body.slice(0, 500));
+      console.error('[webhook] Error response:', res.status, body.slice(0, 300));
       return { ok: false, reason: 'http_error', status: res.status };
     }
     return { ok: true };
   } catch (err) {
-    console.error('[GAS] Fetch error:', err && err.message ? err.message : String(err));
+    console.error('[webhook] Fetch error:', err && err.message ? err.message : String(err));
     return { ok: false, reason: 'network_error' };
   }
 }

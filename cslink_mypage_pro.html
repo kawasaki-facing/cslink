@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>マイページ | CSLINK — CSプロ向け</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -122,11 +124,14 @@ body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--bg);color:var
   <div class="login-card">
     <div class="login-eyebrow">FOR CS PROFESSIONALS</div>
     <div class="login-title">プロマイページにログイン</div>
-    <p class="login-desc">ご登録時のメールアドレスを入力してください。審査状況やマッチングされた案件を確認できます。</p>
+    <p class="login-desc">ご登録時のメールアドレスを入力してください。ログイン用のリンクをメールでお送りします。</p>
     <label class="form-label">登録メールアドレス</label>
-    <input type="email" class="form-input" id="emailInput" placeholder="taro@example.com" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="submit-btn" id="loginBtn" onclick="doLogin()">マイページを表示する →</button>
+    <input type="email" class="form-input" id="emailInput" placeholder="taro@example.com" autocomplete="email" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="submit-btn" id="loginBtn" onclick="doLogin()">ログインリンクを送信 →</button>
     <p class="form-err" id="loginErr">このメールアドレスでの登録が見つかりません。</p>
+    <div id="loginSent" style="display:none;background:#ecfeff;border:1.5px solid var(--teal);border-radius:10px;padding:14px;margin-top:16px;font-size:13px;color:var(--navy);line-height:1.7;">
+      📧 ログインリンクを送信しました。メール内のリンクをクリックしてマイページに戻ってきてください。
+    </div>
     <p class="form-note">登録がお済みでない方は<a href="cslink_register_pro.html" style="color:var(--teal)">こちら</a>から登録できます</p>
   </div>
 </div>
@@ -176,72 +181,89 @@ body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--bg);color:var
 </div>
 
 <script>
-const SUPABASE_URL = 'https://xatjfhleqgubgrnqzxrs.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_TWPuwEddFu3sgGDGSlnFFA_HaLiP7Tw';
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 let currentPro = null;
-let isLoggingIn = false;
 let isResponding = false;
-const sendingStates = {}; // matchingId -> bool
+const sendingStates = {};
+const subscribedChannels = {};
 
-// ===== DOMヘルパー =====
 function el(tag, opts = {}, children = []){
   const node = document.createElement(tag);
   if(opts.className) node.className = opts.className;
   if(opts.text != null) node.textContent = opts.text;
-  if(opts.attrs){
-    for(const k in opts.attrs){
-      if(opts.attrs[k] != null) node.setAttribute(k, opts.attrs[k]);
-    }
-  }
+  if(opts.attrs){ for(const k in opts.attrs){ if(opts.attrs[k]!=null) node.setAttribute(k, opts.attrs[k]); } }
   if(opts.style) node.setAttribute('style', opts.style);
   if(opts.onclick) node.addEventListener('click', opts.onclick);
   (Array.isArray(children)?children:[children]).forEach(c=>{
-    if(c==null || c===false) return;
-    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    if(c==null||c===false) return;
+    node.appendChild(typeof c==='string' ? document.createTextNode(c) : c);
   });
   return node;
 }
-function clearNode(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+function clearNode(n){ while(n.firstChild) n.removeChild(n.firstChild); }
+function fmtDate(d){ if(!d) return '—'; const dt=new Date(d); return `${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`; }
+function fmtDT(d){ if(!d) return ''; const dt=new Date(d); const p=n=>String(n).padStart(2,'0'); return `${dt.getMonth()+1}/${dt.getDate()} ${p(dt.getHours())}:${p(dt.getMinutes())}`; }
 
 async function doLogin(){
-  if(isLoggingIn) return;
-  const email = document.getElementById('emailInput').value.trim();
-  if(!email){ alert('メールアドレスを入力してください'); return; }
+  const email = (document.getElementById('emailInput').value||'').trim();
+  const err  = document.getElementById('loginErr');
+  const sent = document.getElementById('loginSent');
+  err.style.display = 'none';
+  sent.style.display = 'none';
+  if(!email){ err.textContent = 'メールアドレスを入力してください'; err.style.display='block'; return; }
   const btn = document.getElementById('loginBtn');
-  isLoggingIn = true;
-  btn.disabled = true; btn.textContent = '確認中…';
-
+  btn.disabled = true; btn.textContent = '送信中…';
   try {
-    const {data, error} = await db.from('professionals').select('*').eq('email', email).single();
-
-    if(error || !data){
-      document.getElementById('loginErr').style.display = 'block';
-      return;
-    }
-    currentPro = data;
-    document.getElementById('loginErr').style.display = 'none';
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('mainScreen').style.display = 'block';
-    renderMain();
-  } finally {
-    isLoggingIn = false;
-    btn.disabled = false; btn.textContent = 'マイページを表示する →';
+    await window.CSLINK.auth.sendMagicLink(email, '/cslink_mypage_pro.html');
+    sent.style.display = 'block';
+    btn.textContent = '送信済み';
+  } catch(e) {
+    err.textContent = '送信に失敗しました: ' + (e.message || e);
+    err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'ログインリンクを送信 →';
   }
 }
 
-function doLogout(){
+async function doLogout(){
+  try { await window.CSLINK.auth.signOut(); } catch(e){}
   currentPro = null;
+  Object.keys(subscribedChannels).forEach(k=>{ try{ subscribedChannels[k](); }catch(e){} delete subscribedChannels[k]; });
   document.getElementById('mainScreen').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('emailInput').value = '';
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginBtn').textContent = 'ログインリンクを送信 →';
+  document.getElementById('loginSent').style.display = 'none';
+}
+
+async function bootstrap(){
+  const user = await window.CSLINK.auth.getUser();
+  if(!user){
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('mainScreen').style.display = 'none';
+    setTimeout(()=>document.getElementById('emailInput')?.focus(), 100);
+    return;
+  }
+  let pro = null;
+  try { pro = await window.CSLINK.professional.fetchMine(); } catch(e){ console.error(e); }
+  if(!pro){ try { pro = await window.CSLINK.professional.linkByEmail(); } catch(e){ console.error(e); } }
+  if(!pro){
+    const err = document.getElementById('loginErr');
+    err.textContent = 'このメールアドレスで登録されたCSプロが見つかりません。登録時と同じメールでお試しください。';
+    err.style.display = 'block';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('mainScreen').style.display = 'none';
+    await window.CSLINK.auth.signOut();
+    return;
+  }
+  currentPro = pro;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainScreen').style.display = 'block';
+  renderMain();
 }
 
 function renderMain(){
   const p = currentPro;
-  document.getElementById('welcomeName').textContent = p.name;
+  document.getElementById('welcomeName').textContent = p.name || '—';
   document.getElementById('welcomeSub').textContent = `${p.activity||''}　|　専門：${(p.specialties||'').split('、')[0]||'—'}`;
   renderScreening(p.status);
   renderProfile(p);
@@ -250,12 +272,12 @@ function renderMain(){
 
 function renderScreening(status){
   const configs = {
-    pending: {icon:'⏳', cls:'pending', title:'審査受付済み', desc:'ご登録ありがとうございます。facing担当者が審査を開始します。3営業日以内に審査結果をメールでお知らせします。', badge:'審査待ち', badgeCls:'badge-pending'},
     reviewing: {icon:'🔍', cls:'reviewing', title:'審査中', desc:'facing担当者がプロフィールを確認しています。審査完了後、CSLINKに掲載され案件のマッチングが始まります。', badge:'審査中', badgeCls:'badge-reviewing'},
-    approved: {icon:'✅', cls:'approved', title:'審査通過！掲載中', desc:'おめでとうございます。審査を通過しCSLINKに掲載されました。企業からのマッチングをお待ちください。', badge:'承認済 · 掲載中', badgeCls:'badge-approved'},
-    rejected: {icon:'❌', cls:'rejected', title:'審査結果について', desc:'今回は審査基準に合致しなかったためご登録をお断りしました。詳細はメールでお知らせしています。', badge:'審査終了', badgeCls:'badge-rejected'}
+    approved:  {icon:'✅', cls:'approved', title:'審査通過！掲載中', desc:'おめでとうございます。審査を通過しCSLINKに掲載されました。企業からのマッチングをお待ちください。', badge:'承認済 · 掲載中', badgeCls:'badge-approved'},
+    hold:      {icon:'⏸', cls:'reviewing', title:'追加情報をお願いしています', desc:'プロフィールの補足情報について、担当者からご連絡します。もう少々お待ちください。', badge:'保留', badgeCls:'badge-reviewing'},
+    rejected:  {icon:'❌', cls:'rejected', title:'審査結果について', desc:'今回は審査基準に合致しなかったためご登録をお断りしました。詳細はメールでお知らせしています。', badge:'審査終了', badgeCls:'badge-rejected'}
   };
-  const cfg = configs[status] || configs.pending;
+  const cfg = configs[status] || configs.reviewing;
   document.getElementById('screeningIcon').textContent = cfg.icon;
   document.getElementById('screeningIcon').className = 'screening-icon '+cfg.cls;
   document.getElementById('screeningTitle').textContent = cfg.title;
@@ -285,205 +307,179 @@ function renderProfile(p){
   });
 }
 
-function renderEmptyState(container, icon, title, desc){
+function emptyState(container, icon, title, desc){
   clearNode(container);
-  const wrap = el('div', {className:'empty-state'});
-  wrap.appendChild(el('div', {className:'empty-icon', text: icon}));
-  wrap.appendChild(el('div', {className:'empty-title', text: title}));
-  const descNode = el('div', {className:'empty-desc'});
-  desc.split('\n').forEach((line, i)=>{
-    if(i>0) descNode.appendChild(document.createElement('br'));
-    descNode.appendChild(document.createTextNode(line));
-  });
-  wrap.appendChild(descNode);
+  const wrap = el('div', {style:'text-align:center;padding:32px 16px;background:var(--white);border-radius:14px;border:1px dashed var(--border);'});
+  wrap.appendChild(el('div', {style:'font-size:36px;margin-bottom:8px', text: icon}));
+  wrap.appendChild(el('div', {style:'font-size:15px;font-weight:800;color:var(--navy);margin-bottom:6px', text: title}));
+  const d = el('div', {style:'font-size:12px;color:var(--muted);line-height:1.8'});
+  desc.split('\n').forEach((line,i)=>{ if(i>0) d.appendChild(document.createElement('br')); d.appendChild(document.createTextNode(line)); });
+  wrap.appendChild(d);
   container.appendChild(wrap);
 }
 
 async function loadJobs(proId){
-  const {data:matchings} = await db.from('matchings').select('*').eq('professional_id', proId).order('created_at',{ascending:false});
   const container = document.getElementById('jobsList');
-
-  if(!matchings || !matchings.length){
-    renderEmptyState(container, '📋', '案件マッチング待ち', '審査通過後、CSLINKが最適な企業案件をマッチングします。\nマッチングされた案件はこちらに表示されます。');
+  emptyState(container, '🔄', '読み込み中', '');
+  let matchings = [];
+  try {
+    matchings = await window.CSLINK.matching.listAsProfessional(proId);
+  } catch(e){
+    emptyState(container, '⚠️', '読み込みに失敗しました', String(e.message||e));
     return;
   }
-
-  const companyIds = matchings.map(m=>m.company_id);
-  const {data:companies} = await db.from('companies').select('*').in('id', companyIds);
-
-  clearNode(container);
-  matchings.forEach(m=>{
-    const company = companies?.find(c=>c.id===m.company_id);
-    if(!company) return;
-    const statusLabel = {proposed:'提案中',accepted:'対応中',rejected:'見送り',contracted:'成約',closed:'終了'}[m.status]||m.status;
-    const badgeClass = 'badge-'+(m.status==='contracted'?'contracted':m.status==='accepted'?'accepted':m.status==='rejected'?'rejected':'proposed');
-    const challenges = (company.challenges||'').split('、').filter(Boolean).slice(0,4);
-    const canRespond = m.status === 'proposed';
-
-    const card = el('div', {className:'job-card', attrs:{id:'job-'+m.id}});
-
-    // ヘッダー
-    const header = el('div', {className:'job-header'});
-    const headerLeft = el('div');
-    headerLeft.appendChild(el('div', {className:'job-company', text: company.name||''}));
-    headerLeft.appendChild(el('div', {
-      className:'job-sub',
-      text: `${company.industry||'—'}　|　${company.size||'—'}`
-    }));
-    const badgeWrap = el('div', {style:'margin-top:8px'});
-    badgeWrap.appendChild(el('span', {className:'job-status '+badgeClass, text: statusLabel}));
-    headerLeft.appendChild(badgeWrap);
-    header.appendChild(headerLeft);
-    card.appendChild(header);
-
-    // タグ
-    const tagWrap = el('div', {className:'job-tags'});
-    challenges.forEach(t=> tagWrap.appendChild(el('span', {className:'tag', text: t})));
-    card.appendChild(tagWrap);
-
-    // 案件詳細
-    const detail = el('div', {className:'job-detail'});
-    detail.appendChild(el('strong', {text:'CS課題：'}));
-    detail.appendChild(document.createTextNode(company.detail||company.challenges||'—'));
-    detail.appendChild(document.createElement('br'));
-    detail.appendChild(el('strong', {text:'希望稼働：'}));
-    detail.appendChild(document.createTextNode((company.worktype||'—')+'　'));
-    detail.appendChild(el('strong', {text:'開始希望：'}));
-    detail.appendChild(document.createTextNode((company.starttime||'—')+'　'));
-    detail.appendChild(el('strong', {text:'予算：'}));
-    detail.appendChild(document.createTextNode(company.budget||'—'));
-    card.appendChild(detail);
-
-    // アクションボタン
-    if(canRespond){
-      const actionRow = el('div', {className:'action-row'});
-      const acceptBtn = el('button', {
-        className:'btn-accept', text:'✓ この案件を受ける',
-        attrs:{id:'accept-'+m.id},
-        onclick: ()=> respondToMatch(m.id, 'accepted')
-      });
-      const declineBtn = el('button', {
-        className:'btn-decline', text:'見送る',
-        attrs:{id:'decline-'+m.id},
-        onclick: ()=> respondToMatch(m.id, 'rejected')
-      });
-      actionRow.appendChild(acceptBtn);
-      actionRow.appendChild(declineBtn);
-      card.appendChild(actionRow);
-    }
-
-    // メッセージセクション
-    const msgSection = el('div', {className:'msg-section'});
-    msgSection.appendChild(el('div', {className:'msg-section-title', text:'💬 担当者・企業とのメッセージ'}));
-    const msgList = el('div', {className:'msg-list', attrs:{id:'msgs-'+m.id}});
-    msgList.appendChild(el('div', {
-      style:'text-align:center;color:var(--muted);font-size:13px;padding:20px',
-      text:'読み込み中...'
-    }));
-    msgSection.appendChild(msgList);
-
-    const inputRow = el('div', {className:'msg-input-row'});
-    inputRow.appendChild(el('input', {
-      className:'msg-input',
-      attrs:{id:'msginput-'+m.id, placeholder:'メッセージを入力…'}
-    }));
-    inputRow.appendChild(el('button', {
-      className:'msg-send', text:'送信',
-      attrs:{id:'msgbtn-'+m.id},
-      onclick: ()=> sendMsg(m.id, proId, 'professional')
-    }));
-    msgSection.appendChild(inputRow);
-    card.appendChild(msgSection);
-
-    container.appendChild(card);
-  });
-
-  for(const m of matchings){
-    await loadMessages(m.id, proId);
+  if(!matchings.length){
+    emptyState(container, '📋', '案件マッチング待ち', '審査通過後、CSLINKが最適な企業案件をマッチングします。\nマッチングされた案件はこちらに表示されます。');
+    return;
   }
+  clearNode(container);
+  matchings.forEach(m => container.appendChild(renderJobCard(m, proId)));
+  matchings.forEach(m => {
+    loadMessages(m.id);
+    if(!subscribedChannels[m.id]){
+      subscribedChannels[m.id] = window.CSLINK.message.subscribe(m.id, () => loadMessages(m.id));
+    }
+  });
+}
+
+function renderJobCard(m, proId){
+  const company = m.companies || {};
+  const statusLabel = {proposed:'提案中', accepted:'対応中', declined:'見送り', contracted:'成約', closed:'終了'}[m.status] || m.status;
+  const badgeClass = 'badge-'+(m.status==='contracted'?'contracted':m.status==='accepted'?'accepted':m.status==='declined'?'rejected':'proposed');
+  const challenges = (company.challenges||'').split('、').filter(Boolean).slice(0,4);
+  const canRespond = m.status === 'proposed';
+
+  const card = el('div', {className:'job-card'});
+  const header = el('div', {className:'job-header'});
+  const left = el('div');
+  left.appendChild(el('div', {className:'job-company', text: company.name || '企業'}));
+  left.appendChild(el('div', {className:'job-sub', text: `${company.industry||'—'}　|　${company.size||'—'}`}));
+  const badgeWrap = el('div', {style:'margin-top:8px'});
+  badgeWrap.appendChild(el('span', {className:'job-status '+badgeClass, text: statusLabel}));
+  left.appendChild(badgeWrap);
+  header.appendChild(left);
+  card.appendChild(header);
+
+  if(challenges.length){
+    const tagWrap = el('div', {className:'job-tags'});
+    challenges.forEach(t => tagWrap.appendChild(el('span', {className:'tag', text: t})));
+    card.appendChild(tagWrap);
+  }
+
+  const detail = el('div', {className:'job-detail'});
+  detail.appendChild(el('strong', {text:'CS課題：'}));
+  detail.appendChild(document.createTextNode(company.challenges || '—'));
+  detail.appendChild(document.createElement('br'));
+  detail.appendChild(el('strong', {text:'予算：'}));
+  detail.appendChild(document.createTextNode(company.budget||'—'));
+  card.appendChild(detail);
+
+  if(canRespond){
+    const actionRow = el('div', {className:'action-row'});
+    actionRow.appendChild(el('button', {
+      className:'btn-accept', text:'✓ この案件を受ける',
+      attrs:{id:'accept-'+m.id},
+      onclick: () => respondToMatch(m.id, 'accepted')
+    }));
+    actionRow.appendChild(el('button', {
+      className:'btn-decline', text:'見送る',
+      attrs:{id:'decline-'+m.id},
+      onclick: () => respondToMatch(m.id, 'declined')
+    }));
+    card.appendChild(actionRow);
+  }
+
+  const msgSection = el('div', {className:'msg-section'});
+  msgSection.appendChild(el('div', {className:'msg-section-title', text:'💬 担当者・企業とのメッセージ'}));
+  const msgList = el('div', {className:'msg-list', attrs:{id:'msgs-'+m.id}});
+  msgList.appendChild(el('div', {style:'text-align:center;color:var(--muted);font-size:12px;padding:16px', text:'読み込み中…'}));
+  msgSection.appendChild(msgList);
+
+  const inputRow = el('div', {className:'msg-input-row'});
+  const input = el('input', {className:'msg-input', attrs:{id:'msginput-'+m.id, placeholder:'メッセージを入力…'}});
+  input.addEventListener('keydown', ev => { if(ev.key==='Enter' && !ev.shiftKey){ ev.preventDefault(); sendMsg(m.id); } });
+  inputRow.appendChild(input);
+  inputRow.appendChild(el('button', {
+    className:'msg-send', text:'送信',
+    attrs:{id:'msgbtn-'+m.id},
+    onclick: () => sendMsg(m.id)
+  }));
+  msgSection.appendChild(inputRow);
+  card.appendChild(msgSection);
+
+  return card;
 }
 
 async function respondToMatch(matchingId, status){
   if(isResponding) return;
-  const label = status==='accepted'?'この案件を受ける':'見送る';
+  const label = status==='accepted' ? 'この案件を受ける' : '見送る';
   if(!confirm(`「${label}」でよろしいですか？`)) return;
-
   isResponding = true;
-  const acceptBtn = document.getElementById('accept-'+matchingId);
+  const acceptBtn  = document.getElementById('accept-'+matchingId);
   const declineBtn = document.getElementById('decline-'+matchingId);
-  if(acceptBtn) acceptBtn.disabled = true;
+  if(acceptBtn)  acceptBtn.disabled = true;
   if(declineBtn) declineBtn.disabled = true;
-
   try {
-    const {error} = await db.from('matchings').update({status}).eq('id', matchingId);
-    if(error){ alert('更新に失敗しました'); return; }
+    await window.CSLINK.matching.updateStatus(matchingId, status);
     await loadJobs(currentPro.id);
+  } catch(e){
+    alert('更新に失敗しました: ' + (e.message||e));
   } finally {
     isResponding = false;
-    // loadJobsで再描画されるためボタン復帰は不要
   }
 }
 
-async function loadMessages(matchingId, proId){
-  const {data:msgs} = await db.from('messages').select('*').eq('matching_id',matchingId).order('created_at');
+async function loadMessages(matchingId){
   const container = document.getElementById('msgs-'+matchingId);
   if(!container) return;
+  let msgs = [];
+  try { msgs = await window.CSLINK.message.list(matchingId); } catch(e){ console.error(e); }
   clearNode(container);
-  if(!msgs||!msgs.length){
-    container.appendChild(el('div', {
-      style:'text-align:center;color:var(--muted);font-size:13px;padding:20px',
-      text:'まだメッセージはありません'
-    }));
+  if(!msgs.length){
+    container.appendChild(el('div', {style:'text-align:center;color:var(--muted);font-size:12px;padding:16px', text:'まだメッセージはありません'}));
     return;
   }
-  const who = {company:'企業担当者',professional:'あなた',admin:'CSLINK運営'};
-  msgs.forEach(msg=>{
-    const ismine = msg.sender_type==='professional' && msg.sender_id===proId;
-    const isadmin = msg.sender_type==='admin';
-    const cls = ismine?'mine':isadmin?'admin':'theirs';
+  const who = {company:'企業担当者', professional:'あなた', admin:'CSLINK運営'};
+  msgs.forEach(msg => {
+    const isAdmin = msg.sender_type === 'admin';
+    const isMine  = msg.sender_type === 'professional';
+    const cls = isMine ? 'mine' : isAdmin ? 'admin' : 'theirs';
     const bubble = el('div', {className:'msg-bubble '+cls});
-    bubble.appendChild(document.createTextNode(msg.content||''));
-    bubble.appendChild(el('div', {
-      className:'msg-meta',
-      text: `${who[msg.sender_type]||msg.sender_type} · ${fmtDate(msg.created_at)}`
-    }));
+    bubble.appendChild(document.createTextNode(msg.content || ''));
+    bubble.appendChild(el('div', {className:'msg-meta', text: `${who[msg.sender_type]||msg.sender_type} · ${fmtDT(msg.created_at)}`}));
     container.appendChild(bubble);
   });
   container.scrollTop = container.scrollHeight;
 }
 
-async function sendMsg(matchingId, senderId, senderType){
+async function sendMsg(matchingId){
   if(sendingStates[matchingId]) return;
   const input = document.getElementById('msginput-'+matchingId);
-  const btn = document.getElementById('msgbtn-'+matchingId);
-  const content = input?.value.trim();
+  const btn   = document.getElementById('msgbtn-'+matchingId);
+  const content = (input?.value || '').trim();
   if(!content) return;
-
   sendingStates[matchingId] = true;
   if(btn){ btn.disabled = true; btn.textContent = '送信中…'; }
   if(input) input.disabled = true;
-
   try {
-    const {error} = await db.from('messages').insert({
-      matching_id: matchingId,
-      sender_type: senderType,
-      sender_id: senderId,
-      content
-    });
-    if(error){ alert('送信に失敗しました'); return; }
+    await window.CSLINK.message.send(matchingId, 'professional', content);
     if(input) input.value = '';
-    await loadMessages(matchingId, senderId);
+    await loadMessages(matchingId);
+  } catch(e){
+    alert('送信に失敗しました: ' + (e.message||e));
   } finally {
     sendingStates[matchingId] = false;
     if(btn){ btn.disabled = false; btn.textContent = '送信'; }
     if(input) input.disabled = false;
+    if(input) input.focus();
   }
 }
 
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function fmtDate(d){if(!d)return'—';const dt=new Date(d);return`${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`;}
-
-document.getElementById('emailInput').focus();
+window.CSLINK.auth.onAuthChange((evt) => {
+  if(evt === 'SIGNED_IN' || evt === 'INITIAL_SESSION') bootstrap();
+  if(evt === 'SIGNED_OUT') doLogout();
+});
+bootstrap();
 </script>
 </body>
 </html>

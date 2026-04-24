@@ -280,15 +280,7 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
   "description":"CS（カスタマーサクセス）特化AIマッチングプラットフォーム。企業とCS専門家をAIで最短28秒でつなぐ。"
 }
 </script>
-<!-- ▼ Google Analytics 4（測定IDを取得したら G-XXXXXXXXXX を置換） -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
-<!-- <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
-</script> -->
-<!-- ▲ GA4（コメント解除するだけで有効化） -->
+<script src="js/config.js"></script>
 </head>
 <body>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -440,11 +432,10 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
       <p class="press-sub">CSLINK・facing株式会社のメディア掲載実績です。</p>
     </div>
     <div class="press-grid fade-up delay-1">
-      <!-- プレースホルダー：実掲載後に下記blockを複製して使用 -->
       <div class="press-placeholder">
         <span class="press-icon">📰</span>
-        <div class="press-placeholder-text">Coming Soon</div>
-        <div class="press-placeholder-sub">現在、メディア掲載情報を準備中です。</div>
+        <div class="press-placeholder-text">掲載予定</div>
+        <div class="press-placeholder-sub">メディア掲載は今後順次公開予定です。掲載実績は本欄にて随時更新いたします。</div>
       </div>
       <!--
       実掲載例（コメント解除して使用）：
@@ -530,21 +521,6 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
     <a href="blog/">ブログ</a>
     <a href="cases/">事例</a>
   </div>
-  <!-- ▼ MAILCHIMP INTEGRATION（Mailchimpでlist作成後、action URLとUS-regionを置き換え） -->
-  <form class="newsletter-form"
-        action="https://facing.us1.list-manage.com/subscribe/post?u=PLACEHOLDER_USER_ID&id=PLACEHOLDER_LIST_ID"
-        method="post"
-        target="_blank"
-        novalidate>
-    <input type="email" name="EMAIL" placeholder="メールアドレス" required>
-    <!-- Mailchimp の bot protection 隠しフィールド（実ID入力後に有効化） -->
-    <div style="position:absolute;left:-5000px;" aria-hidden="true">
-      <input type="text" name="b_PLACEHOLDER_USER_ID_PLACEHOLDER_LIST_ID" tabindex="-1" value="">
-    </div>
-    <button type="submit">購読する</button>
-  </form>
-  <div class="newsletter-note" style="font-size:10px;color:var(--muted);margin-top:6px;">※Mailchimp未連携（action URLに実IDを設定してください）</div>
-  <!-- ▲ MAILCHIMP INTEGRATION -->
   <p>© <span id="copyYear">2026</span> facing株式会社 All Rights Reserved.</p>
 </footer>
 <button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">
