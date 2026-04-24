@@ -468,15 +468,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
   "description":"CS（カスタマーサクセス）特化AIマッチングプラットフォーム。企業とCS専門家をAIで最短28秒でつなぐ。"
 }
 </script>
-<!-- ▼ Google Analytics 4（測定IDを取得したら G-XXXXXXXXXX を置換） -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
-<!-- <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
-</script> -->
-<!-- ▲ GA4（コメント解除するだけで有効化） -->
+<script src="js/config.js"></script>
 </head>
 <body>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -500,7 +492,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
   </a>
   <ul class="nav-links">
     <li><a href="cslink_features_v5.html">機能</a></li><li><a href="cslink_howto_fixed.html">使い方・事例</a></li>
-    <li><a href="cslink_pricing.html">料金</a></li><li><a href="cslink_register_client.html">企業向け</a></li><li><a href="cslink_register_pro.html">CS人材向け</a></li>
+    <li><a href="cslink_pricing.html">料金</a></li><li><a href="cslink_list_v2.html">CSプロ一覧</a></li><li><a href="cslink_register_client.html">企業向け</a></li><li><a href="cslink_register_pro.html">CS人材向け</a></li>
   </ul>
   <div class="nav-actions">
     <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替" title="ダークモード切替">
@@ -534,7 +526,7 @@ var ScrollReveal=function(){"use strict";var r={delay:0,distance:"0",duration:60
       </div>
       <div class="mc-row">
         <div><div class="mc-score">98%</div><div class="mc-label">マッチ度</div></div>
-        <div class="mc-match">✓ マッチング完了</div>
+        <div class="mc-match">✓ 審査通過予定</div>
       </div>
     </div>
     <div class="match-card mc2">
@@ -748,12 +740,12 @@ document.querySelectorAll('a,button').forEach(el => {
 
 // ── TICKER ──
 const tickerData = [
-  {avatar:'R',color:'#2563ff',name:'リテンションラボ株式会社',tag:'解約防止',score:'98%',match:'マッチング完了'},
-  {avatar:'T',color:'#06b6d4',name:'田中 美咲（フリーランス）',tag:'CS戦略',score:'94%',match:'マッチング完了'},
-  {avatar:'K',color:'#7c3aed',name:'株式会社CS Partners',tag:'SaaS特化',score:'91%',match:'マッチング完了'},
-  {avatar:'S',color:'#059669',name:'鈴木 健太（個人事業主）',tag:'LTV改善',score:'89%',match:'マッチング完了'},
-  {avatar:'C',color:'#dc2626',name:'CSコンサルB社',tag:'BPO',score:'87%',match:'マッチング完了'},
-  {avatar:'N',color:'#d97706',name:'中村 あかり（フリーランス）',tag:'顧客分析',score:'93%',match:'マッチング完了'},
+  {avatar:'R',color:'#2563ff',name:'リテンションラボ株式会社',tag:'解約防止',score:'98%',match:'掲載候補'},
+  {avatar:'T',color:'#06b6d4',name:'田中 美咲（フリーランス）',tag:'CS戦略',score:'94%',match:'掲載候補'},
+  {avatar:'K',color:'#7c3aed',name:'株式会社CS Partners',tag:'SaaS特化',score:'91%',match:'掲載候補'},
+  {avatar:'S',color:'#059669',name:'鈴木 健太（個人事業主）',tag:'LTV改善',score:'89%',match:'掲載候補'},
+  {avatar:'C',color:'#dc2626',name:'CSコンサルB社',tag:'BPO',score:'87%',match:'掲載候補'},
+  {avatar:'N',color:'#d97706',name:'中村 あかり（フリーランス）',tag:'顧客分析',score:'93%',match:'掲載候補'},
 ];
 function buildTicker() {
   const inner = document.getElementById('tickerInner');
@@ -957,7 +949,8 @@ async function sendChat() {
   chatHistory.push({ role: 'user', content: text });
   if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
   try {
-    const res = await fetch('https://cslink-ai-proxy.kawasaki-be9.workers.dev/chat', {
+    const workerUrl = (window.CSLINK_CONFIG && window.CSLINK_CONFIG.WORKER_URL) || 'https://cslink-ai-proxy.kawasaki-be9.workers.dev';
+    const res = await fetch(workerUrl + '/chat', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ messages: chatHistory })
     });
@@ -1137,21 +1130,6 @@ if(typeof ScrollReveal !== 'undefined') {
         <a href="privacy.html">プライバシーポリシー</a>
       </div>
     </div>
-    <!-- ▼ MAILCHIMP INTEGRATION（Mailchimpでlist作成後、action URLとUS-regionを置き換え） -->
-    <form class="newsletter-form"
-          action="https://facing.us1.list-manage.com/subscribe/post?u=PLACEHOLDER_USER_ID&id=PLACEHOLDER_LIST_ID"
-          method="post"
-          target="_blank"
-          novalidate>
-      <input type="email" name="EMAIL" placeholder="メールアドレス" required>
-      <!-- Mailchimp の bot protection 隠しフィールド（実ID入力後に有効化） -->
-      <div style="position:absolute;left:-5000px;" aria-hidden="true">
-        <input type="text" name="b_PLACEHOLDER_USER_ID_PLACEHOLDER_LIST_ID" tabindex="-1" value="">
-      </div>
-      <button type="submit">購読する</button>
-    </form>
-    <div class="newsletter-note" style="font-size:10px;color:var(--muted);margin-top:6px;">※Mailchimp未連携（action URLに実IDを設定してください）</div>
-    <!-- ▲ MAILCHIMP INTEGRATION -->
     <div class="site-footer-bottom">
       <p>© <span id="copyYear">2026</span> facing株式会社 All Rights Reserved.</p>
       <div class="footer-badges">

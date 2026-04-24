@@ -200,15 +200,9 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   "description":"CS（カスタマーサクセス）特化AIマッチングプラットフォーム。企業とCS専門家をAIで最短28秒でつなぐ。"
 }
 </script>
-<!-- ▼ Google Analytics 4（測定IDを取得したら G-XXXXXXXXXX を置換） -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
-<!-- <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
-</script> -->
-<!-- ▲ GA4（コメント解除するだけで有効化） -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
 </head>
 <body>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -226,6 +220,7 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
     <li><a href="cslink_features_v5.html">機能</a></li>
     <li><a href="cslink_howto_fixed.html">使い方・事例</a></li>
     <li><a href="cslink_pricing.html">料金</a></li>
+    <li><a href="cslink_list_v2.html" class="active" style="color:var(--navy);font-weight:700;">CSプロ一覧</a></li>
     <li><a href="cslink_register_client.html">企業向け</a></li>
     <li><a href="cslink_register_pro.html">CS人材向け</a></li>
   </ul>
@@ -271,13 +266,13 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
   </div>
 </div>
 
-<!-- COMING SOON BANNER -->
-<div style="max-width:1200px;margin:40px auto 0;padding:0 56px;">
+<!-- COMING SOON BANNER (0件時に表示) -->
+<div id="emptyBanner" style="max-width:1200px;margin:40px auto 0;padding:0 56px;display:none;">
   <div style="background:linear-gradient(135deg,#fff8e1,#fff3cd);border:1.5px solid #f59e0b;border-radius:16px;padding:20px 28px;display:flex;align-items:center;gap:16px;">
     <span style="font-size:24px;">🔍</span>
     <div>
       <div style="font-weight:700;font-size:14px;color:#92400e;margin-bottom:4px;">現在、初期掲載CS会社・人材を審査・調整中です</div>
-      <div style="font-size:13px;color:#a16207;">掲載されているプロフィールはイメージサンプルです。facing審査通過済みのCS専門家が近日順次公開されます。登録企業には優先的にマッチングをご案内します。</div>
+      <div style="font-size:13px;color:#a16207;">facing審査通過済みのCS専門家が順次公開されます。登録企業には優先的にマッチングをご案内します。</div>
     </div>
     <a href="cslink_register_client.html" style="flex-shrink:0;background:#f59e0b;color:#fff;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;">先行登録する →</a>
   </div>
@@ -286,76 +281,8 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 <!-- FEATURED PROFILES -->
 <div class="featured-section">
   <div class="featured-section-label">FEATURED PROFESSIONALS</div>
-
-  <!-- プロフィール1 -->
-  <div class="profile-editorial fade-in fade-up delay-1" data-spec="churn ltv">
-    <div class="pe-img">
-      <img src="https://cdn.midjourney.com/577711c7-20d7-49f3-9e0e-b7a4a2afec28/0_1_640_N.webp?method=shortest" alt="田中美咲"/>
-      <div class="pe-img-overlay"></div>
-      <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:1px;">サンプル</div>
-      <div class="pe-img-badge">
-        <span class="pe-type-badge indiv">👤 個人</span>
-        <div class="pe-score-badge"><span class="pe-score-num">94</span><span class="pe-score-pct">%</span><span class="pe-score-lbl">適合度</span></div>
-      </div>
-    </div>
-    <div class="pe-body">
-      <div class="pe-name">田中 美咲</div>
-      <div class="pe-sub">CS戦略コンサルタント / フリーランス</div>
-      <div class="pe-tags">
-        <span class="pe-tag main">LTV改善</span><span class="pe-tag main">ヘルススコア設計</span><span class="pe-tag sub">フリーランス</span><span class="pe-tag sub">BtoB SaaS</span>
-      </div>
-      <div class="pe-strengths">
-        <div class="pe-strength-item"><span class="pe-strength-label">LTV改善</span><div class="pe-strength-bar"><div class="pe-strength-fill" data-w="95"></div></div><span class="pe-strength-val">95</span></div>
-        <div class="pe-strength-item"><span class="pe-strength-label">解約防止</span><div class="pe-strength-bar"><div class="pe-strength-fill" data-w="88"></div></div><span class="pe-strength-val">88</span></div>
-        <div class="pe-strength-item"><span class="pe-strength-label">組織設計</span><div class="pe-strength-bar"><div class="pe-strength-fill" data-w="75"></div></div><span class="pe-strength-val">75</span></div>
-      </div>
-      <p class="pe-desc">CS戦略コンサル歴7年。LTV改善・ヘルススコア設計が専門。週3〜フルタイムまで柔軟対応。BtoBスタートアップ中心に30社以上の支援実績。</p>
-      <div class="pe-meta">
-        <div class="pe-meta-item">⏱ 稼働：<strong>週3〜フルタイム</strong></div>
-        <div class="pe-meta-item">💰 費用：<strong>月60万〜</strong></div>
-        <div class="pe-meta-item">📅 経験：<strong>7年</strong></div>
-      </div>
-      <div class="pe-cta">
-        <a href="cslink_register_client.html" class="pe-btn-p">無料でマッチング →</a>
-        <a href="cslink_pro_detail.html" class="pe-btn-s">詳細 →</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- プロフィール2 -->
-  <div class="profile-editorial reverse fade-in fade-up delay-2" data-spec="churn saas">
-    <div class="pe-img">
-      <img src="https://cdn.midjourney.com/7f98ceba-c0c0-46f6-97a4-61182d1dcdab/0_1_640_N.webp?method=shortest" alt="リテンションラボ株式会社" loading="lazy"/>
-      <div class="pe-img-overlay"></div>
-      <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:1px;">サンプル</div>
-      <div class="pe-img-badge">
-        <span class="pe-type-badge corp">🏢 企業</span>
-        <div class="pe-score-badge"><span class="pe-score-num">98</span><span class="pe-score-pct">%</span><span class="pe-score-lbl">適合度</span></div>
-      </div>
-    </div>
-    <div class="pe-body">
-      <div class="pe-name">リテンションラボ株式会社</div>
-      <div class="pe-sub">CS専門会社 / 解約防止・LTV改善特化</div>
-      <div class="pe-tags">
-        <span class="pe-tag main">解約防止</span><span class="pe-tag main">SaaS特化</span><span class="pe-tag sub">即日稼働</span><span class="pe-tag sub">LTV改善</span>
-      </div>
-      <div class="pe-strengths">
-        <div class="pe-strength-item"><span class="pe-strength-label">解約防止</span><div class="pe-strength-bar"><div class="pe-strength-fill" data-w="98"></div></div><span class="pe-strength-val">98</span></div>
-        <div class="pe-strength-item"><span class="pe-strength-label">SaaS対応</span><div class="pe-strength-bar"><div class="pe-strength-fill" data-w="96"></div></div><span class="pe-strength-val">96</span></div>
-        <div class="pe-strength-item"><span class="pe-strength-label">即稼働力</span><div class="pe-strength-bar"><div class="pe-strength-fill" data-w="100"></div></div><span class="pe-strength-val">100</span></div>
-      </div>
-      <p class="pe-desc">SaaS企業の解約防止・LTV改善に特化。facing監修の独自フレームワークで平均チャーンレートを40%改善。最短当日から稼働可能。過去類似案件での成約率92%。</p>
-      <div class="pe-meta">
-        <div class="pe-meta-item">⏱ 稼働：<strong>即日〜フルタイム</strong></div>
-        <div class="pe-meta-item">💰 費用：<strong>要相談</strong></div>
-        <div class="pe-meta-item">📅 実績：<strong>CS支援5年以上</strong></div>
-      </div>
-      <div class="pe-cta">
-        <a href="cslink_register_client.html" class="pe-btn-p">無料でマッチング →</a>
-        <a href="cslink_pro_detail.html" class="pe-btn-s">詳細 →</a>
-      </div>
-    </div>
-  </div>
+  <div id="proList" aria-live="polite"></div>
+  <div id="proLoading" style="text-align:center;padding:64px 0;color:var(--muted);font-size:13px;">読み込み中…</div>
 </div>
 
 <!-- FACING BPO DETAIL -->
@@ -493,21 +420,6 @@ footer{background:var(--navy);padding:28px 56px;display:flex;align-items:center;
 
 <footer>
   <div class="footer-logo"><div class="footer-logo-icon">CS</div>CS<b style="color:var(--teal)">LINK</b></div>
-  <!-- ▼ MAILCHIMP INTEGRATION（Mailchimpでlist作成後、action URLとUS-regionを置き換え） -->
-  <form class="newsletter-form"
-        action="https://facing.us1.list-manage.com/subscribe/post?u=PLACEHOLDER_USER_ID&id=PLACEHOLDER_LIST_ID"
-        method="post"
-        target="_blank"
-        novalidate>
-    <input type="email" name="EMAIL" placeholder="メールアドレス" required>
-    <!-- Mailchimp の bot protection 隠しフィールド（実ID入力後に有効化） -->
-    <div style="position:absolute;left:-5000px;" aria-hidden="true">
-      <input type="text" name="b_PLACEHOLDER_USER_ID_PLACEHOLDER_LIST_ID" tabindex="-1" value="">
-    </div>
-    <button type="submit">購読する</button>
-  </form>
-  <div class="newsletter-note" style="font-size:10px;color:var(--muted);margin-top:6px;">※Mailchimp未連携（action URLに実IDを設定してください）</div>
-  <!-- ▲ MAILCHIMP INTEGRATION -->
   <div class="footer-copy">© <span id="copyYear">2026</span> facing株式会社. All rights reserved.</div>
   <div class="footer-links"><a href="index.html">トップ</a><a href="terms.html">利用規約</a><a href="terms.html#tokushoho">特商法表記</a><a href="privacy.html">プライバシーポリシー</a><a href="company.html">会社概要</a><a href="blog/">ブログ</a><a href="cases/">事例</a></div>
 </footer>
@@ -532,36 +444,197 @@ if(btt){
 </script>
 
 <script>
-// TICKER
-const tData=[
-  {av:'R',bg:'#2563ff',name:'リテンションラボ株式会社',tag:'解約防止',score:98},
-  {av:'T',bg:'#7c3aed',name:'田中 美咲',tag:'LTV改善',score:94},
-];
-const tEl=document.getElementById('tickerEl');
-[...tData,...tData,...tData,...tData].forEach(d=>{
-  tEl.innerHTML+=`<div class="ticker-item"><div class="t-av" style="background:${d.bg}">${d.av}</div>${d.name}<span style="font-size:9px;color:rgba(255,255,255,0.4)">${d.tag}</span><span class="t-score">${d.score}%</span><span class="t-ok">✓ 完了</span></div>`;
-});
+/* ========== ユーティリティ ========== */
+function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function initials(name){
+  const s = String(name||'').trim();
+  if(!s) return 'CS';
+  const ch = Array.from(s)[0] || 'C';
+  return ch.toUpperCase();
+}
+function hashColor(str){
+  const palette = ['#2563ff','#7c3aed','#06b6d4','#0891b2','#db2777','#f59e0b','#10b981','#6366f1'];
+  let h=0; for(const c of String(str||'')){ h=(h*31+c.charCodeAt(0))&0xffffffff; }
+  return palette[Math.abs(h)%palette.length];
+}
+function typeOfActivity(activity){
+  const s = String(activity||'');
+  if(/企業|法人|株式会社|会社|Corp/i.test(s)) return {cls:'corp', label:'🏢 企業'};
+  return {cls:'indiv', label:'👤 個人'};
+}
+function extractTags(row){
+  const s = [row.specialties, row.worktype, row.activity].filter(Boolean).join('、');
+  const parts = s.split(/[、,\s]+/).filter(Boolean);
+  const uniq = []; const seen = new Set();
+  for(const p of parts){
+    if(!seen.has(p)){ seen.add(p); uniq.push(p); if(uniq.length>=4) break; }
+  }
+  return uniq;
+}
+function filterKey(row){
+  const s = (row.specialties||'') + ' ' + (row.achievement||'');
+  return {
+    churn: /解約|チャーン|リテンション/.test(s),
+    ltv:   /LTV|ライフタイム|アップセル|拡大/.test(s),
+    org:   /組織|チーム|採用|マネジ/.test(s),
+    saas:  /SaaS|BtoB|サブスク/.test(s),
+  };
+}
+function snippet(text, max){
+  const s = String(text||'').replace(/\s+/g,' ').trim();
+  if(s.length<=max) return s;
+  return s.slice(0,max).trim()+'…';
+}
 
-// フィルター（サンプル表示のみなので実処理なし）
+/* ========== レンダラ ========== */
+function renderProCard(row, index){
+  const t = typeOfActivity(row.activity);
+  const color = hashColor(row.name);
+  const tags = extractTags(row);
+  const reverse = index % 2 === 1 ? ' reverse' : '';
+  const delay  = 'delay-' + Math.min(index+1, 4);
+  const detailUrl = 'cslink_pro_detail.html?id=' + encodeURIComponent(row.id);
+  return `
+  <div class="profile-editorial fade-in fade-up ${delay}${reverse}" data-id="${esc(row.id)}">
+    <div class="pe-img" style="background:linear-gradient(135deg, ${color}, ${color}cc);min-height:280px;display:flex;align-items:center;justify-content:center;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:96px;font-weight:800;color:rgba(255,255,255,0.9);letter-spacing:-4px;">${esc(initials(row.name))}</div>
+      <div class="pe-img-overlay"></div>
+      <div class="pe-img-badge">
+        <span class="pe-type-badge ${t.cls}">${t.label}</span>
+      </div>
+    </div>
+    <div class="pe-body">
+      <div class="pe-name">${esc(row.name||'CS専門家')}</div>
+      <div class="pe-sub">${esc(row.activity||'CSプロフェッショナル')}${row.experience?' / 経験: '+esc(row.experience):''}</div>
+      ${tags.length ? `<div class="pe-tags">${tags.map((t,i)=>`<span class="pe-tag ${i<2?'main':'sub'}">${esc(t)}</span>`).join('')}</div>` : ''}
+      <p class="pe-desc">${esc(snippet(row.achievement, 180)) || 'プロフィール詳細は詳細ページをご覧ください。'}</p>
+      <div class="pe-meta">
+        ${row.worktype ? `<div class="pe-meta-item">⏱ 稼働：<strong>${esc(row.worktype)}</strong></div>` : ''}
+        ${row.rate ? `<div class="pe-meta-item">💰 費用：<strong>${esc(row.rate)}</strong></div>` : ''}
+        ${row.starttime ? `<div class="pe-meta-item">📅 開始：<strong>${esc(row.starttime)}</strong></div>` : ''}
+      </div>
+      <div class="pe-cta">
+        <a href="cslink_register_client.html" class="pe-btn-p">無料でマッチング →</a>
+        <a href="${esc(detailUrl)}" class="pe-btn-s">詳細 →</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderTicker(rows){
+  const tEl = document.getElementById('tickerEl');
+  if(!tEl) return;
+  const items = (rows && rows.length ? rows : [
+    {name:'審査中のCS専門家', specialties:'解約防止', _score:94, _color:'#2563ff'},
+    {name:'審査中のCS会社',   specialties:'LTV改善',  _score:98, _color:'#7c3aed'},
+  ]).slice(0,6).map((r,i)=>({
+    av: initials(r.name),
+    bg: r._color || hashColor(r.name),
+    name: r.name,
+    tag: (r.specialties||'CS').split('、')[0] || 'CS',
+    score: r._score || (80 + ((i*7)%16))
+  }));
+  const htmlItems = items.concat(items).concat(items).map(d =>
+    `<div class="ticker-item"><div class="t-av" style="background:${d.bg}">${esc(d.av)}</div>${esc(d.name)}<span style="font-size:9px;color:rgba(255,255,255,0.4)">${esc(d.tag)}</span><span class="t-score">${d.score}%</span><span class="t-ok">✓ 審査通過</span></div>`
+  ).join('');
+  tEl.innerHTML = htmlItems;
+}
+
+/* ========== 取得＆描画 ========== */
+let allPros = [];
+let currentFilter = 'all';
+let currentQuery = '';
+
+function applyFilterAndRender(){
+  const listEl = document.getElementById('proList');
+  const emptyEl = document.getElementById('emptyBanner');
+  const resultNum = document.querySelector('.result-num strong');
+  if(!listEl) return;
+
+  const q = currentQuery.toLowerCase();
+  const filtered = allPros.filter(row => {
+    if(currentFilter !== 'all'){
+      const keys = filterKey(row);
+      if(!keys[currentFilter]) return false;
+    }
+    if(q){
+      const hay = [row.name,row.specialties,row.achievement,row.activity,row.worktype].filter(Boolean).join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if(resultNum) resultNum.textContent = filtered.length;
+
+  if(filtered.length === 0){
+    listEl.innerHTML = '';
+    if(emptyEl) emptyEl.style.display = 'block';
+  } else {
+    if(emptyEl) emptyEl.style.display = 'none';
+    listEl.innerHTML = filtered.map((row,i)=>renderProCard(row,i)).join('');
+  }
+
+  // 再アニメ
+  document.querySelectorAll('#proList .fade-in').forEach(el=>{
+    el.classList.add('visible');
+    el.querySelectorAll('.pe-strength-fill').forEach(bar=>{ bar.style.width=(bar.dataset.w||'80')+'%'; });
+  });
+}
+
+async function loadPros(){
+  const loading = document.getElementById('proLoading');
+  try {
+    if(!(window.CSLINK && window.CSLINK.professional)){
+      throw new Error('CSLINK client not loaded');
+    }
+    const rows = await window.CSLINK.professional.listApproved({ limit: 60 });
+    allPros = rows || [];
+  } catch(e){
+    console.error('[list] fetch failed:', e);
+    allPros = [];
+  } finally {
+    if(loading) loading.style.display = 'none';
+    applyFilterAndRender();
+    renderTicker(allPros);
+  }
+}
+
+/* ========== イベント ========== */
 document.querySelectorAll('.pill').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.pill').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');
+    currentFilter = btn.dataset.filter || 'all';
+    applyFilterAndRender();
   });
 });
+const searchInput = document.getElementById('searchInput');
+if(searchInput){
+  let t = null;
+  searchInput.addEventListener('input', ()=>{
+    clearTimeout(t);
+    t = setTimeout(()=>{
+      currentQuery = searchInput.value.trim();
+      applyFilterAndRender();
+    }, 180);
+  });
+}
 
-// IntersectionObserver for animations
+/* ========== 初期描画 ========== */
+renderTicker([]);
+loadPros();
+
+/* IntersectionObserver for initial fade-in animations */
 const io=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
       e.target.classList.add('visible');
-      e.target.querySelectorAll('.pe-strength-fill').forEach(bar=>{ bar.style.width=bar.dataset.w+'%'; });
+      e.target.querySelectorAll('.pe-strength-fill').forEach(bar=>{ bar.style.width=(bar.dataset.w||'80')+'%'; });
     }
   });
 },{threshold:0.1});
 document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
 
-// fade-up scroll animation（company.html と共通）
 const fadeEls=document.querySelectorAll('.fade-up');
 const fadeObserver=new IntersectionObserver((entries)=>{
   entries.forEach(entry=>{
