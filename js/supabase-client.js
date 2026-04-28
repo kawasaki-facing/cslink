@@ -190,7 +190,7 @@
   async function isAdmin() {
     var user = await getUser();
     if (!user) return false;
-    var r = await client.from('admin_users').select('id').eq('auth_user_id', user.id).maybeSingle();
+    var r = await client.from('admin_users').select('auth_user_id').eq('auth_user_id', user.id).maybeSingle();
     return !!(r.data);
   }
 
